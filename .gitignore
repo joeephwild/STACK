@@ -59,9 +59,9 @@ node_modules/
 .expo/
 dist/
 
-# Hardhat
-cache/
-artifacts/
+# Hardhat (only in root, not in packages/contracts)
+/cache/
+/artifacts/
 
 # Prisma
 prisma/migrations/
