@@ -63,5 +63,7 @@ dist/
 /cache/
 /artifacts/
 
+.turbo/daemon/*.log*
+
 # Prisma
 prisma/migrations/
