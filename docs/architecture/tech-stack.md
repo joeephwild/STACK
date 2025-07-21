@@ -6,6 +6,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **Frontend Language** | TypeScript | 5.4+ | Primary language for the mobile app | Provides strong typing to reduce bugs and improve developer experience. |
 | **Frontend Framework**| Expo (React Native) | SDK 51+ | Core framework for building the iOS & Android app | Fulfills the PRD requirement for a cross-platform mobile framework. |
+| **Navigation** | Expo Router | 3.0+ | File-based routing for the mobile app | Provides a modern, file-system based routing solution with type safety and excellent DX. |
 | **Styling** | NativeWind | 4.0+ | Utility-first CSS for React Native | Allows for rapid styling using Tailwind CSS conventions. |
 | **State Management** | Zustand | 4.5+ | Global state management | A simple, lightweight, and powerful alternative to Redux, ideal for an MVP. |
 | **Backend Language** | TypeScript | 5.4+ | Primary language for the serverless backend | Maintains language consistency across the monorepo for shared code and types. |

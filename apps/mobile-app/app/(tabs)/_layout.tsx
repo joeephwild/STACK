@@ -1,67 +1,33 @@
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Tabs } from "expo-router";
-import React from "react";
+import { Link, Tabs } from 'expo-router';
+
+import { HeaderButton } from '../../components/HeaderButton';
+import { TabBarIcon } from '../../components/TabBarIcon';
 
 export default function TabLayout() {
-	const colorScheme = useColorScheme();
-
-	return (
-		<Tabs
-			screenOptions={{
-				tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-				headerShown: false,
-			}}
-		>
-			<Tabs.Screen
-				name="index"
-				options={{
-					title: "Connect",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "wallet" : "wallet-outline"}
-							color={color}
-						/>
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name="read"
-				options={{
-					title: "Read",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "reader" : "reader-outline"}
-							color={color}
-						/>
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name="write"
-				options={{
-					title: "Write",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "code-slash" : "code-slash-outline"}
-							color={color}
-						/>
-					),
-				}}
-			/>
-			<Tabs.Screen
-				name="buy"
-				options={{
-					title: "Buy",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "cart" : "cart-outline"}
-							color={color}
-						/>
-					),
-				}}
-			/>
-		</Tabs>
-	);
+  return (
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: 'black',
+      }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Tab One',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => (
+            <Link href="/modal" asChild>
+              <HeaderButton />
+            </Link>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="two"
+        options={{
+          title: 'Tab Two',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+    </Tabs>
+  );
 }

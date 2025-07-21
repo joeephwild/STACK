@@ -17,6 +17,35 @@
 - All backend logic must be serverless-compatible (stateless functions)
 - Database connections must use **AWS RDS Proxy** for connection pooling
 
+### **Design System Compliance**
+- **MANDATORY**: Always reference `/docs/design.json` when building any UI components or screens
+- **Color Palette**: Use only the colors defined in `design.json` - never hardcode colors
+- **Typography**: Follow the exact font specifications (MD Nichrome for headings, Gilroy for body text)
+- **Component Styling**: Match the component specifications exactly as defined in the design system
+- **Layout Standards**: Use the defined spacing, padding, and corner radius values
+- **Screen Structure**: Follow the exact layout specifications for each screen defined in `design.json`
+
+**Example of proper design.json usage:**
+```typescript
+// ✅ Good: Using design.json values
+const styles = {
+  primaryButton: {
+    backgroundColor: '#5852FF', // palette.primary.royalBlue from design.json
+    borderRadius: 12, // from components.buttons.primary.cornerRadius
+    padding: '16px 24px' // from components.buttons.primary.padding
+  }
+};
+
+// ❌ Bad: Hardcoded values not from design.json
+const styles = {
+  primaryButton: {
+    backgroundColor: '#4A90E2', // Random blue not in design system
+    borderRadius: 8, // Not matching design.json specification
+    padding: '12px 20px' // Custom padding not from design system
+  }
+};
+```
+
 ---
 
 ## **Frontend Standards (React Native + Expo)**
