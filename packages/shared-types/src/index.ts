@@ -1,6 +1,44 @@
 import { z } from 'zod';
 
-// User schemas
+// Re-export Prisma client and types
+export { prisma, checkDatabaseConnection, disconnectDatabase } from './database';
+export type {
+  User,
+  Portfolio,
+  PortfolioHolding,
+  Basket,
+  VirtualCard,
+  Transaction,
+  Loan,
+  Quest,
+  UserQuest,
+  BattlePass,
+  UserBattlePass,
+  ExpertTip,
+  UserTipInteraction,
+  UserPreference,
+  FeedItem,
+  UserFeedInteraction,
+  InvestmentSchedule,
+  AutoInvestment,
+  Notification,
+  RiskLevel,
+  CardStatus,
+  TransactionType,
+  TransactionStatus,
+  LoanStatus,
+  QuestType,
+  RewardType,
+  TipCategory,
+  TriggerEvent,
+  FeedItemType,
+  ScheduleFrequency,
+  AutoInvestmentType,
+  AutoInvestmentStatus,
+  NotificationType,
+} from '@prisma/client';
+
+// Legacy Zod schemas (keeping for backward compatibility)
 export const UserSchema = z.object({
   id: z.string(),
   address: z.string(),
@@ -47,8 +85,8 @@ export const HealthCheckSchema = z.object({
   database: z.string().optional(),
 });
 
-// Type exports
-export type User = z.infer<typeof UserSchema>;
+// Legacy type exports (keeping for backward compatibility)
+export type LegacyUser = z.infer<typeof UserSchema>;
 export type CreateUser = z.infer<typeof CreateUserSchema>;
 export type Investment = z.infer<typeof InvestmentSchema>;
 export type CreateInvestment = z.infer<typeof CreateInvestmentSchema>;
