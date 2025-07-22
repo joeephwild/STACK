@@ -11,10 +11,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  address   String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  walletAddress String   @unique @map("address")
+  displayName   String
+  email         String?  @unique
+  bio           String?
+  avatarUrl     String?
+  isCurator     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   investments Investment[]
 

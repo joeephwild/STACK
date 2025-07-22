@@ -21,5 +21,6 @@
     "ts-jest": {
       "useESM": true
     }
-  }
+  },
+  "setupFiles": ["<rootDir>/jest.setup.js"]
 }

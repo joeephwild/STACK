@@ -1,17 +1,16 @@
-
-
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
-
-const prisma = new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-}).$extends(withAccelerate())
+import { PrismaClient } from '@prisma/client';
 
 declare global {
   // eslint-disable-next-line no-var
-  var __prisma: typeof prisma | undefined;
+  var __prisma: PrismaClient | undefined;
 }
 
+// Create a single instance of Prisma Client
+const prisma = globalThis.__prisma || new PrismaClient({
+  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+});
+
+// In development, store the instance globally to prevent multiple instances
 if (process.env.NODE_ENV === 'development') {
   globalThis.__prisma = prisma;
 }

@@ -10,13 +10,19 @@ dependencies:
     version: 5.22.0(prisma@5.22.0)
   '@thirdweb-dev/auth':
     specifier: ^4.1.97
-    version: 4.1.97(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(express@4.21.2)(fastify@4.29.1)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)
+    version: 4.1.97(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(cookie-parser@1.4.7)(ethers@6.15.0)(express@4.21.2)(fastify@4.29.1)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)
   '@thirdweb-dev/sdk':
     specifier: ^4.0.0
-    version: 4.0.99(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)
+    version: 4.0.99(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)
+  cookie-parser:
+    specifier: ^1.4.7
+    version: 1.4.7
   cors:
     specifier: ^2.8.5
     version: 2.8.5
+  ethers:
+    specifier: ^6
+    version: 6.15.0
   express:
     specifier: ^4.18.0
     version: 4.21.2
@@ -25,15 +31,18 @@ dependencies:
     version: 7.2.0
   thirdweb:
     specifier: ^5.105.17
-    version: 5.105.17(@hey-api/openapi-ts@0.79.2)(react-dom@18.3.1)(react@18.3.1)(storybook@9.0.17)(typescript@5.8.3)
+    version: 5.105.17(@hey-api/openapi-ts@0.79.2)(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(storybook@9.0.17)(typescript@5.8.3)
   zksync-ethers:
     specifier: ^6.15.0
-    version: 6.19.0
+    version: 6.19.0(ethers@6.15.0)
   zod:
     specifier: ^3.22.0
     version: 3.25.76
 
 devDependencies:
+  '@types/cookie-parser':
+    specifier: ^1.4.9
+    version: 1.4.9(@types/express@4.17.23)
   '@types/cors':
     specifier: ^2.8.17
     version: 2.8.19
@@ -49,12 +58,18 @@ devDependencies:
   '@types/supertest':
     specifier: ^6.0.2
     version: 6.0.3
+  dotenv:
+    specifier: ^17.2.0
+    version: 17.2.0
   eslint:
     specifier: ^8.57.0
     version: 8.57.1
   jest:
     specifier: ^29.7.0
     version: 29.7.0(@types/node@20.19.9)
+  nodemon:
+    specifier: ^3.0.0
+    version: 3.1.10
   prisma:
     specifier: ^5.10.0
     version: 5.22.0
@@ -83,6 +98,10 @@ packages:
 
   /@adraffy/ens-normalize@1.10.0:
     resolution: {integrity: sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==}
+    dev: false
+
+  /@adraffy/ens-normalize@1.10.1:
+    resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
     dev: false
 
   /@adraffy/ens-normalize@1.11.0:
@@ -125,7 +144,7 @@ packages:
       '@babel/traverse': 7.28.0
       '@babel/types': 7.28.1
       convert-source-map: 2.0.0
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -396,7 +415,7 @@ packages:
       '@babel/parser': 7.28.0
       '@babel/template': 7.27.2
       '@babel/types': 7.28.1
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -861,7 +880,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.2
@@ -878,7 +897,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@eth-optimism/contracts@0.6.0:
+  /@eth-optimism/contracts@0.6.0(ethers@6.15.0):
     resolution: {integrity: sha512-vQ04wfG9kMf1Fwy3FEMqH2QZbgS0gldKhcBeBUPfO8zu68L61VI97UDXmsMQXzTsEAxK8HnokW3/gosl4/NW3w==}
     peerDependencies:
       ethers: ^5
@@ -886,6 +905,7 @@ packages:
       '@eth-optimism/core-utils': 0.12.0
       '@ethersproject/abstract-provider': 5.8.0
       '@ethersproject/abstract-signer': 5.8.0
+      ethers: 6.15.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -938,13 +958,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@eth-optimism/sdk@3.3.2:
+  /@eth-optimism/sdk@3.3.2(ethers@6.15.0):
     resolution: {integrity: sha512-+zhxT0YkBIEzHsuIayQGjr8g9NawZo6/HYfzg1NSEFsE2Yt0NyCWqVDFTuuak0T6AvIa2kNcl3r0Z8drdb2QmQ==}
     peerDependencies:
       ethers: ^5
     dependencies:
-      '@eth-optimism/contracts': 0.6.0
+      '@eth-optimism/contracts': 0.6.0(ethers@6.15.0)
       '@eth-optimism/core-utils': 0.13.2
+      ethers: 6.15.0
       lodash: 4.17.21
       merkletreejs: 0.3.11
       rlp: 2.2.7
@@ -1764,7 +1785,7 @@ packages:
     deprecated: Use @eslint/config-array instead
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -2177,7 +2198,7 @@ packages:
     dependencies:
       '@ethereumjs/tx': 4.2.0
       '@types/debug': 4.1.12
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       semver: 7.7.2
       superstruct: 1.0.4
     transitivePeerDependencies:
@@ -2193,7 +2214,7 @@ packages:
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.6
       '@types/debug': 4.1.12
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       pony-cause: 2.1.11
       semver: 7.7.2
       uuid: 9.0.1
@@ -2210,7 +2231,7 @@ packages:
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.6
       '@types/debug': 4.1.12
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       pony-cause: 2.1.11
       semver: 7.7.2
       uuid: 9.0.1
@@ -3341,7 +3362,7 @@ packages:
       - supports-color
     dev: false
 
-  /@safe-global/safe-core-sdk@3.3.5:
+  /@safe-global/safe-core-sdk@3.3.5(ethers@6.15.0):
     resolution: {integrity: sha512-ul+WmpxZOXgDIXrZ6MIHptThYbm0CVV3/rypMQEn4tZLkudh/yXK7EuWBFnx9prR3MePuku51Zcz9fu1vi7sfQ==}
     deprecated: 'WARNING: This project has been renamed to @safe-global/protocol-kit. Please, follow the migration guide https://docs.safe.global/safe-core-aa-sdk/protocol-kit/reference/v1'
     dependencies:
@@ -3352,7 +3373,7 @@ packages:
       ethereumjs-util: 7.1.5
       semver: 7.7.2
       web3-utils: 1.10.4
-      zksync-web3: 0.14.4
+      zksync-web3: 0.14.4(ethers@6.15.0)
     transitivePeerDependencies:
       - encoding
       - ethers
@@ -3365,7 +3386,7 @@ packages:
       semver: 7.7.2
     dev: false
 
-  /@safe-global/safe-ethers-adapters@0.1.0-alpha.19(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0):
+  /@safe-global/safe-ethers-adapters@0.1.0-alpha.19(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(ethers@6.15.0):
     resolution: {integrity: sha512-FKd1XySR/FGfEY/HDGfQPByTnOPWE4m6HuH/Q4PgizsGdgYa6kjUy0/UWTb42bOdkqeVm2XffPxErHK/BaUhaQ==}
     deprecated: 'WARNING: This project is currently unmaintained. Please, use the combination of kits to achieve the desired functionality. Documentation can be found at https://docs.safe.global/sdk/overview'
     peerDependencies:
@@ -3378,7 +3399,7 @@ packages:
       '@ethersproject/abstract-signer': 5.8.0
       '@ethersproject/bignumber': 5.8.0
       '@ethersproject/properties': 5.8.0
-      '@safe-global/safe-core-sdk': 3.3.5
+      '@safe-global/safe-core-sdk': 3.3.5(ethers@6.15.0)
       '@safe-global/safe-core-sdk-types': 1.10.1
       '@safe-global/safe-deployments': 1.37.39
       axios: 0.27.2
@@ -3701,7 +3722,7 @@ packages:
       '@testing-library/dom': 10.4.0
     dev: false
 
-  /@thirdweb-dev/auth@4.1.97(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(express@4.21.2)(fastify@4.29.1)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0):
+  /@thirdweb-dev/auth@4.1.97(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(cookie-parser@1.4.7)(ethers@6.15.0)(express@4.21.2)(fastify@4.29.1)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0):
     resolution: {integrity: sha512-uJgbJxkFleQKKQgifuW9fJNfpBWPzbqSYAOirj/t/+Cfg/yKgoRGjtng3J8F7axLIGMgVR58V39/JRrrXyKJbg==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -3726,8 +3747,10 @@ packages:
         optional: true
     dependencies:
       '@fastify/cookie': 9.4.0
-      '@thirdweb-dev/wallets': 2.5.39(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)(zod@3.25.76)
+      '@thirdweb-dev/wallets': 2.5.39(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(ethers@6.15.0)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)(zod@3.25.76)
       cookie: 0.6.0
+      cookie-parser: 1.4.7
+      ethers: 6.15.0
       express: 4.21.2
       fastify: 4.29.1
       fastify-type-provider-zod: 1.2.0(fastify@4.29.1)(zod@3.25.76)
@@ -3789,12 +3812,13 @@ packages:
     engines: {node: '>=18'}
     dev: false
 
-  /@thirdweb-dev/contracts-js@1.3.23:
+  /@thirdweb-dev/contracts-js@1.3.23(ethers@6.15.0):
     resolution: {integrity: sha512-AC8VbiYCZlWhiJl+uzScvbPznZce0mMzVwAZdBFZcfX7QE1kpDssocWna70ksmfCFkWLOrZuzTLYUoLatvOiBQ==}
     peerDependencies:
       ethers: ^5
     dependencies:
       '@thirdweb-dev/contracts': 3.15.0
+      ethers: 6.15.0
     dev: false
 
   /@thirdweb-dev/contracts@3.15.0:
@@ -3861,7 +3885,7 @@ packages:
       treeify: 1.1.0
     dev: false
 
-  /@thirdweb-dev/sdk@4.0.99(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0):
+  /@thirdweb-dev/sdk@4.0.99(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0):
     resolution: {integrity: sha512-Zm1K+tmzz5mnVBues68Bi6vRO6RIjeiblt8URGxoyXNtfLNOmDDZ4t8Znsjg/oegrvh5LyT1XnZfepBZdl0ZSw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -3877,9 +3901,9 @@ packages:
       zksync-ethers:
         optional: true
     dependencies:
-      '@eth-optimism/sdk': 3.3.2
+      '@eth-optimism/sdk': 3.3.2(ethers@6.15.0)
       '@thirdweb-dev/chains': 0.1.120
-      '@thirdweb-dev/contracts-js': 1.3.23
+      '@thirdweb-dev/contracts-js': 1.3.23(ethers@6.15.0)
       '@thirdweb-dev/crypto': 0.2.6
       '@thirdweb-dev/generated-abis': 0.0.2
       '@thirdweb-dev/merkletree': 0.2.6
@@ -3888,14 +3912,15 @@ packages:
       bn.js: 5.2.1
       bs58: 5.0.0
       buffer: 6.0.3
+      ethers: 6.15.0
       eventemitter3: 5.0.1
       fast-deep-equal: 3.1.3
-      thirdweb: 5.29.6(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zod@3.25.76)
+      thirdweb: 5.29.6(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zod@3.25.76)
       tiny-invariant: 1.3.3
       tweetnacl: 1.0.3
       uuid: 9.0.1
       yaml: 2.8.0
-      zksync-ethers: 6.19.0
+      zksync-ethers: 6.19.0(ethers@6.15.0)
       zod: 3.25.76
     transitivePeerDependencies:
       - '@aws-sdk/client-lambda'
@@ -3946,7 +3971,7 @@ packages:
       uuid: 9.0.1
     dev: false
 
-  /@thirdweb-dev/wallets@2.5.39(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)(zod@3.25.76):
+  /@thirdweb-dev/wallets@2.5.39(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(ethers@6.15.0)(localforage@1.10.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)(zod@3.25.76):
     resolution: {integrity: sha512-VcPnpTHZZwdCap+o3mD8xngC2NV8s0DiQD0BdAuEEhQv+664gLsVRUxZKvW7h/lBXxkyEvSnSOgRwQ3zTVSPvw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -3977,13 +4002,13 @@ packages:
       '@metamask/eth-sig-util': 4.0.1
       '@paperxyz/embedded-wallet-service-sdk': 1.2.5
       '@paperxyz/sdk-common-utilities': 0.1.1
-      '@safe-global/safe-core-sdk': 3.3.5
-      '@safe-global/safe-ethers-adapters': 0.1.0-alpha.19(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)
+      '@safe-global/safe-core-sdk': 3.3.5(ethers@6.15.0)
+      '@safe-global/safe-ethers-adapters': 0.1.0-alpha.19(@ethersproject/abstract-provider@5.8.0)(@ethersproject/abstract-signer@5.8.0)(@ethersproject/bignumber@5.8.0)(@ethersproject/properties@5.8.0)(ethers@6.15.0)
       '@safe-global/safe-ethers-lib': 1.9.4
       '@thirdweb-dev/chains': 0.1.120
-      '@thirdweb-dev/contracts-js': 1.3.23
+      '@thirdweb-dev/contracts-js': 1.3.23(ethers@6.15.0)
       '@thirdweb-dev/crypto': 0.2.6
-      '@thirdweb-dev/sdk': 4.0.99(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)
+      '@thirdweb-dev/sdk': 4.0.99(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zksync-ethers@6.19.0)
       '@walletconnect/core': 2.21.5(typescript@5.8.3)(zod@3.25.76)
       '@walletconnect/ethereum-provider': 2.12.2(react@18.3.1)
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -3996,6 +4021,7 @@ packages:
       buffer: 6.0.3
       eth-provider: 0.13.7
       ethereumjs-util: 7.1.5
+      ethers: 6.15.0
       eventemitter3: 5.0.1
       key-encoder: 2.0.3
       magic-sdk: 13.6.2
@@ -4121,6 +4147,14 @@ packages:
       '@types/node': 20.19.9
     dev: true
 
+  /@types/cookie-parser@1.4.9(@types/express@4.17.23):
+    resolution: {integrity: sha512-tGZiZ2Gtc4m3wIdLkZ8mkj1T6CEHb35+VApbL2T14Dew8HA7c+04dmKqsKRNC+8RJPm16JEK0tFSwdZqubfc4g==}
+    peerDependencies:
+      '@types/express': '*'
+    dependencies:
+      '@types/express': 4.17.23
+    dev: true
+
   /@types/cookiejar@2.1.5:
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
     dev: true
@@ -4226,6 +4260,12 @@ packages:
     resolution: {integrity: sha512-cuVNgarYWZqxRJDQHEB58GEONhOK79QVR/qYx4S7kcUObQvUwvFnYxJuuHUKm2aieN9X3yZB4LZsuYNU1Qphsw==}
     dependencies:
       undici-types: 6.21.0
+
+  /@types/node@22.7.5:
+    resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
+    dependencies:
+      undici-types: 6.19.8
+    dev: false
 
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -5637,11 +5677,15 @@ packages:
     resolution: {integrity: sha512-H7wUZRn8WpTq9jocdxQ2c8x2sKo9ZVmzfRE13GiNJXfp7NcKYEdvl3vspKjXox6RIG2VtaRe4JFvxG4rqp2Zuw==}
     dev: false
 
+  /aes-js@4.0.0-beta.5:
+    resolution: {integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==}
+    dev: false
+
   /agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -5973,6 +6017,11 @@ packages:
   /bignumber.js@9.3.1:
     resolution: {integrity: sha512-Ko0uX15oIUS7wJ3Rb30Fs6SkVbLmPBAKdlm7q9+ak9bbIeFf0MwuBsQV6z7+X768/cHsfg+WlysDWJcmthjsjQ==}
     dev: false
+
+  /binary-extensions@2.3.0:
+    resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
+    engines: {node: '>=8'}
+    dev: true
 
   /blakejs@1.2.1:
     resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==}
@@ -6330,6 +6379,21 @@ packages:
     engines: {node: '>= 16'}
     dev: false
 
+  /chokidar@3.6.0:
+    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
+    engines: {node: '>= 8.10.0'}
+    dependencies:
+      anymatch: 3.1.3
+      braces: 3.0.3
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
   /chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
@@ -6511,6 +6575,14 @@ packages:
 
   /cookie-es@1.2.2:
     resolution: {integrity: sha512-+W7VmiVINB+ywl1HGXJXmrqkOhpKrIiVZV6tQuV54ZyQC7MMuBt81Vc336GMLoHBq5hV/F9eXgt5Mnx0Rha5Fg==}
+    dev: false
+
+  /cookie-parser@1.4.7:
+    resolution: {integrity: sha512-nGUvgXnotP3BsjiLX2ypbQnWoGUPIIfHQNZkkC668ntrzGWEZVW70HDEB1qnNGMicPje6EttlIgzo51YSwNQGw==}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      cookie: 0.7.2
+      cookie-signature: 1.0.6
     dev: false
 
   /cookie-signature@1.0.6:
@@ -6704,7 +6776,7 @@ packages:
       ms: 2.0.0
     dev: false
 
-  /debug@4.4.1:
+  /debug@4.4.1(supports-color@5.5.0):
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
     engines: {node: '>=6.0'}
     peerDependencies:
@@ -6714,6 +6786,7 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.3
+      supports-color: 5.5.0
 
   /decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
@@ -6902,6 +6975,11 @@ packages:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
     dev: false
+
+  /dotenv@17.2.0:
+    resolution: {integrity: sha512-Q4sgBT60gzd0BB0lSyYD3xM4YxrXA9y4uBDof1JNYGzOXrQdQ6yX+7XIAqoFOGQFOTK1D3Hts5OllpxMDZFONQ==}
+    engines: {node: '>=12'}
+    dev: true
 
   /dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -7099,7 +7177,7 @@ packages:
     peerDependencies:
       esbuild: '>=0.12 <1'
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       esbuild: 0.25.8
     transitivePeerDependencies:
       - supports-color
@@ -7185,7 +7263,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -7471,6 +7549,22 @@ packages:
       '@ethersproject/wallet': 5.8.0
       '@ethersproject/web': 5.8.0
       '@ethersproject/wordlists': 5.8.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /ethers@6.15.0:
+    resolution: {integrity: sha512-Kf/3ZW54L4UT0pZtsY/rf+EkBU7Qi5nnhonjUb8yTXcxH3cdcWrV2cRyk0Xk/4jK6OoHhxxZHriyhje20If2hQ==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@adraffy/ens-normalize': 1.10.1
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@types/node': 22.7.5
+      aes-js: 4.0.0-beta.5
+      tslib: 2.7.0
+      ws: 8.17.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -7987,6 +8081,13 @@ packages:
       tar: 6.2.1
     dev: false
 
+  /glob-parent@5.1.2:
+    resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
+    engines: {node: '>= 6'}
+    dependencies:
+      is-glob: 4.0.3
+    dev: true
+
   /glob-parent@6.0.2:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
     engines: {node: '>=10.13.0'}
@@ -8111,6 +8212,10 @@ packages:
       uglify-js: 3.19.3
     dev: false
 
+  /has-flag@3.0.0:
+    resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
+    engines: {node: '>=4'}
+
   /has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
@@ -8215,7 +8320,7 @@ packages:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -8229,7 +8334,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -8239,7 +8344,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -8263,6 +8368,10 @@ packages:
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
     dev: false
+
+  /ignore-by-default@1.0.1:
+    resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
+    dev: true
 
   /ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -8343,6 +8452,13 @@ packages:
 
   /is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
+
+  /is-binary-path@2.1.0:
+    resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
+    engines: {node: '>=8'}
+    dependencies:
+      binary-extensions: 2.3.0
+    dev: true
 
   /is-callable@1.2.7:
     resolution: {integrity: sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA==}
@@ -8575,7 +8691,7 @@ packages:
     resolution: {integrity: sha512-n3s8EwkdFIJCG3BPKBYvskgXGoy88ARzvegkitk60NxRdwltLOTaH7CUiMRXvwYorl0Q712iEjcWB+fK/MrWVw==}
     engines: {node: '>=10'}
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       istanbul-lib-coverage: 3.2.2
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -9619,6 +9735,23 @@ packages:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
     dev: true
 
+  /nodemon@3.1.10:
+    resolution: {integrity: sha512-WDjw3pJ0/0jMFmyNDp3gvY2YizjLmmOUQo6DEBY+JgdvW/yQ9mEeSw6H5ythl5Ny2ytb7f9C2nIbjSxMNzbJXw==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.6.0
+      debug: 4.4.1(supports-color@5.5.0)
+      ignore-by-default: 1.0.1
+      minimatch: 3.1.2
+      pstree.remy: 1.1.8
+      semver: 7.7.2
+      simple-update-notifier: 2.0.0
+      supports-color: 5.5.0
+      touch: 3.1.1
+      undefsafe: 2.0.5
+    dev: true
+
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -10239,6 +10372,10 @@ packages:
     resolution: {integrity: sha512-oyfc0Tx87Cpwva5ZXezSp5V9vht1c7dZBhvuV/y3ctkgMVUmiAGDVeeB0dKhGSyT0v1ZTEQYpe/RXlBVBNuCLA==}
     dev: false
 
+  /pstree.remy@1.1.8:
+    resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
+    dev: true
+
   /public-encrypt@4.0.3:
     resolution: {integrity: sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q==}
     dependencies:
@@ -10473,6 +10610,13 @@ packages:
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
     dev: false
+
+  /readdirp@3.6.0:
+    resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
+    engines: {node: '>=8.10.0'}
+    dependencies:
+      picomatch: 2.3.1
+    dev: true
 
   /readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
@@ -10836,6 +10980,13 @@ packages:
       simple-concat: 1.0.1
     dev: false
 
+  /simple-update-notifier@2.0.0:
+    resolution: {integrity: sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==}
+    engines: {node: '>=10'}
+    dependencies:
+      semver: 7.7.2
+    dev: true
+
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
@@ -11071,7 +11222,7 @@ packages:
     dependencies:
       component-emitter: 1.3.1
       cookiejar: 2.1.4
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       fast-safe-stringify: 2.1.1
       form-data: 4.0.4
       formidable: 2.1.5
@@ -11098,6 +11249,12 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /supports-color@5.5.0:
+    resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
+    engines: {node: '>=4'}
+    dependencies:
+      has-flag: 3.0.0
 
   /supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -11155,7 +11312,7 @@ packages:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
 
-  /thirdweb@5.105.17(@hey-api/openapi-ts@0.79.2)(react-dom@18.3.1)(react@18.3.1)(storybook@9.0.17)(typescript@5.8.3):
+  /thirdweb@5.105.17(@hey-api/openapi-ts@0.79.2)(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(storybook@9.0.17)(typescript@5.8.3):
     resolution: {integrity: sha512-tXFXwG2c1M3Es0EWDN7MguU0oTfeM8MfzK9qPMDqoZRrLu8sM3mwTcEQCnYwKGhJjt3Zaqu3O9NAqTuCQ37hMA==}
     engines: {node: '>=18'}
     hasBin: true
@@ -11228,6 +11385,7 @@ packages:
       '@walletconnect/universal-provider': 2.21.4(typescript@5.8.3)(zod@3.25.75)
       abitype: 1.0.8(typescript@5.8.3)(zod@3.25.75)
       cross-spawn: 7.0.6
+      ethers: 6.15.0
       fuse.js: 7.1.0
       input-otp: 1.4.2(react-dom@18.3.1)(react@18.3.1)
       mipd: 0.0.7(typescript@5.8.3)
@@ -11270,7 +11428,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /thirdweb@5.29.6(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zod@3.25.76):
+  /thirdweb@5.29.6(ethers@6.15.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.8.3)(zod@3.25.76):
     resolution: {integrity: sha512-OR/YjArZE2gc72kwJENbbWqxT6AY/X7phdyuu9GgG2O56/vbr4rytKdPesGUeYZ3dY5moUgZZgff+FmQhW0OCA==}
     engines: {node: '>=18'}
     hasBin: true
@@ -11331,6 +11489,7 @@ packages:
       '@walletconnect/ethereum-provider': 2.12.2(react@18.3.1)
       '@walletconnect/sign-client': 2.21.5(typescript@5.8.3)(zod@3.25.76)
       abitype: 1.0.0(typescript@5.8.3)(zod@3.25.76)
+      ethers: 6.15.0
       fast-text-encoding: 1.0.6
       fuse.js: 7.0.0
       input-otp: 1.4.2(react-dom@18.3.1)(react@18.3.1)
@@ -11452,6 +11611,11 @@ packages:
     resolution: {integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==}
     dev: false
 
+  /touch@3.1.1:
+    resolution: {integrity: sha512-r0eojU4bI8MnHr8c5bNo7lJDdI2qXlWWJk6a9EAFG7vbhTjElYhBVS3/miuE0uOuoLdb8Mc/rVfsmm6eo5o9GA==}
+    hasBin: true
+    dev: true
+
   /tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
@@ -11505,6 +11669,10 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: false
+
+  /tslib@2.7.0:
+    resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
     dev: false
 
   /tslib@2.8.1:
@@ -11630,6 +11798,14 @@ packages:
 
   /uncrypto@0.1.3:
     resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
+    dev: false
+
+  /undefsafe@2.0.5:
+    resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
+    dev: true
+
+  /undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
     dev: false
 
   /undici-types@6.21.0:
@@ -12354,6 +12530,19 @@ packages:
         optional: true
     dev: false
 
+  /ws@8.17.1:
+    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
+
   /ws@8.18.0:
     resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
     engines: {node: '>=10.0.0'}
@@ -12541,18 +12730,22 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zksync-ethers@6.19.0:
+  /zksync-ethers@6.19.0(ethers@6.15.0):
     resolution: {integrity: sha512-mJwYcSEfQx6COXOU4oWzUYvWf3n4xFkpdwxuw+FJ5UZXFGRpwu2g1t6xX5EwFcR7BfM3JrBGAZlOFYdtD7CZGw==}
     engines: {node: '>=18.9.0'}
     peerDependencies:
       ethers: ^6.7.1
+    dependencies:
+      ethers: 6.15.0
     dev: false
 
-  /zksync-web3@0.14.4:
+  /zksync-web3@0.14.4(ethers@6.15.0):
     resolution: {integrity: sha512-kYehMD/S6Uhe1g434UnaMN+sBr9nQm23Ywn0EUP5BfQCsbjcr3ORuS68PosZw8xUTu3pac7G6YMSnNHk+fwzvg==}
     deprecated: This package has been deprecated in favor of zksync-ethers@5.0.0
     peerDependencies:
       ethers: ^5.7.0
+    dependencies:
+      ethers: 6.15.0
     dev: false
 
   /zod-to-json-schema@3.24.6(zod@3.25.76):

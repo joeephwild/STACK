@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
+import { checkDatabaseConnection } from '../lib/prisma';
 
 const router = Router();
 
@@ -17,19 +18,21 @@ router.get('/', (req, res) => {
 // Detailed health check with database status
 router.get('/detailed', async (req, res) => {
   try {
-    // TODO: Add database health check when Prisma is configured
+    const dbHealthy = await checkDatabaseConnection();
+    
     const healthData = {
-      status: 'healthy',
+      status: dbHealthy ? 'healthy' : 'degraded',
       timestamp: new Date().toISOString(),
       service: 'STACK Backend API',
       version: '1.0.0',
       environment: process.env.NODE_ENV || 'development',
       uptime: process.uptime(),
       memory: process.memoryUsage(),
-      database: 'not_configured', // Will be updated when Prisma is set up
+      database: dbHealthy ? 'connected' : 'disconnected',
     };
 
-    res.json(healthData);
+    const statusCode = dbHealthy ? 200 : 503;
+    res.status(statusCode).json(healthData);
   } catch (error) {
     res.status(503).json({
       status: 'unhealthy',

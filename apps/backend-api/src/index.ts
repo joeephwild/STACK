@@ -1,7 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { healthRouter } from './routes/health';
+import { authRouter } from './routes/auth';
+import { userRouter } from './routes/users';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
@@ -16,9 +22,12 @@ app.use(cors({
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Routes
 app.use('/api/health', healthRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', userRouter);
 
 // Error handling middleware
 app.use(errorHandler);
@@ -29,7 +38,7 @@ app.use('*', (req, res) => {
 });
 
 // Only start server if this file is run directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
     console.log(`🚀 STACK Backend API running on port ${PORT}`);

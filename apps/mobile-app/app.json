@@ -22,7 +22,7 @@
                 {
                     "ios": {
                         "backgroundColor": "#FF7A1B",
-                        "image": "./assets/app-icon/splash-icon-light.png",
+                        "image": "./assets/app-icon/splash-icon-dark.png",
                         "resizeMode": "cover"
                     }
                 }
