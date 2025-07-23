@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import { useAddress, useConnect, useDisconnect, useWallet, ConnectWallet } from '@thirdweb-dev/react-native';
+import { useActiveAccount, useDisconnect, ConnectButton, useConnect } from 'thirdweb/react';
 import { useAuthStore } from '../store/authStore';
 import { apiClient } from '../lib/api';
+import { client } from '../lib/client';
+import { inAppWallet, preAuthenticate, authenticate } from 'thirdweb/wallets/in-app';
+import { router } from 'expo-router';
+import BottomSheet, { BottomSheetRef } from './BottomSheet';
+import { AuthBottomSheet } from './AuthBottomSheet';
+
+const wallet = inAppWallet();
 
 interface ConnectButtonAuthProps {
   onAuthSuccess?: () => void;
@@ -13,22 +20,59 @@ export const ConnectButtonAuth: React.FC<ConnectButtonAuthProps> = ({
   onAuthSuccess,
   onAuthError,
 }) => {
-  const address = useAddress();
-  const wallet = useWallet();
-  const disconnect = useDisconnect();
+  const account = useActiveAccount();
+  const { disconnect } = useDisconnect();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  
-  const { 
-    user, 
-    isAuthenticated, 
-    login, 
-    logout, 
-    error: authError,
-    clearError 
-  } = useAuthStore();
+  const bottomSheetRef = useRef<BottomSheetRef>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+  const { user, isAuthenticated, login, logout, error: authError, clearError } = useAuthStore();
+  const { connect, isConnecting, error } = useConnect();
+
+  const authenticateUser = async () => {
+    const result = await authenticate({
+      client,
+      strategy: 'email',
+      email: 'example@example.org',
+      verificationCode: '123456',
+    });
+  };
+
+  const preLogin = async (email: string) => {
+    // send email verification code
+    await preAuthenticate({
+      client,
+      strategy: 'email',
+      email,
+    });
+  };
+
+  const loginWithEmail = async (email: string, verificationCode: string) => {
+    // verify email with verificationCode and connect
+    connect(async () => {
+      await wallet.connect({
+        client,
+        strategy: 'email',
+        email,
+        verificationCode,
+      });
+      return wallet;
+    });
+  };
+
+  const loginWithGoogle = async () => {
+    // connect with google
+    connect(async () => {
+      await wallet.connect({
+        client,
+        strategy: 'google',
+      });
+      return wallet;
+    });
+  };
 
   const handleAuthenticate = async () => {
-    if (!address || !wallet) {
+    if (!account) {
       Alert.alert('Error', 'Please connect your wallet first');
       return;
     }
@@ -38,14 +82,14 @@ export const ConnectButtonAuth: React.FC<ConnectButtonAuthProps> = ({
       clearError();
 
       // Get login payload from backend
-      const payload = await apiClient.getLoginPayload(address);
-      
+      const payload = await apiClient.getLoginPayload(account.address);
+
       // Sign the payload with the wallet
-      const signature = await wallet.sign(JSON.stringify(payload));
-      
+      const signature = await account.signMessage({ message: JSON.stringify(payload) });
+
       // Send signed payload to backend for authentication
-      await login(address, signature, payload);
-      
+      await login(account.address, signature, payload);
+
       onAuthSuccess?.();
       Alert.alert('Success', 'Successfully authenticated!');
     } catch (error) {
@@ -60,102 +104,120 @@ export const ConnectButtonAuth: React.FC<ConnectButtonAuthProps> = ({
   const handleLogout = async () => {
     try {
       await logout();
-      await disconnect();
       Alert.alert('Success', 'Successfully logged out!');
     } catch (error) {
       Alert.alert('Error', 'Failed to logout');
     }
   };
 
-  if (isAuthenticated && user) {
-    return (
-      <View className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-        <View className="flex-row items-center justify-between mb-3">
-          <Text className="text-lg font-semibold text-gray-900">
-            Welcome, {user.username || user.firstName || 'User'}!
-          </Text>
-        </View>
+  const openBottomSheet = () => {
+    setIsBottomSheetOpen(true);
+    bottomSheetRef.current?.scrollTo(-300);
+  };
+
+  const closeBottomSheet = () => {
+    setIsBottomSheetOpen(false);
+    bottomSheetRef.current?.scrollTo(0);
+  };
+
+  const handlePreAuth = async (email: string) => {
+    await preAuthenticate({
+      client,
+      strategy: 'email',
+      email,
+    });
+  };
+
+  const handleEmailAuth = async (email: string, verificationCode: string, isSignUp: boolean) => {
+    try {
+      setIsAuthenticating(true);
+      
+      // Connect wallet with email verification
+      await connect(async () => {
+        await wallet.connect({
+          client,
+          strategy: 'email',
+          email,
+          verificationCode,
+        });
+        return wallet;
+      });
+
+      // Wait for account to be available
+      setTimeout(async () => {
+        await handleAuthenticate();
         
-        <View className="mb-3">
-          <Text className="text-sm text-gray-600 mb-1">Wallet Address:</Text>
-          <Text className="text-xs font-mono text-gray-800 bg-gray-100 p-2 rounded">
-            {user.walletAddress}
-          </Text>
-        </View>
+        // Route to appropriate screen based on sign up or sign in
+        if (isSignUp) {
+          router.push('/onboarding');
+        } else {
+          router.push('/dashboard');
+        }
+      }, 1000);
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Email authentication failed';
+      onAuthError?.(errorMessage);
+      Alert.alert('Authentication Error', errorMessage);
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
 
-        {user.email && (
-          <View className="mb-3">
-            <Text className="text-sm text-gray-600 mb-1">Email:</Text>
-            <Text className="text-sm text-gray-800">{user.email}</Text>
-          </View>
-        )}
+  const handleGoogleAuth = async () => {
+    try {
+      setIsAuthenticating(true);
+      
+      // Connect wallet with Google
+      await connect(async () => {
+        await wallet.connect({
+          client,
+          strategy: 'google',
+        });
+        return wallet;
+      });
 
+      // Wait for account to be available
+      setTimeout(async () => {
+        await handleAuthenticate();
+        router.push('/dashboard');
+      }, 1000);
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Google authentication failed';
+      onAuthError?.(errorMessage);
+      Alert.alert('Authentication Error', errorMessage);
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+  return (
+    <>
+      <View className="absolute bottom-10 w-full items-center px-6">
         <TouchableOpacity
-          onPress={handleLogout}
-          className="bg-red-500 py-3 px-4 rounded-lg"
+          className="w-full rounded-xl bg-slate-900 p-4"
+          onPress={openBottomSheet}
+          disabled={isAuthenticating || isConnecting}
         >
-          <Text className="text-white text-center font-medium">
-            Disconnect & Logout
-          </Text>
+          {(isAuthenticating || isConnecting) ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text className="text-center text-lg font-bold text-white">Get Started</Text>
+          )}
         </TouchableOpacity>
       </View>
-    );
-  }
 
-  if (!address) {
-    return (
-      <View className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-        <Text className="text-lg font-semibold text-gray-900 mb-4 text-center">
-          Connect Your Wallet
-        </Text>
-        <ConnectWallet 
-          theme="light"
-          btnTitle="Connect Wallet"
-        />
-      </View>
-    );
-  }
-
-  return (
-    <View className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-      <View className="mb-4">
-        <Text className="text-lg font-semibold text-gray-900 mb-2">
-          Wallet Connected
-        </Text>
-        <Text className="text-sm text-gray-600 mb-1">Address:</Text>
-        <Text className="text-xs font-mono text-gray-800 bg-gray-100 p-2 rounded">
-          {address}
-        </Text>
-      </View>
-
-      {authError && (
-        <View className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-          <Text className="text-red-800 text-sm">{authError}</Text>
-        </View>
+      {isBottomSheetOpen && (
+        <BottomSheet ref={bottomSheetRef} onClose={closeBottomSheet}>
+          <AuthBottomSheet
+            onEmailAuth={handleEmailAuth}
+            onGoogleAuth={handleGoogleAuth}
+            onPreAuth={handlePreAuth}
+            onClose={closeBottomSheet}
+            isLoading={isAuthenticating || isConnecting}
+          />
+        </BottomSheet>
       )}
-
-      <TouchableOpacity
-        onPress={handleAuthenticate}
-        disabled={isAuthenticating}
-        className={`py-3 px-4 rounded-lg ${
-          isAuthenticating 
-            ? 'bg-gray-400' 
-            : 'bg-blue-500'
-        }`}
-      >
-        {isAuthenticating ? (
-          <View className="flex-row items-center justify-center">
-            <ActivityIndicator size="small" color="white" />
-            <Text className="text-white font-medium ml-2">
-              Authenticating...
-            </Text>
-          </View>
-        ) : (
-          <Text className="text-white text-center font-medium">
-            Sign In with Wallet
-          </Text>
-        )}
-      </TouchableOpacity>
-    </View>
+    </>
   );
 };

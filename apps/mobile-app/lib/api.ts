@@ -1,4 +1,17 @@
-import { LoginPayload } from '@thirdweb-dev/auth';
+// Define custom LoginPayload interface for thirdweb v5 compatibility
+export interface LoginPayload {
+  domain: string;
+  address: string;
+  statement?: string;
+  uri?: string;
+  version?: string;
+  chainId?: number;
+  nonce: string;
+  issuedAt: string;
+  expirationTime?: string;
+  notBefore?: string;
+  resources?: string[];
+}
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
 const AUTH_API_URL = process.env.EXPO_PUBLIC_AUTH_API || 'http://localhost:3000/api/auth';

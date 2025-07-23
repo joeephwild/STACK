@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { checkDatabaseConnection } from '../lib/prisma';
+import { checkDatabaseConnection } from '@stack/shared-types';
 
 const router = Router();
 

@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "rootDir": "./src",
     "module": "ESNext",
     "target": "ES2022",
     "moduleResolution": "node",
@@ -19,8 +18,7 @@
     }
   },
   "include": [
-    "src/**/*",
-    "../../packages/shared-types/src/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

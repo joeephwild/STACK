@@ -1,70 +1,71 @@
 {
-    "expo": {
-        "name": "mobile-app",
-        "slug": "mobile-app",
-        "version": "1.0.0",
-        "scheme": "mobile-app",
-        "web": {
-            "bundler": "metro",
-            "output": "static",
-            "favicon": "./assets/favicon.png"
-        },
-        "plugins": [
-            "expo-router",
-            [
-                "expo-dev-launcher",
-                {
-                    "launchMode": "most-recent"
-                }
-            ],
-            [
-                "expo-splash-screen",
-                {
-                    "ios": {
-                        "backgroundColor": "#FF7A1B",
-                        "image": "./assets/app-icon/splash-icon-dark.png",
-                        "resizeMode": "cover"
-                    }
-                }
-            ],
-            "expo-web-browser"
-        ],
-        "experiments": {
-            "typedRoutes": true,
-            "tsconfigPaths": true
-        },
-        "orientation": "portrait",
-        "icon": "./assets/icon.png",
-        "userInterfaceStyle": "light",
-        "splash": {
-            "image": "./assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "com.josephweb3.mobileapp",
-            "icon": {
-                "dark": "./assets/app-icon/ios-dark.png",
-                "light": "./assets/app-icon/ios-light.png",
-                "tinted": "./assets/app-icon/ios-tinted.png"
-            }
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
-            },
-            "package": "com.josephweb3.mobileapp"
-        },
-        "extra": {
-            "router": {},
-            "eas": {
-                "projectId": "8e5ecb88-304f-40e5-951a-abf43dc6a895"
-            }
+  "expo": {
+    "name": "mobile-app",
+    "slug": "mobile-app",
+    "version": "1.0.0",
+    "scheme": "mobile-app",
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-dev-launcher",
+        {
+          "launchMode": "most-recent"
         }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "ios": {
+            "backgroundColor": "#0A0427",
+            "image": "./assets/app-icon/splash-icon-dark.png",
+            "resizeMode": "cover"
+          }
+        }
+      ],
+      "expo-web-browser",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.josephweb3.mobileapp",
+      "icon": {
+        "dark": "./assets/app-icon/ios-dark.png",
+        "light": "./assets/app-icon/ios-light.png",
+        "tinted": "./assets/app-icon/ios-tinted.png"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.josephweb3.mobileapp"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8e5ecb88-304f-40e5-951a-abf43dc6a895"
+      }
     }
+  }
 }

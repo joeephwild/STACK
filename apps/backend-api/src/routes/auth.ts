@@ -86,7 +86,7 @@ router.post('/login', async (req, res) => {
   try {
     const validatedPayload = LoginPayloadSchema.parse(req.body);
 
-    const verifiedPayload = await thirdwebAuth.verifyPayload(validatedPayload);
+    const verifiedPayload = await thirdwebAuth.verifyPayload(validatedPayload as any);
 
     if (verifiedPayload.valid) {
       const jwt = await thirdwebAuth.generateJWT({

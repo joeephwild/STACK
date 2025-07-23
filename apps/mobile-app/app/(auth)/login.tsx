@@ -25,34 +25,14 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-gray-50">
+    <View className="bg-primary-dark flex-1">
       <View className="flex-1 justify-center px-6 py-12">
         <View className="mb-8">
-          <Text className="text-3xl font-bold text-gray-900 text-center mb-2">
-            Welcome to STACK
-          </Text>
-          <Text className="text-gray-600 text-center text-lg">
-            Connect your wallet to get started
-          </Text>
-        </View>
-
-        <View className="mb-8">
-          <ConnectButtonAuth 
-            onAuthSuccess={handleAuthSuccess}
-            onAuthError={(error) => console.error('Auth error:', error)}
-          />
-        </View>
-
-        <View className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <Text className="text-blue-800 text-sm font-medium mb-2">
-            🔐 Secure Wallet Authentication
-          </Text>
-          <Text className="text-blue-700 text-sm">
-            Your wallet serves as your secure login method. No passwords needed - 
-            just connect and sign with your wallet to access your account.
+          <Text className="font-heading text-center text-h1 font-bold text-[#949FFF]">
+            Connect your wallet
           </Text>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }

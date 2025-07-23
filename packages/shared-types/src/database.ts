@@ -1,11 +1,10 @@
 
 
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-}).$extends(withAccelerate())
+})
 
 declare global {
   // eslint-disable-next-line no-var

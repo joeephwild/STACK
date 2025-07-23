@@ -1,5 +1,5 @@
 
-import { prisma } from '../lib/prisma';
+import { prisma } from '@stack/shared-types';
 import { z } from 'zod';
 
 // Remove the local prisma instance since we're using the shared one
@@ -80,7 +80,7 @@ export async function createUser(userData: CreateUserData) {
 export async function findUserByWalletAddress(walletAddress: string) {
   try {
     const user = await prisma.user.findFirst({
-      where: { 
+      where: {
         walletAddress: {
           equals: walletAddress,
           mode: 'insensitive'
@@ -101,7 +101,7 @@ export async function findUserByWalletAddress(walletAddress: string) {
 export async function findUserByEmail(email: string) {
   try {
     const user = await prisma.user.findFirst({
-      where: { 
+      where: {
         email: {
           equals: email,
           mode: 'insensitive'
@@ -177,7 +177,7 @@ export async function getOrCreateUser(walletAddress: string, additionalData?: Pa
 export async function getUserStats(walletAddress: string) {
   try {
     const user = await prisma.user.findFirst({
-      where: { 
+      where: {
         walletAddress: {
           equals: walletAddress,
           mode: 'insensitive'

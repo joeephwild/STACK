@@ -59,7 +59,7 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     // Add user info to request object
     req.user = {
       address: authResult.parsedJWT.sub!,
-      chainId: authResult.parsedJWT.ctx?.chainId,
+      chainId: (authResult.parsedJWT.ctx as any)?.chainId,
     };
 
     next();
@@ -95,7 +95,7 @@ export async function optionalAuth(req: Request, res: Response, next: NextFuncti
         // Add user info to request object
         req.user = {
           address: authResult.parsedJWT.sub!,
-          chainId: authResult.parsedJWT.ctx?.chainId,
+          chainId: (authResult.parsedJWT.ctx as any)?.chainId,
         };
       }
     }

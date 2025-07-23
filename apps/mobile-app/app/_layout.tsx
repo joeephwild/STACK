@@ -1,29 +1,44 @@
 import '../global.css';
 import 'react-native-get-random-values';
 
-import { Stack } from 'expo-router';
-import { ThirdwebProvider, thirdwebConfig } from '../lib/client';
-import { AuthGuard } from '../components/AuthGuard';
+import { useEffect } from 'react';
+import { Stack, SplashScreen } from 'expo-router';
+import { ThirdwebProvider } from 'thirdweb/react';
+import { useCustomFonts } from '../lib/fonts';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: '(auth)',
 };
 
 export default function RootLayout() {
+  const fontsLoaded = useCustomFonts();
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <ThirdwebProvider
-      clientId={thirdwebConfig.clientId}
-      activeChain={thirdwebConfig.activeChain}
-      supportedChains={thirdwebConfig.supportedChains}
-    >
-      <AuthGuard>
-        <Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThirdwebProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         </Stack>
-      </AuthGuard>
-    </ThirdwebProvider>
+      </ThirdwebProvider>
+    </GestureHandlerRootView>
   );
 }
