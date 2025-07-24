@@ -1,9 +1,9 @@
 /**
  * Test setup file for UI Library
- * Configures React Native Testing Library and Jest environment
+ * Configures React Testing Library and Jest environment for React Native Web
  */
 
-import '@testing-library/jest-native/extend-expect';
+import '@testing-library/jest-dom';
 
 // Mock React Native modules for web environment
 jest.mock('react-native', () => {

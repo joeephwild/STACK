@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react';
 import { Text, View } from 'react-native';
 import { Card } from '../src/components/atoms/Card';
 
 describe('Card Component', () => {
   it('renders correctly with default props', () => {
-    const component = render(
+    render(
       <Card>
         <Text>Test Content</Text>
       </Card>
@@ -104,7 +104,7 @@ describe('Card Component', () => {
   });
 
   it('renders children correctly', () => {
-    const component = render(
+    render(
       <Card>
         <Text>First Child</Text>
         <Text>Second Child</Text>

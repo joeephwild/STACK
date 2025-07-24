@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react';
 import { Text } from 'react-native';
 import { UserProfile } from '../src/components/organisms/UserProfile';
 
@@ -11,18 +11,18 @@ const mockStats = [
 
 describe('UserProfile', () => {
   it('renders without crashing', () => {
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
       />
     );
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with edit button when onEditPress is provided', () => {
     const mockOnEdit = jest.fn();
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
@@ -30,7 +30,7 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with action buttons when provided', () => {
@@ -39,7 +39,7 @@ describe('UserProfile', () => {
       { label: 'Message', onPress: jest.fn() }
     ];
     
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
@@ -47,11 +47,11 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with custom class name', () => {
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
@@ -59,11 +59,11 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with bio', () => {
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
@@ -71,11 +71,11 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with stats', () => {
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
@@ -83,13 +83,13 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with avatar', () => {
     const avatar = <Text>👤</Text>;
     
-    const result = render(
+    render(
       <UserProfile 
         name="John Doe"
         email="john.doe@example.com"
@@ -97,11 +97,11 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders without optional props', () => {
-    const result = render(<UserProfile name="John Doe" />);
-    expect(result).toBeTruthy();
+    render(<UserProfile name="John Doe" />);
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 });

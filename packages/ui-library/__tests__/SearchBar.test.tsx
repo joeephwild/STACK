@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { SearchBar } from '../src/components/molecules/SearchBar';
 
 describe('SearchBar', () => {
   it('renders without crashing', () => {
-    const result = render(<SearchBar />);
-    expect(result).toBeTruthy();
+    render(<SearchBar />);
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with placeholder text', () => {
@@ -45,7 +45,7 @@ describe('SearchBar', () => {
   it('shows clear button when text is entered', () => {
     const { getByLabelText } = render(<SearchBar value="test" />);
     
-    expect(getByLabelText('Clear search')).toBeTruthy();
+    expect(getByLabelText('Clear search')).toBeInTheDocument();
   });
 
   it('handles clear button press', () => {
@@ -56,7 +56,7 @@ describe('SearchBar', () => {
     );
     
     const clearButton = getByLabelText('Clear search');
-    fireEvent.press(clearButton);
+    fireEvent.click(clearButton);
     
     expect(mockOnClear).toHaveBeenCalled();
     expect(mockOnChangeText).toHaveBeenCalledWith('');
@@ -77,15 +77,15 @@ describe('SearchBar', () => {
     );
     
     const input = getByLabelText('Search input');
-    expect(input).toBeTruthy();
+    expect(input).toBeInTheDocument();
   });
 
   it('renders with custom class name', () => {
-    const result = render(
+    render(
       <SearchBar className="custom-search" />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with autoFocus', () => {
@@ -94,6 +94,6 @@ describe('SearchBar', () => {
     );
     
     const input = getByLabelText('Search input');
-    expect(input).toBeTruthy();
+    expect(input).toBeInTheDocument();
   });
 });

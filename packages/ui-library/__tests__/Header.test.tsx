@@ -1,20 +1,20 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { Text } from 'react-native';
 import { Header } from '../src/components/molecules/Header';
 
 describe('Header', () => {
   it('renders with title only', () => {
-    const { toJSON } = render(<Header title="Test Title" />);
+    render(<Header title="Test Title" />);
     
     // Check if component renders and contains the title text
     const rendered = toJSON();
-    expect(rendered).toBeTruthy();
+    expect(rendered).toBeInTheDocument();
     expect(JSON.stringify(rendered)).toContain('Test Title');
   });
 
   it('renders with title and subtitle', () => {
-    const { toJSON } = render(
+    render(
       <Header 
         title="Test Title" 
         subtitle="Test Subtitle" 
@@ -22,7 +22,7 @@ describe('Header', () => {
     );
     
     const rendered = toJSON();
-    expect(rendered).toBeTruthy();
+    expect(rendered).toBeInTheDocument();
     expect(JSON.stringify(rendered)).toContain('Test Title');
     expect(JSON.stringify(rendered)).toContain('Test Subtitle');
   });
@@ -37,7 +37,7 @@ describe('Header', () => {
       />
     );
     
-    expect(getByLabelText('Left action')).toBeTruthy();
+    expect(getByLabelText('Left action')).toBeInTheDocument();
   });
 
   it('renders right icon when provided', () => {
@@ -50,7 +50,7 @@ describe('Header', () => {
       />
     );
     
-    expect(getByLabelText('Right action')).toBeTruthy();
+    expect(getByLabelText('Right action')).toBeInTheDocument();
   });
 
   it('handles left icon press', () => {
@@ -66,7 +66,7 @@ describe('Header', () => {
     );
     
     const leftButton = getByLabelText('Left action');
-    fireEvent.press(leftButton);
+    fireEvent.click(leftButton);
     
     expect(mockOnLeftPress).toHaveBeenCalled();
   });
@@ -84,7 +84,7 @@ describe('Header', () => {
     );
     
     const rightButton = getByLabelText('Right action');
-    fireEvent.press(rightButton);
+    fireEvent.click(rightButton);
     
     expect(mockOnRightPress).toHaveBeenCalled();
   });
@@ -101,13 +101,13 @@ describe('Header', () => {
     );
     
     const backButton = getByLabelText('Go back');
-    fireEvent.press(backButton);
+    fireEvent.click(backButton);
     
     expect(mockOnLeftPress).toHaveBeenCalled();
   });
 
   it('applies custom className', () => {
-    const { toJSON } = render(
+    render(
       <Header 
         title="Test Title" 
         className="custom-header" 
@@ -115,7 +115,7 @@ describe('Header', () => {
     );
     
     const rendered = toJSON();
-    expect(rendered).toBeTruthy();
+    expect(rendered).toBeInTheDocument();
     expect(JSON.stringify(rendered)).toContain('Test Title');
   });
 
@@ -128,6 +128,6 @@ describe('Header', () => {
       />
     );
     
-    expect(getByLabelText('Go back')).toBeTruthy();
+    expect(getByLabelText('Go back')).toBeInTheDocument();
   });
 });

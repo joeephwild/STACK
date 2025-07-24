@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { Text } from 'react-native';
 import { NavigationBar } from '../src/components/organisms/NavigationBar';
 
@@ -31,7 +31,7 @@ describe('NavigationBar', () => {
   });
 
   it('renders all tabs correctly', () => {
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home" 
@@ -39,7 +39,7 @@ describe('NavigationBar', () => {
     );
     
     const rendered = toJSON();
-    expect(rendered).toBeTruthy();
+    expect(rendered).toBeInTheDocument();
     expect(JSON.stringify(rendered)).toContain('Home');
     expect(JSON.stringify(rendered)).toContain('Search');
     expect(JSON.stringify(rendered)).toContain('Profile');
@@ -51,7 +51,7 @@ describe('NavigationBar', () => {
   });
 
   it('shows badge when provided', () => {
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home" 
@@ -72,7 +72,7 @@ describe('NavigationBar', () => {
       },
     ];
     
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={tabsWithLargeBadge} 
         activeTabId="notifications" 
@@ -84,7 +84,7 @@ describe('NavigationBar', () => {
   });
 
   it('handles tab press correctly', () => {
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home" 
@@ -100,7 +100,7 @@ describe('NavigationBar', () => {
   });
 
   it('applies correct accessibility states', () => {
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home" 
@@ -109,13 +109,13 @@ describe('NavigationBar', () => {
     
     // Verify component renders with accessibility attributes
     const rendered = toJSON();
-    expect(rendered).toBeTruthy();
+    expect(rendered).toBeInTheDocument();
     expect(JSON.stringify(rendered)).toContain('Home');
     expect(JSON.stringify(rendered)).toContain('Search');
   });
 
   it('has correct accessibility roles', () => {
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home" 
@@ -130,7 +130,7 @@ describe('NavigationBar', () => {
   });
 
   it('applies custom className', () => {
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home"
@@ -152,7 +152,7 @@ describe('NavigationBar', () => {
       },
     ];
     
-    const { toJSON } = render(
+    render(
       <NavigationBar 
         tabs={tabsWithStringBadge} 
         activeTabId="messages" 

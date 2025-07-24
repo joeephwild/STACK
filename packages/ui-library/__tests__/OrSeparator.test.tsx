@@ -1,29 +1,29 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react';
 import { OrSeparator } from '../src/components/atoms/OrSeparator';
 
 describe('OrSeparator', () => {
   it('renders without crashing', () => {
-    const result = render(<OrSeparator />);
-    expect(result).toBeTruthy();
+    render(<OrSeparator />);
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with default "OR" text', () => {
     const { getByText } = render(<OrSeparator />);
     
-    expect(getByText('OR')).toBeTruthy();
+    expect(getByText('OR')).toBeInTheDocument();
   });
 
   it('renders with custom text', () => {
     const { getByText } = render(<OrSeparator text="AND" />);
     
-    expect(getByText('AND')).toBeTruthy();
+    expect(getByText('AND')).toBeInTheDocument();
   });
 
   it('renders with empty text', () => {
     const { queryByText } = render(<OrSeparator text="" />);
     
-    expect(queryByText('OR')).toBeNull();
+    expect(queryByText('OR')).not.toBeInTheDocument();
   });
 
   it('renders separator lines', () => {

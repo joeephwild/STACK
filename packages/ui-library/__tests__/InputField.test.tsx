@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { InputField } from '../src/components/atoms/InputField';
 
 describe('InputField', () => {
   it('renders without crashing', () => {
-    const result = render(<InputField label="Test Label" />);
-    expect(result).toBeTruthy();
+    render(<InputField label="Test Label" />);
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with label and placeholder text', () => {
@@ -13,8 +13,8 @@ describe('InputField', () => {
       <InputField label="Name" placeholder="Enter your name" />
     );
     
-    expect(getByText('Name')).toBeTruthy();
-    expect(getByPlaceholderText('Enter your name')).toBeTruthy();
+    expect(getByText('Name')).toBeInTheDocument();
+    expect(getByPlaceholderText('Enter your name')).toBeInTheDocument();
   });
 
   it('handles text input changes', () => {
@@ -34,7 +34,7 @@ describe('InputField', () => {
       <InputField label="Test" value="controlled value" />
     );
     
-    expect(getByDisplayValue('controlled value')).toBeTruthy();
+    expect(getByDisplayValue('controlled value')).toBeInTheDocument();
   });
 
   it('renders with required indicator', () => {
@@ -42,8 +42,8 @@ describe('InputField', () => {
       <InputField label="Required Field" required />
     );
     
-    expect(getByText('Required Field')).toBeTruthy();
-    expect(getByText('*')).toBeTruthy();
+    expect(getByText('Required Field')).toBeInTheDocument();
+    expect(getByText('*')).toBeInTheDocument();
   });
 
   it('renders with error state', () => {
@@ -51,7 +51,7 @@ describe('InputField', () => {
       <InputField label="Test" error="This field is required" />
     );
     
-    expect(getByText('This field is required')).toBeTruthy();
+    expect(getByText('This field is required')).toBeInTheDocument();
   });
 
   it('renders with email type', () => {
@@ -97,11 +97,11 @@ describe('InputField', () => {
   });
 
   it('renders with icon', () => {
-    const result = render(
+    render(
       <InputField label="Search" icon="search" />
     );
     
-    expect(result).toBeTruthy();
+    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
   });
 
   it('renders with multiline support', () => {

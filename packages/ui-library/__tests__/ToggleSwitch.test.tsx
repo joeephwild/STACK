@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ToggleSwitch } from '../src/components/atoms/ToggleSwitch';
 
 describe('ToggleSwitch Component', () => {
@@ -15,7 +15,7 @@ describe('ToggleSwitch Component', () => {
     );
     
     const toggle = UNSAFE_getByProps({ accessibilityRole: 'switch' });
-    expect(toggle).toBeTruthy();
+    expect(toggle).toBeInTheDocument();
   });
 
   it('shows correct accessibility state when off', () => {
@@ -51,7 +51,7 @@ describe('ToggleSwitch Component', () => {
     );
     
     const toggle = UNSAFE_getByProps({ accessibilityRole: 'switch' });
-    fireEvent.press(toggle);
+    fireEvent.click(toggle);
     expect(mockOnValueChange).toHaveBeenCalledWith(true);
   });
 
@@ -61,7 +61,7 @@ describe('ToggleSwitch Component', () => {
     );
     
     const toggle = UNSAFE_getByProps({ accessibilityRole: 'switch' });
-    fireEvent.press(toggle);
+    fireEvent.click(toggle);
     expect(mockOnValueChange).not.toHaveBeenCalled();
   });
 

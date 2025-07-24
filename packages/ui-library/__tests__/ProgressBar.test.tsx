@@ -1,15 +1,15 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react';
 import { View } from 'react-native';
 import { ProgressBar } from '../src/components/atoms/ProgressBar';
 
 describe('ProgressBar Component', () => {
   it('renders correctly with default props', () => {
-    const component = render(
+    render(
       <ProgressBar progress={50} />
     );
     
-    expect(component.toJSON()).toBeTruthy();
+    expect(component.toJSON()).toBeInTheDocument();
   });
 
   it('displays correct progress width', () => {

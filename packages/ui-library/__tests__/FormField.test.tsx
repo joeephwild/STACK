@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { FormField } from '../src/components/molecules/FormField';
 
 describe('FormField', () => {
   it('renders with label and input', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Email"
         value=""
@@ -17,7 +17,7 @@ describe('FormField', () => {
   });
 
   it('shows error message when provided', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Email"
         value=""
@@ -31,7 +31,7 @@ describe('FormField', () => {
   });
 
   it('shows helper text when provided', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Password"
         value=""
@@ -47,7 +47,7 @@ describe('FormField', () => {
   it('handles text input correctly', () => {
     const mockOnChangeText = jest.fn();
     
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Email"
         value=""
@@ -61,7 +61,7 @@ describe('FormField', () => {
   });
 
   it('applies required styling when required', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Email"
         value=""
@@ -75,7 +75,7 @@ describe('FormField', () => {
   });
 
   it('passes through input props correctly', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Email"
         value=""
@@ -91,7 +91,7 @@ describe('FormField', () => {
   });
 
   it('applies custom className', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Email"
         value=""
@@ -105,7 +105,7 @@ describe('FormField', () => {
   });
 
   it('shows error but hides helper text when both provided', () => {
-    const { toJSON } = render(
+    render(
       <FormField 
         label="Password"
         value=""

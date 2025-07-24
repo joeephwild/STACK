@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { SocialLoginButton, SocialLoginButtons } from '../src/components/atoms/SocialLoginButtons';
 
 const mockOnPress = jest.fn();
@@ -10,70 +10,49 @@ describe('SocialLoginButton', () => {
   });
 
   it('renders without crashing', () => {
-    const result = render(
-      <SocialLoginButton provider="google" onPress={mockOnPress} />
-    );
-    expect(result).toBeTruthy();
+    render(<SocialLoginButton provider="google" onPress={mockOnPress} />);
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
   });
 
   it('renders Google button with correct text', () => {
-    const { toJSON } = render(
-      <SocialLoginButton provider="google" onPress={mockOnPress} />
-    );
-    
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Google');
+    render(<SocialLoginButton provider="google" onPress={mockOnPress} />);
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
   });
 
   it('renders Apple button with correct text', () => {
-    const { toJSON } = render(
-      <SocialLoginButton provider="apple" onPress={mockOnPress} />
-    );
-    
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Apple');
+    render(<SocialLoginButton provider="apple" onPress={mockOnPress} />);
+    expect(screen.getByText('Continue with Apple')).toBeInTheDocument();
   });
 
   it('renders Facebook button with correct text', () => {
-    const { toJSON } = render(
-      <SocialLoginButton provider="facebook" onPress={mockOnPress} />
-    );
-    
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Facebook');
+    render(<SocialLoginButton provider="facebook" onPress={mockOnPress} />);
+    expect(screen.getByText('Continue with Facebook')).toBeInTheDocument();
   });
 
   it('handles button press', () => {
-    const component = render(
-      <SocialLoginButton provider="google" onPress={mockOnPress} />
-    );
+    render(<SocialLoginButton provider="google" onPress={mockOnPress} />);
     
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Google');
+    const button = screen.getByText('Continue with Google');
+    expect(button).toBeInTheDocument();
     
-    // Verify handler is defined (can't reliably test press in React Native Web)
-    expect(mockOnPress).toBeDefined();
+    fireEvent.click(button);
+    expect(mockOnPress).toHaveBeenCalledTimes(1);
   });
 
   it('renders in disabled state', () => {
-    const component = render(
-      <SocialLoginButton provider="google" onPress={mockOnPress} disabled />
-    );
-    
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Google');
+    render(<SocialLoginButton provider="google" onPress={mockOnPress} disabled />);
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
   });
 
   it('does not call onPress when disabled', () => {
-    const component = render(
-      <SocialLoginButton provider="google" onPress={mockOnPress} disabled />
-    );
+    render(<SocialLoginButton provider="google" onPress={mockOnPress} disabled />);
     
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Google');
+    const button = screen.getByText('Continue with Google');
+    expect(button).toBeInTheDocument();
     
-    // Verify handler is defined but not called (can't simulate disabled press)
-    expect(mockOnPress).toBeDefined();
+    // Button should be disabled, so click shouldn't trigger handler
+    fireEvent.click(button);
+    expect(mockOnPress).not.toHaveBeenCalled();
   });
 });
 
@@ -89,45 +68,39 @@ describe('SocialLoginButtons', () => {
   });
 
   it('renders without crashing', () => {
-    const result = render(<SocialLoginButtons />);
-    expect(result).toBeTruthy();
+    render(<SocialLoginButtons />);
+    // Component should render even without handlers
+    expect(screen.queryByText('Continue with Google')).not.toBeInTheDocument();
+    expect(screen.queryByText('Continue with Apple')).not.toBeInTheDocument();
+    expect(screen.queryByText('Continue with Facebook')).not.toBeInTheDocument();
   });
 
   it('renders only Google button when only Google handler provided', () => {
-    const { toJSON } = render(
-      <SocialLoginButtons onGooglePress={mockGooglePress} />
-    );
+    render(<SocialLoginButtons onGooglePress={mockGooglePress} />);
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Google');
-    expect(output).not.toContain('Continue with Apple');
-    expect(output).not.toContain('Continue with Facebook');
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
+    expect(screen.queryByText('Continue with Apple')).not.toBeInTheDocument();
+    expect(screen.queryByText('Continue with Facebook')).not.toBeInTheDocument();
   });
 
   it('renders only Apple button when only Apple handler provided', () => {
-    const { toJSON } = render(
-      <SocialLoginButtons onApplePress={mockApplePress} />
-    );
+    render(<SocialLoginButtons onApplePress={mockApplePress} />);
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Apple');
-    expect(output).not.toContain('Continue with Google');
-    expect(output).not.toContain('Continue with Facebook');
+    expect(screen.getByText('Continue with Apple')).toBeInTheDocument();
+    expect(screen.queryByText('Continue with Google')).not.toBeInTheDocument();
+    expect(screen.queryByText('Continue with Facebook')).not.toBeInTheDocument();
   });
 
   it('renders only Facebook button when only Facebook handler provided', () => {
-    const { toJSON } = render(
-      <SocialLoginButtons onFacebookPress={mockFacebookPress} />
-    );
+    render(<SocialLoginButtons onFacebookPress={mockFacebookPress} />);
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Facebook');
-    expect(output).not.toContain('Continue with Google');
-    expect(output).not.toContain('Continue with Apple');
+    expect(screen.getByText('Continue with Facebook')).toBeInTheDocument();
+    expect(screen.queryByText('Continue with Google')).not.toBeInTheDocument();
+    expect(screen.queryByText('Continue with Apple')).not.toBeInTheDocument();
   });
 
   it('renders all buttons when all handlers provided', () => {
-    const { toJSON } = render(
+    render(
       <SocialLoginButtons 
         onGooglePress={mockGooglePress}
         onApplePress={mockApplePress}
@@ -135,50 +108,40 @@ describe('SocialLoginButtons', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Continue with Google');
-    expect(output).toContain('Continue with Apple');
-    expect(output).toContain('Continue with Facebook');
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
+    expect(screen.getByText('Continue with Apple')).toBeInTheDocument();
+    expect(screen.getByText('Continue with Facebook')).toBeInTheDocument();
   });
 
   it('handles Google button press', () => {
-    const component = render(
-      <SocialLoginButtons onGooglePress={mockGooglePress} />
-    );
+    render(<SocialLoginButtons onGooglePress={mockGooglePress} />);
     
-    // Verify the button is rendered and simulate press
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Google');
+    const button = screen.getByText('Continue with Google');
+    fireEvent.click(button);
     
-    // Since we can't reliably query the button, we'll test the handler directly
-    // This is a limitation of React Native Web testing
-    expect(mockGooglePress).toBeDefined();
+    expect(mockGooglePress).toHaveBeenCalledTimes(1);
   });
 
   it('handles Apple button press', () => {
-    const component = render(
-      <SocialLoginButtons onApplePress={mockApplePress} />
-    );
+    render(<SocialLoginButtons onApplePress={mockApplePress} />);
     
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Apple');
+    const button = screen.getByText('Continue with Apple');
+    fireEvent.click(button);
     
-    expect(mockApplePress).toBeDefined();
+    expect(mockApplePress).toHaveBeenCalledTimes(1);
   });
 
   it('handles Facebook button press', () => {
-    const component = render(
-      <SocialLoginButtons onFacebookPress={mockFacebookPress} />
-    );
+    render(<SocialLoginButtons onFacebookPress={mockFacebookPress} />);
     
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Facebook');
+    const button = screen.getByText('Continue with Facebook');
+    fireEvent.click(button);
     
-    expect(mockFacebookPress).toBeDefined();
+    expect(mockFacebookPress).toHaveBeenCalledTimes(1);
   });
 
   it('renders all buttons in disabled state', () => {
-    const component = render(
+    render(
       <SocialLoginButtons 
         onGooglePress={mockGooglePress}
         onApplePress={mockApplePress}
@@ -187,14 +150,13 @@ describe('SocialLoginButtons', () => {
       />
     );
     
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Google');
-    expect(output).toContain('Continue with Apple');
-    expect(output).toContain('Continue with Facebook');
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
+    expect(screen.getByText('Continue with Apple')).toBeInTheDocument();
+    expect(screen.getByText('Continue with Facebook')).toBeInTheDocument();
   });
 
   it('does not call handlers when disabled', () => {
-    const component = render(
+    render(
       <SocialLoginButtons 
         onGooglePress={mockGooglePress}
         onApplePress={mockApplePress}
@@ -203,14 +165,16 @@ describe('SocialLoginButtons', () => {
       />
     );
     
-    const output = JSON.stringify(component.toJSON());
-    expect(output).toContain('Continue with Google');
-    expect(output).toContain('Continue with Apple');
-    expect(output).toContain('Continue with Facebook');
+    const googleButton = screen.getByText('Continue with Google');
+    const appleButton = screen.getByText('Continue with Apple');
+    const facebookButton = screen.getByText('Continue with Facebook');
     
-    // Verify handlers are defined but not called (since we can't simulate disabled button press)
-    expect(mockGooglePress).toBeDefined();
-    expect(mockApplePress).toBeDefined();
-    expect(mockFacebookPress).toBeDefined();
+    fireEvent.click(googleButton);
+    fireEvent.click(appleButton);
+    fireEvent.click(facebookButton);
+    
+    expect(mockGooglePress).not.toHaveBeenCalled();
+    expect(mockApplePress).not.toHaveBeenCalled();
+    expect(mockFacebookPress).not.toHaveBeenCalled();
   });
 });
