@@ -11,14 +11,13 @@ describe('Modal', () => {
   });
 
   it('renders children when visible', () => {
-    render(
+    const { getByText } = render(
       <Modal isVisible={true} onClose={mockOnClose}>
         <Text>Modal Content</Text>
       </Modal>
     );
 
-    const tree = component.toJSON();
-    expect(JSON.stringify(tree)).toContain('Modal Content');
+    expect(getByText('Modal Content')).toBeInTheDocument();
   });
 
   it('does not render children when not visible', () => {

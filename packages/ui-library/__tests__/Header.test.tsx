@@ -5,26 +5,22 @@ import { Header } from '../src/components/molecules/Header';
 
 describe('Header', () => {
   it('renders with title only', () => {
-    render(<Header title="Test Title" />);
+    const { getByText } = render(<Header title="Test Title" />);
     
     // Check if component renders and contains the title text
-    const rendered = toJSON();
-    expect(rendered).toBeInTheDocument();
-    expect(JSON.stringify(rendered)).toContain('Test Title');
+    expect(getByText('Test Title')).toBeInTheDocument();
   });
 
   it('renders with title and subtitle', () => {
-    render(
+    const { getByText } = render(
       <Header 
         title="Test Title" 
         subtitle="Test Subtitle" 
       />
     );
     
-    const rendered = toJSON();
-    expect(rendered).toBeInTheDocument();
-    expect(JSON.stringify(rendered)).toContain('Test Title');
-    expect(JSON.stringify(rendered)).toContain('Test Subtitle');
+    expect(getByText('Test Title')).toBeInTheDocument();
+    expect(getByText('Test Subtitle')).toBeInTheDocument();
   });
 
   it('renders left icon when provided', () => {
@@ -107,16 +103,14 @@ describe('Header', () => {
   });
 
   it('applies custom className', () => {
-    render(
+    const { getByText } = render(
       <Header 
         title="Test Title" 
         className="custom-header" 
       />
     );
     
-    const rendered = toJSON();
-    expect(rendered).toBeInTheDocument();
-    expect(JSON.stringify(rendered)).toContain('Test Title');
+    expect(getByText('Test Title')).toBeInTheDocument();
   });
 
   it('has correct accessibility labels', () => {

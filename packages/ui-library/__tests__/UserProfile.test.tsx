@@ -17,7 +17,8 @@ describe('UserProfile', () => {
         email="john.doe@example.com"
       />
     );
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
   });
 
   it('renders with edit button when onEditPress is provided', () => {
@@ -30,7 +31,7 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
 
   it('renders with action buttons when provided', () => {
@@ -47,7 +48,9 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Follow')).toBeInTheDocument();
+    expect(screen.getByText('Message')).toBeInTheDocument();
   });
 
   it('renders with custom class name', () => {
@@ -59,7 +62,7 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
 
   it('renders with bio', () => {
@@ -71,7 +74,8 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Software developer passionate about React Native')).toBeInTheDocument();
   });
 
   it('renders with stats', () => {
@@ -83,7 +87,11 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Posts')).toBeInTheDocument();
+    expect(screen.getByText('42')).toBeInTheDocument();
+    expect(screen.getByText('Followers')).toBeInTheDocument();
+    expect(screen.getByText('1.2K')).toBeInTheDocument();
   });
 
   it('renders with avatar', () => {
@@ -97,11 +105,12 @@ describe('UserProfile', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('👤')).toBeInTheDocument();
   });
 
   it('renders without optional props', () => {
     render(<UserProfile name="John Doe" />);
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
 });

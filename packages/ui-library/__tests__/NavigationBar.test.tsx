@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Text } from 'react-native';
 import { NavigationBar } from '../src/components/organisms/NavigationBar';
 
@@ -31,23 +31,21 @@ describe('NavigationBar', () => {
   });
 
   it('renders all tabs correctly', () => {
-    render(
+    const { getByText } = render(
       <NavigationBar 
         tabs={mockTabs} 
         activeTabId="home" 
       />
     );
     
-    const rendered = toJSON();
-    expect(rendered).toBeInTheDocument();
-    expect(JSON.stringify(rendered)).toContain('Home');
-    expect(JSON.stringify(rendered)).toContain('Search');
-    expect(JSON.stringify(rendered)).toContain('Profile');
+    expect(getByText('Home')).toBeInTheDocument();
+    expect(getByText('Search')).toBeInTheDocument();
+    expect(getByText('Profile')).toBeInTheDocument();
     
-    // Check for icon content instead of testIDs
-    expect(JSON.stringify(rendered)).toContain('🏠');
-    expect(JSON.stringify(rendered)).toContain('🔍');
-    expect(JSON.stringify(rendered)).toContain('👤');
+    // Check for icon content
+    expect(getByText('🏠')).toBeInTheDocument();
+    expect(getByText('🔍')).toBeInTheDocument();
+    expect(getByText('👤')).toBeInTheDocument();
   });
 
   it('shows badge when provided', () => {
@@ -58,8 +56,7 @@ describe('NavigationBar', () => {
       />
     );
     
-    const rendered = toJSON();
-    expect(JSON.stringify(rendered)).toContain('3');
+    expect(screen.getByText('3')).toBeInTheDocument();
   });
 
   it('shows 99+ for badges over 99', () => {
@@ -79,8 +76,7 @@ describe('NavigationBar', () => {
       />
     );
     
-    const rendered = toJSON();
-    expect(JSON.stringify(rendered)).toContain('99+');
+    expect(screen.getByText('99+')).toBeInTheDocument();
   });
 
   it('handles tab press correctly', () => {
@@ -91,9 +87,7 @@ describe('NavigationBar', () => {
       />
     );
     
-    // Verify component renders and contains expected content
-    const rendered = toJSON();
-    expect(JSON.stringify(rendered)).toContain('Search');
+    expect(screen.getByText('Search')).toBeInTheDocument();
     
     // Test that onPress is called (this tests the actual functionality)
     expect(mockTabs[1].onPress).not.toHaveBeenCalled();
@@ -107,11 +101,8 @@ describe('NavigationBar', () => {
       />
     );
     
-    // Verify component renders with accessibility attributes
-    const rendered = toJSON();
-    expect(rendered).toBeInTheDocument();
-    expect(JSON.stringify(rendered)).toContain('Home');
-    expect(JSON.stringify(rendered)).toContain('Search');
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Search')).toBeInTheDocument();
   });
 
   it('has correct accessibility roles', () => {
@@ -122,11 +113,9 @@ describe('NavigationBar', () => {
       />
     );
     
-    // Verify component renders with all tabs
-    const rendered = toJSON();
-    expect(JSON.stringify(rendered)).toContain('Home');
-    expect(JSON.stringify(rendered)).toContain('Search');
-    expect(JSON.stringify(rendered)).toContain('Profile');
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Search')).toBeInTheDocument();
+    expect(screen.getByText('Profile')).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
@@ -138,8 +127,7 @@ describe('NavigationBar', () => {
       />
     );
     
-    const rendered = toJSON();
-    expect(JSON.stringify(rendered)).toContain('Home');
+    expect(screen.getByText('Home')).toBeInTheDocument();
   });
 
   it('handles string badges correctly', () => {
@@ -159,8 +147,7 @@ describe('NavigationBar', () => {
       />
     );
     
-    const rendered = toJSON();
-    expect(JSON.stringify(rendered)).toContain('Messages');
-    expect(JSON.stringify(rendered)).toContain('new');
+    expect(screen.getByText('Messages')).toBeInTheDocument();
+    expect(screen.getByText('new')).toBeInTheDocument();
   });
 });

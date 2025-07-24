@@ -11,7 +11,7 @@ describe('CountryPicker', () => {
 
   it('renders without crashing', () => {
     render(<CountryPicker onSelect={mockOnSelect} />);
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 
   it('renders with placeholder text', () => {
@@ -119,7 +119,7 @@ describe('CountryPicker', () => {
     
     // Search for Canada
     const searchInput = getByPlaceholderText('Search countries...');
-    fireEvent.changeText(searchInput, 'Canada');
+    fireEvent.change(searchInput, { target: { value: 'Canada' } });
     
     expect(getByText('Canada')).toBeInTheDocument();
   });

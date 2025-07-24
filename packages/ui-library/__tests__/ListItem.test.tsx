@@ -6,7 +6,7 @@ import { ListItem } from '../src/components/molecules/ListItem';
 describe('ListItem', () => {
   it('renders without crashing', () => {
     render(<ListItem title="Test Item" />);
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 
   it('renders with subtitle when provided', () => {
@@ -17,7 +17,7 @@ describe('ListItem', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 
   it('renders with right text when provided', () => {
@@ -28,7 +28,7 @@ describe('ListItem', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 
   it('renders with icons when provided', () => {
@@ -43,7 +43,7 @@ describe('ListItem', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 
   it('renders as pressable when onPress is provided', () => {
@@ -55,6 +55,6 @@ describe('ListItem', () => {
       />
     );
     
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 });

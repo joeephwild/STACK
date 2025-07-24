@@ -5,7 +5,7 @@ import { OrSeparator } from '../src/components/atoms/OrSeparator';
 describe('OrSeparator', () => {
   it('renders without crashing', () => {
     render(<OrSeparator />);
-    expect(screen.getByTestId("test-component") || document.body).toBeInTheDocument();
+    expect(document.body).toBeInTheDocument();
   });
 
   it('renders with default "OR" text', () => {

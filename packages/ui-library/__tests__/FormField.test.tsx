@@ -12,8 +12,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Email');
+    expect(screen.getByText('Email')).toBeInTheDocument();
   });
 
   it('shows error message when provided', () => {
@@ -26,8 +25,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Invalid email');
+    expect(screen.getByText('Invalid email')).toBeInTheDocument();
   });
 
   it('shows helper text when provided', () => {
@@ -40,8 +38,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Must be at least 8 characters');
+    expect(screen.getByText('Must be at least 8 characters')).toBeInTheDocument();
   });
 
   it('handles text input correctly', () => {
@@ -55,8 +52,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Email');
+    expect(screen.getByText('Email')).toBeInTheDocument();
     expect(mockOnChangeText).toBeDefined();
   });
 
@@ -70,8 +66,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Email');
+    expect(screen.getByText('Email')).toBeInTheDocument();
   });
 
   it('passes through input props correctly', () => {
@@ -85,9 +80,8 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Email');
-    expect(output).toContain('Enter your email');
+    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter your email')).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
@@ -100,8 +94,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Email');
+    expect(screen.getByText('Email')).toBeInTheDocument();
   });
 
   it('shows error but hides helper text when both provided', () => {
@@ -115,8 +108,7 @@ describe('FormField', () => {
       />
     );
     
-    const output = JSON.stringify(toJSON());
-    expect(output).toContain('Password too short');
-    expect(output).not.toContain('Must be at least 8 characters');
+    expect(screen.getByText('Password too short')).toBeInTheDocument();
+    expect(screen.queryByText('Must be at least 8 characters')).not.toBeInTheDocument();
   });
 });
