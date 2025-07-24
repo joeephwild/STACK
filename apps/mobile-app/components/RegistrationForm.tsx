@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  Alert, 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
   ActivityIndicator,
-  ScrollView 
+  ScrollView
 } from 'react-native';
 import { useAuthStore } from '../store/authStore';
 import { RegisterData } from '../lib/api';
@@ -27,7 +27,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     lastName: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { register, error: authError, clearError } = useAuthStore();
 
   const handleInputChange = (field: keyof RegisterData, value: string) => {
@@ -145,8 +145,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
             onPress={handleSubmit}
             disabled={isSubmitting}
             className={`py-4 px-6 rounded-lg ${
-              isSubmitting 
-                ? 'bg-gray-400' 
+              isSubmitting
+                ? 'bg-gray-400'
                 : 'bg-blue-500'
             }`}
           >

@@ -1,18 +1,40 @@
+import { router } from 'expo-router';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, FlatList, Dimensions, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, FlatList, Dimensions, Image, TouchableOpacity, StatusBar, ViewStyle } from 'react-native';
 import { onBoard1, onBoard2, onBoard3 } from '~/assets/images';
-import { ConnectButtonAuth } from '~/components/ConnectButtonAuth';
 
 const { width, height } = Dimensions.get('window');
 
+// Define TypeScript interfaces
+interface OnboardingSlide {
+  key: string;
+  title: string;
+  description: string;
+  image: any;
+  backgroundColor: string;
+  textColor: string;
+  indicatorBg: string;
+  indicatorActiveBg: string;
+  textSmall?: string;
+}
+
+interface ViewableItemsChanged {
+  viewableItems: Array<{
+    index: number;
+    item: OnboardingSlide;
+    key: string;
+    isViewable: boolean;
+  }>;
+}
+
 // --- Onboarding Data ---
 // This array holds the content for each slide.
-const onboardingSlides = [
+const onboardingSlides: OnboardingSlide[] = [
   {
     key: '1',
-    title: 'Best Finance\nAdvice',
+    title: 'Level Up Your\nMoney Game',
     description:
-      'Expert-backed insights to help you make smarter money decisions—every step of the way.',
+      'investment turned into an epic adventure. Complete quests, earn rewards, and watch your money grow while having fun!',
     image: onBoard1,
     backgroundColor: '#1E1A3E',
     textColor: 'text-[#949FFF]',
@@ -22,8 +44,9 @@ const onboardingSlides = [
   },
   {
     key: '2',
-    title: 'Easy To\nInvest',
-    description: 'Start your investment journey with just a few taps. Simple, fast, and secure.',
+    title: 'Investing\nMade Easy AF',
+    description:
+      'No complicated finance stuff. Just swipe, tap, and invest in what you believe in. Start with just $1!',
     image: onBoard2,
     backgroundColor: '#D4FF00',
     textColor: 'text-black',
@@ -32,8 +55,9 @@ const onboardingSlides = [
   },
   {
     key: '3',
-    title: 'End-to-End\nDesign Process For A Next-Gen Investment App',
-    description: 'Track your portfolio performance with our next-gen investment tracking tools.',
+    title: 'Join The\nFinance Revolution',
+    description:
+      'Be part of a community thats changing the game. Trade, learn, and grow together with other young investors.',
     image: onBoard3,
     backgroundColor: '#EAE8FF',
     textColor: 'text-[#1E1F4B]',
@@ -47,7 +71,7 @@ const SLIDE_INTERVAL = 4000; // 4 seconds
 // --- Main App Component ---
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef(null);
+  const flatListRef = useRef<FlatList<OnboardingSlide>>(null);
 
   // --- Auto-scroll Logic ---
   useEffect(() => {
@@ -63,16 +87,16 @@ export default function App() {
   }, [currentIndex]);
 
   // --- Handle scroll to update the current index ---
-  const onViewableItemsChanged = useRef(({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
+  const onViewableItemsChanged = useRef((info: ViewableItemsChanged) => {
+    if (info.viewableItems.length > 0) {
+      setCurrentIndex(info.viewableItems[0].index);
     }
   }).current;
 
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50 }).current;
 
   // --- Renders each slide item ---
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: OnboardingSlide }) => (
     <View
       className="flex-1 items-center"
       style={{ width: width, backgroundColor: item.backgroundColor }}>
@@ -81,7 +105,7 @@ export default function App() {
           {item.title}
         </Text>
         <Text
-          className={`font-body-light mt-4 max-w-xs text-base font-bold ${item.textSmall} opacity-80`}>
+          className={`mt-4 max-w-xs font-body-light text-base font-bold ${item.textSmall ?? ''} opacity-80`}>
           {item.description}
         </Text>
       </View>
@@ -108,7 +132,7 @@ export default function App() {
             {index === currentIndex && (
               <View
                 className={`h-1 rounded-full ${currentSlide.indicatorActiveBg}`}
-                style={{ width: '100%', transition: `width ${SLIDE_INTERVAL}ms linear` }}
+                style={{ width: '100%' } as ViewStyle}
               />
             )}
           </View>
@@ -132,6 +156,9 @@ export default function App() {
         renderItem={renderItem}
         horizontal
         pagingEnabled
+        bounces={false}
+        scrollEventThrottle={16}
+        decelerationRate={0.85}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.key}
         onViewableItemsChanged={onViewableItemsChanged}
@@ -141,17 +168,13 @@ export default function App() {
       {renderIndicators()}
 
       {/* --- "Get Started" Button --- */}
-      {/* This button only shows on the last slide */}
-
-      {/* <View className="absolute bottom-10 w-full items-center px-6">
-
+      <View className="absolute bottom-10 w-full items-center px-6">
         <TouchableOpacity
           className="w-full rounded-xl bg-slate-900 p-4"
-          onPress={() => console.log('Get Started Pressed!')}>
+          onPress={() => router.replace('/(auth)/login')}>
           <Text className="text-center text-lg font-bold text-white">Get Started</Text>
         </TouchableOpacity>
-      </View> */}
-        <ConnectButtonAuth />
+      </View>
     </View>
   );
 }

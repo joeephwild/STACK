@@ -5,9 +5,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "*"
-      ]
+      "~/*": ["*"]
     }
   },
   "include": [
@@ -15,6 +13,12 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "../../packages/ui-library/src/components/atoms/Button.tsx",
+    "../../packages/ui-library/src/components/atoms/CountryPicker.tsx",
+    "../../packages/ui-library/src/components/atoms/InputField.tsx",
+    "../../packages/ui-library/src/components/atoms/OrSeparator.tsx",
+    "../../packages/ui-library/src/components/atoms/PhoneNumberInput.tsx",
+    "../../packages/ui-library/src/components/atoms/SocialLoginButtons.tsx"
   ]
 }

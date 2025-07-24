@@ -37,7 +37,7 @@ export const UserProfile: React.FC = () => {
         <Text className="text-lg font-semibold text-gray-900 mb-2">
           Welcome, {user.firstName || user.username || 'User'}!
         </Text>
-        
+
         <View className="space-y-2">
           {user.username && (
             <View className="flex-row">
@@ -45,21 +45,21 @@ export const UserProfile: React.FC = () => {
               <Text className="text-gray-900">{user.username}</Text>
             </View>
           )}
-          
+
           {user.email && (
             <View className="flex-row">
               <Text className="text-gray-600 font-medium w-20">Email:</Text>
               <Text className="text-gray-900">{user.email}</Text>
             </View>
           )}
-          
+
           <View className="flex-row">
             <Text className="text-gray-600 font-medium w-20">Wallet:</Text>
             <Text className="text-gray-900 font-mono text-sm">
-              {user.walletAddress.slice(0, 6)}...{user.walletAddress.slice(-4)}
+              {user?.walletAddress?.slice(0, 6)}...{user?.walletAddress?.slice(-4)}
             </Text>
           </View>
-          
+
           <View className="flex-row">
             <Text className="text-gray-600 font-medium w-20">Joined:</Text>
             <Text className="text-gray-900">

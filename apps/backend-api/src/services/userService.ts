@@ -11,6 +11,13 @@ const CreateUserSchema = z.object({
   email: z.string().email('Invalid email format').optional().nullable(),
   bio: z.string().optional().nullable(),
   avatarUrl: z.string().url('Invalid avatar URL').optional().nullable(),
+  phoneNumber: z.string().optional(),
+  nationality: z.string().optional(),
+  referralCode: z.string().optional(),
+  passwordHash: z.string().optional(),
+  emailVerified: z.boolean().optional(),
+  emailVerificationToken: z.string().optional(),
+  emailVerificationExpires: z.date().optional(),
 });
 
 const UpdateUserSchema = z.object({
@@ -19,6 +26,14 @@ const UpdateUserSchema = z.object({
   bio: z.string().optional().nullable(),
   avatarUrl: z.string().url('Invalid avatar URL').optional().nullable(),
   isCurator: z.boolean().optional(),
+  phoneNumber: z.string().optional(),
+  nationality: z.string().optional(),
+  referralCode: z.string().optional(),
+  passwordHash: z.string().optional(),
+  emailVerified: z.boolean().optional(),
+  emailVerificationToken: z.string().nullable().optional(),
+  emailVerificationExpires: z.date().nullable().optional(),
+  phoneVerified: z.boolean().optional(),
 });
 
 export interface CreateUserData {
@@ -27,6 +42,13 @@ export interface CreateUserData {
   email?: string | null;
   bio?: string | null;
   avatarUrl?: string | null;
+  phoneNumber?: string;
+  nationality?: string;
+  referralCode?: string;
+  passwordHash?: string;
+  emailVerified?: boolean;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
 }
 
 export interface UpdateUserData {
@@ -35,6 +57,14 @@ export interface UpdateUserData {
   bio?: string | null;
   avatarUrl?: string | null;
   isCurator?: boolean;
+  phoneNumber?: string;
+  nationality?: string;
+  referralCode?: string;
+  passwordHash?: string;
+  emailVerified?: boolean;
+  emailVerificationToken?: string | null;
+  emailVerificationExpires?: Date | null;
+  phoneVerified?: boolean;
 }
 
 /**
@@ -59,6 +89,13 @@ export async function createUser(userData: CreateUserData) {
         email: validatedData.email,
         bio: validatedData.bio,
         avatarUrl: validatedData.avatarUrl,
+        phoneNumber: validatedData.phoneNumber,
+        nationality: validatedData.nationality,
+        referralCode: validatedData.referralCode,
+        passwordHash: validatedData.passwordHash,
+        emailVerified: validatedData.emailVerified || false,
+        emailVerificationToken: validatedData.emailVerificationToken,
+        emailVerificationExpires: validatedData.emailVerificationExpires,
         isCurator: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -168,6 +205,27 @@ export async function getOrCreateUser(walletAddress: string, additionalData?: Pa
   } catch (error) {
     console.error('Error in getOrCreateUser:', error);
     throw error;
+  }
+}
+
+/**
+ * Find user by email verification token
+ */
+export async function findUserByVerificationToken(token: string) {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        emailVerificationToken: token,
+        emailVerificationExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    return user;
+  } catch (error) {
+    console.error('Error finding user by verification token:', error);
+    throw new Error('Failed to find user by verification token');
   }
 }
 

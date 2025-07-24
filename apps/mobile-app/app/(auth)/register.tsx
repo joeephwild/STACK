@@ -1,22 +1,22 @@
 import React from 'react';
-import { useRouter } from 'expo-router';
-import { RegistrationForm } from '../../components/RegistrationForm';
+import { SafeAreaView, View } from 'react-native';
+import { router } from 'expo-router';
+import { SignupForm } from '../../components/auth/SignupForm';
 
 export default function RegisterScreen() {
-  const router = useRouter();
-
-  const handleRegistrationSuccess = () => {
+  const handleSuccess = () => {
+    // Navigate to main app after successful registration
     router.replace('/(tabs)');
   };
 
   const handleCancel = () => {
-    router.replace('/(tabs)');
+    // Navigate to login screen
+    router.push('/(auth)/login');
   };
 
   return (
-    <RegistrationForm 
-      onRegistrationSuccess={handleRegistrationSuccess}
-      onCancel={handleCancel}
-    />
+    <SafeAreaView className="flex-1 bg-white">
+      <SignupForm onSuccess={handleSuccess} onCancel={handleCancel} />
+    </SafeAreaView>
   );
 }

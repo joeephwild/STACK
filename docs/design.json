@@ -103,6 +103,14 @@
                 "cornerRadius": "12px",
                 "padding": "16px 24px",
                 "font": "typography.styles.label"
+            },
+            "floatingActionButton": {
+                "backgroundColor": "palette.primary.royalBlue",
+                "iconColor": "palette.text.onPrimary",
+                "size": "56px",
+                "cornerRadius": "28px",
+                "shadow": "0px 8px 16px rgba(0, 0, 0, 0.2)",
+                "description": "For the AI Expert feature."
             }
         },
         "cards": {
@@ -117,6 +125,38 @@
                 "cornerRadius": "16px",
                 "padding": "16px",
                 "description": "A card variant for displaying gamified quests and rewards."
+            }
+        },
+        "inputs": {
+            "inputField": {
+                "backgroundColor": "palette.surface.card",
+                "textColor": "palette.text.primary",
+                "placeholderColor": "palette.text.tertiary",
+                "borderColor": "palette.surface.light",
+                "cornerRadius": "12px",
+                "padding": "16px",
+                "font": "typography.styles.body"
+            },
+            "toggleSwitch": {
+                "thumbColor": "palette.background.main",
+                "trackColorOn": "palette.accent.limeGreen",
+                "trackColorOff": "palette.text.tertiary"
+            }
+        },
+        "feedback": {
+            "progressBar": {
+                "backgroundColor": "palette.surface.light",
+                "progressColor": "palette.accent.limeGreen",
+                "height": "8px",
+                "cornerRadius": "4px"
+            }
+        },
+        "overlays": {
+            "modal": {
+                "backgroundColor": "palette.background.main",
+                "cornerRadius": "24px",
+                "shadow": "0px 16px 40px rgba(0, 0, 0, 0.15)",
+                "description": "For displaying content over the current screen, like the 'Power Up' amount entry."
             }
         },
         "icons": {
@@ -170,15 +210,6 @@
                     "properties": {
                         "title": "Create Account"
                     }
-                },
-                {
-                    "component": "SocialLoginButtons",
-                    "properties": {
-                        "description": "Buttons for Google, Apple, etc."
-                    }
-                },
-                {
-                    "component": "OrSeparator"
                 },
                 {
                     "component": "InputField",
@@ -249,15 +280,6 @@
                         "target": "forgotPassword"
                     }
                 },
-                {
-                    "component": "OrSeparator"
-                },
-                {
-                    "component": "SocialLoginButtons",
-                    "properties": {
-                        "description": "Buttons for Google, Apple, etc."
-                    }
-                }
             ]
         },
         "onboarding": {
@@ -383,6 +405,13 @@
                     }
                 },
                 {
+                    "component": "FloatingActionButton",
+                    "properties": {
+                        "icon": "sparkles",
+                        "action": "openAiExpert"
+                    }
+                },
+                {
                     "component": "BottomNavigation"
                 }
             ]
@@ -460,7 +489,10 @@
                     "component": "SpendableBalance"
                 },
                 {
-                    "component": "RoundUpToggle"
+                    "component": "RoundUpToggle",
+                    "properties": {
+                        "component": "ToggleSwitch"
+                    }
                 },
                 {
                     "component": "RecentTransactionsList"
@@ -520,7 +552,8 @@
                     "component": "BattlePassProgress",
                     "properties": {
                         "level": 5,
-                        "xp": 750
+                        "xp": 750,
+                        "component": "ProgressBar"
                     }
                 },
                 {
@@ -548,11 +581,82 @@
                 },
                 {
                     "component": "SettingsList",
-                    "properties": [
-                        "Preferences",
-                        "Security",
-                        "Notifications"
-                    ]
+                    "properties": {
+                        "sections": [
+                            {
+                                "title": "Preferences",
+                                "items": [
+                                    {
+                                        "label": "Theme",
+                                        "type": "toggle",
+                                        "options": [
+                                            "Light",
+                                            "Dark",
+                                            "System"
+                                        ]
+                                    },
+                                    {
+                                        "label": "Language",
+                                        "type": "select",
+                                        "options": [
+                                            "English",
+                                            "Spanish",
+                                            "French"
+                                        ]
+                                    },
+                                    {
+                                        "label": "Currency",
+                                        "type": "select",
+                                        "options": [
+                                            "USD",
+                                            "EUR",
+                                            "GBP"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Security",
+                                "items": [
+                                    {
+                                        "label": "Two-Factor Authentication",
+                                        "type": "toggle",
+                                        "description": "Enable additional security"
+                                    },
+                                    {
+                                        "label": "Face ID / Touch ID",
+                                        "type": "toggle",
+                                        "description": "Use biometric authentication"
+                                    },
+                                    {
+                                        "label": "Change Password",
+                                        "type": "action",
+                                        "description": "Update your account password"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Notifications",
+                                "items": [
+                                    {
+                                        "label": "Push Notifications",
+                                        "type": "toggle",
+                                        "description": "Enable push notifications"
+                                    },
+                                    {
+                                        "label": "Email Updates",
+                                        "type": "toggle",
+                                        "description": "Receive email notifications"
+                                    },
+                                    {
+                                        "label": "Investment Alerts",
+                                        "type": "toggle",
+                                        "description": "Get notified about portfolio changes"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 },
                 {
                     "component": "LogoutButton"

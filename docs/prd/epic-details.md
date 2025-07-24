@@ -8,9 +8,9 @@
 
 ### **Story 1.1: Project Scaffolding & Core Dependencies**
 
-* **As a** Developer,
-* **I want** a clean monorepo structure with all core dependencies and tooling installed,
-* **so that** I can begin building features in a consistent and secure environment.
+- **As a** Developer,
+- **I want** a clean monorepo structure with all core dependencies and tooling installed,
+- **so that** I can begin building features in a consistent and secure environment.
 
 **Acceptance Criteria:**
 
@@ -23,9 +23,9 @@
 
 ### **Story 1.2: Basic Smart Contract for Asset Ownership**
 
-* **As a** Developer,
-* **I want** a basic smart contract deployed on the Etherlink testnet that can track fractional ownership of assets,
-* **so that** we have a foundational on-chain component to build upon.
+- **As a** Developer,
+- **I want** a basic smart contract deployed on the Etherlink testnet that can track fractional ownership of assets,
+- **so that** we have a foundational on-chain component to build upon.
 
 **Acceptance Criteria:**
 
@@ -36,9 +36,9 @@
 
 ### **Story 1.2a: Database Schema Initialization**
 
-* **As a** Developer,
-* **I want** the initial database schema to be created and version-controlled,
-* **so that** backend services have a stable and ready database to connect to for all subsequent features.
+- **As a** Developer,
+- **I want** the initial database schema to be created and version-controlled,
+- **so that** backend services have a stable and ready database to connect to for all subsequent features.
 
 **Acceptance Criteria:**
 
@@ -51,9 +51,9 @@
 
 ### **Story 1.3: User Sign-Up and Wallet Creation**
 
-* **As a** new user,
-* **I want** to easily sign up for a STACK account and have a secure wallet automatically created for me,
-* **so that** I can start my investment journey without understanding complex crypto concepts.
+- **As a** new user,
+- **I want** to easily sign up for a STACK account and have a secure wallet automatically created for me,
+- **so that** I can start my investment journey without understanding complex crypto concepts.
 
 **Acceptance Criteria:**
 
@@ -64,25 +64,26 @@
 
 ---
 
-### **Story 1.4: Virtual Debit Card Issuance**
+### **Story 1.4: Component-First Development Setup**
 
-* **As a** new user,
-* **I want** a virtual debit card to be instantly issued upon account creation,
-* **so that** I can see the connection between my investments and real-world spending from day one.
+- **As a** Developer,
+- **I want** to establish a component-first development approach,
+- **so that** all required UI components are built before constructing complete screens.
 
 **Acceptance Criteria:**
 
-1. A unique virtual debit card number, CVV, and expiry date are generated and associated with the user's account.
-2. The card is initially in an inactive state with a zero balance.
-3. The card details are securely stored and can be retrieved for display to the authenticated user within the app.
+1. A component library structure is established within the mobile app codebase.
+2. Core UI components are identified and listed based on the design specifications.
+3. A storybook or similar component documentation system is set up.
+4. Development guidelines document the component-first approach, requiring all components to be built and tested before screen assembly.
 
 ---
 
 ### **Story 1.5: Onboarding Flow & Free Starter Slice**
 
-* **As a** new user,
-* **I want** to go through a simple onboarding flow and receive a "free starter slice" of a pre-determined asset,
-* **so that** I feel immediately welcomed and can experience ownership without any risk.
+- **As a** new user,
+- **I want** to go through a simple onboarding flow and receive a "free starter slice" of a pre-determined asset,
+- **so that** I feel immediately welcomed and can experience ownership without any risk.
 
 **Acceptance Criteria:**
 
@@ -99,9 +100,9 @@
 
 ### **Story 2.1: Display Curated Investment Baskets**
 
-* **As a** user,
-* **I want** to see a list of curated "Baskets" with clear, visual information,
-* **so that** I can easily browse and understand my investment options.
+- **As a** user,
+- **I want** to see a list of curated "Baskets" with clear, visual information,
+- **so that** I can easily browse and understand my investment options.
 
 **Acceptance Criteria:**
 
@@ -114,9 +115,9 @@
 
 ### **Story 2.2: View Basket Details**
 
-* **As a** user,
-* **I want** to view the detailed contents and philosophy of a specific "Basket,"
-* **so that** I can make an informed decision before investing.
+- **As a** user,
+- **I want** to view the detailed contents and philosophy of a specific "Basket,"
+- **so that** I can make an informed decision before investing.
 
 **Acceptance Criteria:**
 
@@ -129,9 +130,9 @@
 
 ### **Story 2.3: Invest in a Basket ("Power Up")**
 
-* **As a** user,
-* **I want** a simple, fast way to invest a specific amount of money into a "Basket,"
-* **so that** the process feels effortless and encouraging.
+- **As a** user,
+- **I want** a simple, fast way to invest a specific amount of money into a "Basket,"
+- **so that** the process feels effortless and encouraging.
 
 **Acceptance Criteria:**
 
@@ -145,9 +146,9 @@
 
 ### **Story 2.4: Receive AI Tip Post-Investment**
 
-* **As a** user,
-* **I want** to receive a simple, personalized tip from the AI Expert immediately after I make an investment,
-* **so that** I can learn and feel more confident about my financial decisions.
+- **As a** user,
+- **I want** to receive a simple, personalized tip from the AI Expert immediately after I make an investment,
+- **so that** I can learn and feel more confident about my financial decisions.
 
 **Acceptance Criteria:**
 
@@ -158,30 +159,31 @@
 
 ## **Epic 3: Gamification & Automated Investing**
 
-**Expanded Goal:** This epic focuses on making investing a sticky, effortless, and deeply personalized habit. It builds on the core investment loop by introducing a powerful gamification layer to drive engagement and two automated investing features to promote consistent, passive wealth creation. By the end of this epic, STACK will transform from a tool a user *can* use into a system that works *for* them.
+**Expanded Goal:** This epic focuses on making investing a sticky, effortless, and deeply personalized habit. It builds on the core investment loop by introducing a powerful gamification layer to drive engagement and two automated investing features to promote consistent, passive wealth creation. By the end of this epic, STACK will transform from a tool a user _can_ use into a system that works _for_ them.
 
 ---
 
 ### **Story 3.1: Configure "Round-up" Investing**
 
-* **As a** user,
-* **I want** to set up the "round-up" feature by linking it to my virtual debit card,
-* **so that** my spare change is automatically invested whenever I spend.
+- **As a** user with a virtual debit card,
+- **I want** to set up the "round-up" feature for my card,
+- **so that** my spare change is automatically invested whenever I spend.
 
 **Acceptance Criteria:**
 
-1. An interface exists within the app for a user to enable or disable the "Round-up" feature.
-2. When enabled, all transactions on the user's STACK virtual debit card are rounded up to the nearest dollar.
-3. The accumulated spare change is automatically invested into a user's pre-selected default "Basket" at a set interval (e.g., once a day or once it hits a $5 threshold).
-4. The user can view a clear history of all their "round-up" investments.
+1. An interface exists within the card section of the app for a user to enable or disable the "Round-up" feature.
+2. The feature is only available to users who have requested and received their virtual debit card.
+3. When enabled, all transactions on the user's STACK virtual debit card are rounded up to the nearest dollar.
+4. The accumulated spare change is automatically invested into a user's pre-selected default "Basket" at a set interval (e.g., once a day or once it hits a $5 threshold).
+5. The user can view a clear history of all their "round-up" investments.
 
 ---
 
 ### **Story 3.2: Configure "Payday" Investing**
 
-* **As a** user,
-* **I want** to schedule automatic investments to coincide with my payday,
-* **so that** I can consistently invest without having to think about it.
+- **As a** user,
+- **I want** to schedule automatic investments to coincide with my payday,
+- **so that** I can consistently invest without having to think about it.
 
 **Acceptance Criteria:**
 
@@ -194,9 +196,9 @@
 
 ### **Story 3.3: "Battle Pass" & Quest System**
 
-* **As a** user,
-* **I want** to see a "battle pass" or quest log with challenges and rewards,
-* **so that** I feel motivated and guided on my investment journey.
+- **As a** user,
+- **I want** to see a "battle pass" or quest log with challenges and rewards,
+- **so that** I feel motivated and guided on my investment journey.
 
 **Acceptance Criteria:**
 
@@ -209,9 +211,9 @@
 
 ### **Story 3.4: "For You" Algorithmic Feed**
 
-* **As a** user,
-* **I want** to see a personalized "For You" feed of investment opportunities,
-* **so that** I can discover new Baskets and quests that are relevant to my interests and behavior.
+- **As a** user,
+- **I want** to see a personalized "For You" feed of investment opportunities,
+- **so that** I can discover new Baskets and quests that are relevant to my interests and behavior.
 
 **Acceptance Criteria:**
 
@@ -219,6 +221,22 @@
 2. The feed contains a mix of content, including suggested "Baskets," new quests from the "Battle Pass," and potentially content from "Community Curators."
 3. A backend algorithm uses the user's investment history, stated interests, and in-app behavior to tailor the content of the feed.
 4. All content in the feed includes clear calls-to-action (e.g., "Invest in this Basket," "Start this Quest").
+
+---
+
+### **Story 3.5: Virtual Debit Card Issuance**
+
+- **As a** user who has completed onboarding,
+- **I want** to request a virtual debit card from the card section of the app,
+- **so that** I can connect my investments with real-world spending when I'm ready.
+
+**Acceptance Criteria:**
+
+1. The card section of the app includes a clear option to request a virtual debit card.
+2. Upon request, a unique virtual debit card number, CVV, and expiry date are generated and associated with the user's account.
+3. The card is initially in an inactive state with a zero balance.
+4. The card details are securely stored and can be retrieved for display to the authenticated user within the card section of the app.
+5. The user can only access this feature after completing the onboarding process.
 
 ## **Epic 4: Ecosystem & Advanced Utility**
 
@@ -228,9 +246,9 @@
 
 ### **Story 4.1: Community Curator Application & Profile**
 
-* **As a** successful user,
-* **I want** to apply to become a "Community Curator" and set up a public profile,
-* **so that** I can share my investment strategies with the community.
+- **As a** successful user,
+- **I want** to apply to become a "Community Curator" and set up a public profile,
+- **so that** I can share my investment strategies with the community.
 
 **Acceptance Criteria:**
 
@@ -243,9 +261,9 @@
 
 ### **Story 4.2: Curate and Publish Baskets**
 
-* **As a** Community Curator,
-* **I want** to create, name, and publish my own "Baskets" of assets,
-* **so that** other users can discover and invest in my strategies.
+- **As a** Community Curator,
+- **I want** to create, name, and publish my own "Baskets" of assets,
+- **so that** other users can discover and invest in my strategies.
 
 **Acceptance Criteria:**
 
@@ -259,9 +277,9 @@
 
 ### **Story 4.3: View Portfolio as Collateral**
 
-* **As a** user with a portfolio,
-* **I want** to see how much I can borrow against my assets,
-* **so that** I understand my options for a micro-loan.
+- **As a** user with a portfolio,
+- **I want** to see how much I can borrow against my assets,
+- **so that** I understand my options for a micro-loan.
 
 **Acceptance Criteria:**
 
@@ -273,14 +291,15 @@
 
 ### **Story 4.4: Request and Receive a Micro-Loan**
 
-* **As a** user,
-* **I want** to easily request a loan against my portfolio and have the funds instantly available on my virtual debit card,
-* **so that** I can access liquidity without selling my assets.
+- **As a** user with a virtual debit card,
+- **I want** to easily request a loan against my portfolio and have the funds instantly available on my virtual debit card,
+- **so that** I can access liquidity without selling my assets.
 
 **Acceptance Criteria:**
 
 1. The user can request a loan up to their maximum available amount through a simple interface.
-2. Upon confirming the loan terms, the user's portfolio assets are programmatically marked as collateral.
-3. The loan amount is instantly credited to the user's STACK virtual debit card, making the funds available to spend.
-4. The user's "Loans" dashboard is updated to show the outstanding balance, interest accrued, and repayment schedule.
-5. A basic automated system is in place to notify users if their collateral value drops near a liquidation threshold.
+2. The loan feature is only available to users who have requested and received their virtual debit card.
+3. Upon confirming the loan terms, the user's portfolio assets are programmatically marked as collateral.
+4. The loan amount is instantly credited to the user's STACK virtual debit card, making the funds available to spend.
+5. The user's "Loans" dashboard is updated to show the outstanding balance, interest accrued, and repayment schedule.
+6. A basic automated system is in place to notify users if their collateral value drops near a liquidation threshold.

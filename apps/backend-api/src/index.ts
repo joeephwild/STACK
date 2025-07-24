@@ -9,6 +9,7 @@ import { healthRouter } from './routes/health';
 import { authRouter } from './routes/auth';
 import { userRouter } from './routes/users';
 import { errorHandler } from './middleware/errorHandler';
+import { testEmailConfiguration } from './services/emailService';
 
 const app = express();
 
@@ -40,9 +41,13 @@ app.use('*', (req, res) => {
 // Only start server if this file is run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   const PORT = process.env.PORT || 3001;
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
     console.log(`🚀 STACK Backend API running on port ${PORT}`);
     console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+    
+    // Test email configuration on startup
+    console.log('📧 Testing email configuration...');
+    await testEmailConfiguration();
   });
 }
 

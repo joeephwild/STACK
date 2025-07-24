@@ -13,17 +13,23 @@ export interface LoginPayload {
   resources?: string[];
 }
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
-const AUTH_API_URL = process.env.EXPO_PUBLIC_AUTH_API || 'http://localhost:3000/api/auth';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/api';
+const AUTH_API_URL = process.env.EXPO_PUBLIC_AUTH_API || 'http://localhost:3001/api/auth';
 
 export interface User {
   id: string;
-  walletAddress: string;
-  email?: string;
+  walletAddress?: string;
+  email: string;
+  displayName?: string;
   username?: string;
   firstName?: string;
   lastName?: string;
+  phoneNumber?: string;
+  nationality?: string;
   profilePicture?: string;
+  referralCode?: string;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -32,13 +38,50 @@ export interface AuthResponse {
   success: boolean;
   user?: User;
   message?: string;
+  token?: string;
+}
+
+export interface EmailSignupData {
+  email: string;
+  password: string;
+  displayName: string;
+  phoneNumber?: string;
+  nationality?: string;
+  referralCode?: string;
 }
 
 export interface RegisterData {
-  email?: string;
-  username?: string;
+  email: string;
+  password: string;
+  phoneNumber: string | undefined;
+  nationality: string;
+  referralCode?: string;
   firstName?: string;
   lastName?: string;
+  username?: string;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordData {
+  email: string;
+}
+
+export interface ResetPasswordData {
+  token: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface VerifyEmailData {
+  token: string;
+}
+
+export interface ResendVerificationData {
+  email: string;
 }
 
 class ApiClient {
@@ -65,7 +108,8 @@ class ApiClient {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      const errorMessage = errorData.error || errorData.message || `HTTP error! status: ${response.status}`;
+      throw new Error(errorMessage);
     }
 
     return response.json();
@@ -83,6 +127,34 @@ class ApiClient {
     });
   }
 
+  async loginWithEmail(data: LoginData): Promise<AuthResponse> {
+    return this.request<AuthResponse>(`${this.authUrl}/login/email`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async signupWithEmail(data: EmailSignupData): Promise<AuthResponse> {
+    return this.request<AuthResponse>(`${this.authUrl}/signup`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async verifyEmail(data: VerifyEmailData): Promise<AuthResponse> {
+    return this.request<AuthResponse>(`${this.authUrl}/verify-email`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async resendVerification(data: ResendVerificationData): Promise<{ success: boolean; message: string }> {
+    return this.request<{ success: boolean; message: string }>(`${this.authUrl}/resend-verification`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
   async register(data: RegisterData): Promise<AuthResponse> {
     return this.request<AuthResponse>(`${this.authUrl}/register`, {
       method: 'POST',
@@ -97,6 +169,20 @@ class ApiClient {
   async logout(): Promise<{ success: boolean }> {
     return this.request<{ success: boolean }>(`${this.authUrl}/logout`, {
       method: 'POST',
+    });
+  }
+
+  async forgotPassword(data: ForgotPasswordData): Promise<{ success: boolean; message: string }> {
+    return this.request<{ success: boolean; message: string }>(`${this.authUrl}/forgot-password`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async resetPassword(data: ResetPasswordData): Promise<{ success: boolean; message: string }> {
+    return this.request<{ success: boolean; message: string }>(`${this.authUrl}/reset-password`, {
+      method: 'POST',
+      body: JSON.stringify(data),
     });
   }
 

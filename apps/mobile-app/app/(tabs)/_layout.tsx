@@ -9,12 +9,13 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: '#5852FF',
         tabBarInactiveTintColor: '#6B7280',
+        headerShown: false,
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <HeaderButton />

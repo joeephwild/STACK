@@ -1,20 +1,36 @@
 {
   "preset": "ts-jest",
   "testEnvironment": "jsdom",
-  "roots": ["<rootDir>/src", "<rootDir>/__tests__"],
-  "testMatch": ["**/__tests__/**/*.test.tsx", "**/__tests__/**/*.test.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/__tests__/setup.ts"],
+  "testMatch": [
+    "**/__tests__/**/*.test.ts",
+    "**/__tests__/**/*.test.tsx"
+  ],
   "transform": {
-    "^.+\\.(ts|tsx)$": "ts-jest"
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest"
   },
   "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>/src/$1"
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@stack/(.*)$": "<rootDir>/../$1",
+    "^react-native$": "react-native-web",
+    "^react-native-svg$": "react-native-svg-web"
   },
   "collectCoverageFrom": [
     "src/**/*.{ts,tsx}",
-    "!src/**/*.d.ts"
+    "!src/**/*.d.ts",
+    "!src/**/*.stories.{ts,tsx}",
+    "!src/**/index.{ts,tsx}"
   ],
-  "coverageDirectory": "coverage",
-  "coverageReporters": ["text", "lcov", "html"],
-  "setupFilesAfterEnv": [],
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"]
+  "coverageThreshold": {
+    "global": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": 80
+    }
+  },
+  "testTimeout": 10000,
+  "clearMocks": true,
+  "restoreMocks": true
 }

@@ -1,8 +1,10 @@
 import { createThirdwebClient } from "thirdweb";
 
-const secretKey = "bkn-DIfzX2ePx3w2ima_NJQz4J6IWK-UnHkPOoIwJd4XQMtsfq6BU7UNUrRLcA3DfUjRR8eOILpKWR9IVB9Fgw";
+if (!process.env.THIRDWEB_SECRET_KEY) {
+  throw new Error("THIRDWEB_SECRET_KEY environment variable is required");
+}
 
 export const thirdwebClient = createThirdwebClient({
-   secretKey:  secretKey,
-    clientId: process.env.THIRDWEB_CLIENT_ID
+  secretKey: process.env.THIRDWEB_SECRET_KEY,
+  clientId: process.env.THIRDWEB_CLIENT_ID
 });

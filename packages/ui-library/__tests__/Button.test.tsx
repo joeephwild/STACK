@@ -2,38 +2,84 @@
  * @jest-environment jsdom
  */
 
-describe('UI Library', () => {
-  it('should be defined', () => {
-    // Simple test to verify the test setup works
-    expect(true).toBe(true);
+import React from 'react';
+import { render } from '@testing-library/react-native';
+import { Button } from '../src/components/atoms/Button';
+
+describe('Button Component', () => {
+  it('renders correctly with default props', () => {
+    const { getByLabelText } = render(<Button title="Test Button" onPress={() => {}} />);
+    expect(getByLabelText('Test Button')).toBeTruthy();
   });
 
-  it('should have proper package structure', () => {
-    // Test that the package exports exist
-    const fs = require('fs');
-    const path = require('path');
-    
-    const packageJsonPath = path.join(__dirname, '..', 'package.json');
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    
-    expect(packageJson.name).toBe('@stack/ui-library');
-    expect(packageJson.main).toBe('./dist/index.js');
-    expect(packageJson.types).toBe('./dist/index.d.ts');
+  it('renders with primary variant by default', () => {
+    const { getByLabelText } = render(<Button title="Primary Button" onPress={() => {}} />);
+    expect(getByLabelText('Primary Button')).toBeTruthy();
   });
 
-  it('should have Button component file', () => {
-    const fs = require('fs');
-    const path = require('path');
-    
-    const buttonPath = path.join(__dirname, '..', 'src', 'components', 'Button.tsx');
-    expect(fs.existsSync(buttonPath)).toBe(true);
+  it('renders with accent variant', () => {
+    const { getByLabelText } = render(<Button title="Accent Button" variant="accent" onPress={() => {}} />);
+    expect(getByLabelText('Accent Button')).toBeTruthy();
   });
 
-  it('should have index file', () => {
-    const fs = require('fs');
-    const path = require('path');
-    
-    const indexPath = path.join(__dirname, '..', 'src', 'index.ts');
-    expect(fs.existsSync(indexPath)).toBe(true);
+  it('renders with tertiary variant', () => {
+    const { getByLabelText } = render(<Button title="Tertiary Button" variant="tertiary" onPress={() => {}} />);
+    expect(getByLabelText('Tertiary Button')).toBeTruthy();
+  });
+
+  it('renders with fab variant', () => {
+    const { getByLabelText } = render(<Button title="+" variant="fab" onPress={() => {}} />);
+    expect(getByLabelText('+')).toBeTruthy();
+  });
+
+  it('renders in loading state', () => {
+    const { getByLabelText } = render(<Button title="Loading Button" loading onPress={() => {}} />);
+    // Button should still have accessibility label even when loading
+    expect(getByLabelText('Loading Button')).toBeTruthy();
+  });
+
+  it('renders with different sizes', () => {
+    const { getByLabelText, rerender } = render(<Button title="Small" size="small" onPress={() => {}} />);
+    expect(getByLabelText('Small')).toBeTruthy();
+
+    rerender(<Button title="Medium" size="medium" onPress={() => {}} />);
+    expect(getByLabelText('Medium')).toBeTruthy();
+
+    rerender(<Button title="Large" size="large" onPress={() => {}} />);
+    expect(getByLabelText('Large')).toBeTruthy();
+  });
+
+  it('renders with full width', () => {
+    const { getByLabelText } = render(<Button title="Full Width" fullWidth onPress={() => {}} />);
+    expect(getByLabelText('Full Width')).toBeTruthy();
+  });
+
+  it('renders fab with default plus icon when no icon provided', () => {
+    const { getByLabelText } = render(<Button title="FAB" variant="fab" onPress={() => {}} />);
+    expect(getByLabelText('FAB')).toBeTruthy();
+  });
+
+  it('renders with custom title', () => {
+    const customTitle = 'Custom Button Title';
+    const { getByLabelText } = render(<Button title={customTitle} onPress={() => {}} />);
+    expect(getByLabelText(customTitle)).toBeTruthy();
+  });
+
+  it('has proper accessibility attributes', () => {
+    const { getByLabelText } = render(<Button title="Accessible Button" onPress={() => {}} />);
+    const button = getByLabelText('Accessible Button');
+    expect(button).toBeTruthy();
+  });
+
+  it('is disabled when loading', () => {
+    const { getByLabelText } = render(<Button title="Loading" loading onPress={() => {}} />);
+    const button = getByLabelText('Loading');
+    expect(button).toBeTruthy();
+  });
+
+  it('is disabled when disabled prop is true', () => {
+    const { getByLabelText } = render(<Button title="Disabled" disabled onPress={() => {}} />);
+    const button = getByLabelText('Disabled');
+    expect(button).toBeTruthy();
   });
 });

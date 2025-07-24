@@ -20,6 +20,26 @@ model User {
   avatarUrl       String?
   bio             String?
   isCurator       Boolean   @default(false)
+  
+  // Email verification fields
+  emailVerified   Boolean   @default(false)
+  emailVerificationToken String? @unique
+  emailVerificationExpires DateTime?
+  
+  // Password for email/password authentication
+  passwordHash    String?
+  
+  // Phone number for verification
+  phoneNumber     String?
+  phoneVerified   Boolean   @default(false)
+  
+  // Nationality for compliance
+  nationality     String?
+  
+  // Referral system
+  referralCode    String?   @unique
+  referredBy      String?
+  
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
