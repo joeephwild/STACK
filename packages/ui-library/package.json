@@ -19,6 +19,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@stack/shared-types": "workspace:*",
     "nativewind": "latest",
     "react": "19.1.0",
     "react-native": "0.79.5"
