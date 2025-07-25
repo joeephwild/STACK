@@ -7,7 +7,7 @@ module.exports = function (api) {
       [
         'babel-preset-expo', 
         { 
-          jsxImportSource: 'nativewind',
+          jsxImportSource: 'react-native-css-interop/jsx-runtime',
           unstable_transformImportMeta: true
         }
       ], 

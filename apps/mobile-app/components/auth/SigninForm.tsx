@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { InputField } from '../../../../packages/ui-library/src/components/atoms/InputField';
-import { Button } from '../../../../packages/ui-library/src/components/atoms/Button';
-import { OrSeparator } from '../../../../packages/ui-library/src/components/atoms/OrSeparator';
-import { SocialLoginButtons } from '../../../../packages/ui-library/src/components/atoms/SocialLoginButtons';
+import { InputField, Button } from '@stack/ui-library';
 import { useAuthStore } from '../../store/authStore';
 import { LoginData } from '../../lib/api';
 

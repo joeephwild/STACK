@@ -392,8 +392,10 @@ exports[`Visual Regression Tests Atomic Components InputField - Error state shou
 exports[`Visual Regression Tests Atomic Components ProgressBar - 50% progress should match snapshot 1`] = `
 <div
   className="css-view-g5y9jx"
+  data-testid="progress-bar"
   dir={null}
   ref={[Function]}
+  role="progressbar"
   style={
     {
       "backgroundColor": "rgba(234,226,255,1.00)",
@@ -429,8 +431,10 @@ exports[`Visual Regression Tests Atomic Components ProgressBar - 50% progress sh
 exports[`Visual Regression Tests Atomic Components ProgressBar - 100% progress should match snapshot 1`] = `
 <div
   className="css-view-g5y9jx"
+  data-testid="progress-bar"
   dir={null}
   ref={[Function]}
+  role="progressbar"
   style={
     {
       "backgroundColor": "rgba(234,226,255,1.00)",
@@ -1333,8 +1337,10 @@ exports[`Visual Regression Tests Molecular Components QuestProgress - Active que
       </div>
       <div
         className="css-view-g5y9jx"
+        data-testid="progress-bar"
         dir={null}
         ref={[Function]}
+        role="progressbar"
         style={
           {
             "backgroundColor": "rgba(247,247,247,1.00)",
@@ -1596,8 +1602,10 @@ exports[`Visual Regression Tests Organism Components BattlePass - Level 5 progre
     </div>
     <div
       className="css-view-g5y9jx"
+      data-testid="progress-bar"
       dir={null}
       ref={[Function]}
+      role="progressbar"
       style={
         {
           "backgroundColor": "rgba(247,247,247,1.00)",

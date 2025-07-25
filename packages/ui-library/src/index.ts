@@ -13,6 +13,7 @@ export { Icon } from './components/atoms/Icon';
 export { Chart } from './components/atoms/Chart';
 export { Grid, GridItem } from './components/atoms/Grid';
 export { Breadcrumb } from './components/atoms/Breadcrumb';
+export { Ionicons } from './components/atoms/SafeIonicons';
 
 // Molecules
 export { SearchBar } from './components/molecules/SearchBar';

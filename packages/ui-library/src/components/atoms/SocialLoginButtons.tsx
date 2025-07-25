@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { Ionicons } from './SafeIonicons';
 
 interface SocialLoginButtonProps {
   provider: 'google' | 'apple' | 'facebook';
