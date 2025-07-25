@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { InputField } from '../../../../packages/ui-library/src/components/atoms/InputField';
-import { Button } from '../../../../packages/ui-library/src/components/atoms/Button';
-import { CountryPicker } from '../../../../packages/ui-library/src/components/atoms/CountryPicker';
-import { PhoneNumberInput } from '../../../../packages/ui-library/src/components/atoms/PhoneNumberInput';
+import { InputField, Button, PhoneNumberInput, CountryPicker } from '@stack/ui-library';
 import { useAuthStore } from '../../store/authStore';
 import type { EmailSignupData } from '../../lib/api';
 
