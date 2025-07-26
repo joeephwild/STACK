@@ -110,7 +110,7 @@ export default function App() {
       className="flex-1 items-center"
       style={{ width: width, backgroundColor: item.backgroundColor }}>
       <View className="w-full flex-1 items-start px-4 pt-32">
-        <Text className={`font-heading text-5xl uppercase leading-none ${item.textColor}`}>
+        <Text className={`font-h1 text-[50px] uppercase leading-none ${item.textColor}`}>
           {item.title}
         </Text>
         <Text
@@ -180,8 +180,8 @@ export default function App() {
       <View className="absolute bottom-10 w-full items-center px-6">
         <TouchableOpacity
           className="w-full rounded-xl bg-slate-900 p-4"
-          onPress={() => router.replace('/(auth)/login')}
-          //   onPress={() => router.push('/(auth)/onboarding')}
+        //   onPress={() => router.replace('/(auth)/login')}
+            onPress={() => router.push('/(auth)/onboarding')}
         >
           <Text className="text-center text-lg font-bold text-white">Get Started</Text>
         </TouchableOpacity>

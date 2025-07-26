@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import { router } from 'expo-router';
-import { WelcomeStep } from '../../components/onboarding/WelcomeStep';
+import { NotificationPermissionStep } from '../../components/onboarding/NotificationPermissionStep';
+import { TrackingPermissionStep } from '../../components/onboarding/TrackingPermissionStep';
 import { FreeStarterSliceStep } from '../../components/onboarding/FreeStarterSliceStep';
-import { HowItWorksStep } from '../../components/onboarding/HowItWorksStep';
+import { CompletionStep } from '../../components/onboarding/CompletionStep';
 import { useOnboardingStore } from '../../store/onboardingStore';
 import { useAuthStore } from '../../store/authStore';
-import { colors } from '@stack/ui-library';
 
-const TOTAL_STEPS = 3;
+const TOTAL_STEPS = 4;
 
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -47,37 +47,22 @@ export default function OnboardingScreen() {
   };
 
   const handleStarterSliceAccept = async () => {
-    if (!user) {
-      Alert.alert('Error', 'Please log in to continue');
-      return;
-    }
+    // if (!user) {
+    //   Alert.alert('Error', 'Please log in to continue');
+    //   return;
+    // }
 
-    setIsLoading(true);
-    setLoading(true);
-    clearError();
+    // setIsLoading(true);
+    // setLoading(true);
+    // clearError();
 
     try {
-      const response = await fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/onboarding/starter-investment`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to create starter investment');
-      }
 
       setHasAcceptedStarterSlice(true);
-      Alert.alert('Success!', 'Your $25 starter investment has been created. Welcome to STACK!', [
-        { text: 'Continue', onPress: handleNext },
-      ]);
+      handleNext()
+    //   Alert.alert('Success!', 'Your $25 starter investment has been created. Welcome to STACK!', [
+    //     { text: 'Continue', onPress: handleNext },
+    //   ]);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
       setError(errorMessage);
@@ -92,29 +77,36 @@ export default function OnboardingScreen() {
     switch (currentStep) {
       case 0:
         return (
-          <WelcomeStep
+          <NotificationPermissionStep
             onNext={handleNext}
-            onSkip={handleSkip}
+            onSkip={handleNext}
             currentStep={currentStep + 1}
             totalSteps={TOTAL_STEPS}
           />
         );
       case 1:
         return (
-          <FreeStarterSliceStep
+          <TrackingPermissionStep
             onNext={handleNext}
-            onSkip={handleSkip}
-            onAccept={handleStarterSliceAccept}
+            onSkip={handleNext}
             currentStep={currentStep + 1}
             totalSteps={TOTAL_STEPS}
-            isLoading={isLoading}
           />
         );
       case 2:
         return (
-          <HowItWorksStep
+          <FreeStarterSliceStep
+            onAccept={handleStarterSliceAccept}
+            onSkip={handleNext}
+            currentStep={currentStep + 1}
+            totalSteps={TOTAL_STEPS}
+          />
+        );
+      case 3:
+        return (
+          <CompletionStep
             onNext={handleComplete}
-            onSkip={handleSkip}
+            onSkip={handleComplete}
             currentStep={currentStep + 1}
             totalSteps={TOTAL_STEPS}
           />
@@ -124,12 +116,5 @@ export default function OnboardingScreen() {
     }
   };
 
-  return <View style={styles.container}>{renderStep()}</View>;
+  return <View className="flex-1 bg-background-main">{renderStep()}</View>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.main,
-  },
-});
