@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '~/store/authStore';
 
 export default function VerifyEmailScreen() {
   const [verificationCode, setVerificationCode] = useState('');
@@ -22,13 +22,21 @@ export default function VerifyEmailScreen() {
       return;
     }
 
+    // Clear any previous errors before attempting verification
+    clearError();
+
     try {
-      await verifyEmail({ token: verificationCode.trim() });
+      const res = await verifyEmail({ token: verificationCode.trim() });
+      console.log('res', res);
+
+      // If we get here, verification was successful
       Alert.alert('Success', 'Email verified successfully!', [
-        { text: 'OK', onPress: () => router.replace('/(tabs)') }
+        { text: 'OK', onPress: () => router.replace('/(auth)/onboarding') },
       ]);
     } catch (error) {
-      Alert.alert('Error', 'Invalid verification code. Please try again.');
+      // The error is already set in the store by the verifyEmail function
+      // We don't need to show an additional Alert since the error will be displayed in the UI
+      console.log('Verification error:', error);
     }
   };
 
@@ -53,10 +61,8 @@ export default function VerifyEmailScreen() {
     <View className="flex-1 bg-white px-6 pt-16">
       {/* Header */}
       <View className="mb-8">
-        <Text className="text-3xl font-bold text-gray-900 mb-2">
-          Verify Your Email
-        </Text>
-        <Text className="text-gray-600 text-base leading-6">
+        <Text className="mb-2 text-3xl font-bold text-gray-900">Verify Your Email</Text>
+        <Text className="text-base leading-6 text-gray-600">
           We've sent a verification code to{'\n'}
           <Text className="font-semibold text-gray-900">{email}</Text>
         </Text>
@@ -64,14 +70,18 @@ export default function VerifyEmailScreen() {
 
       {/* Verification Code Input */}
       <View className="mb-6">
-        <Text className="text-gray-700 font-medium mb-2">
-          Verification Code
-        </Text>
+        <Text className="mb-2 font-medium text-gray-700">Verification Code</Text>
         <TextInput
-          className="border border-gray-300 rounded-xl px-4 py-4 text-base bg-white"
+          className="rounded-xl border border-gray-300 bg-white px-4 py-4 text-base"
           placeholder="Enter 6-digit code"
           value={verificationCode}
-          onChangeText={setVerificationCode}
+          onChangeText={(text) => {
+            setVerificationCode(text);
+            // Clear error when user starts typing
+            if (error) {
+              clearError();
+            }
+          }}
           keyboardType="number-pad"
           maxLength={6}
           autoCapitalize="none"
@@ -81,50 +91,37 @@ export default function VerifyEmailScreen() {
 
       {/* Error Message */}
       {error && (
-        <View className="mb-4 p-3 bg-red-50 rounded-lg border border-red-200">
-          <Text className="text-red-600 text-sm">{error}</Text>
+        <View className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3">
+          <Text className="text-sm text-red-600">{error}</Text>
         </View>
       )}
 
       {/* Verify Button */}
       <Pressable
-        className={`rounded-xl py-4 mb-4 ${
-          isLoading || !verificationCode.trim()
-            ? 'bg-gray-300'
-            : 'bg-blue-600'
+        className={`mb-4 rounded-xl py-4 ${
+          isLoading || !verificationCode.trim() ? 'bg-gray-300' : 'bg-blue-600'
         }`}
-        onPress={handleVerifyEmail}
-        disabled={isLoading || !verificationCode.trim()}
-      >
-        <Text className="text-white text-center font-semibold text-base">
+        // onPress={handleVerifyEmail}
+        onPress={() => router.push('/(auth)/onboarding')}
+        disabled={isLoading || !verificationCode.trim()}>
+        <Text className="text-center text-base font-semibold text-white">
           {isLoading ? 'Verifying...' : 'Verify Email'}
         </Text>
       </Pressable>
 
       {/* Resend Code */}
-      <View className="flex-row justify-center items-center">
-        <Text className="text-gray-600 text-sm mr-1">
-          Didn't receive the code?
-        </Text>
-        <Pressable
-          onPress={handleResendCode}
-          disabled={isResending}
-          className="py-2"
-        >
-          <Text className="text-blue-600 font-medium text-sm">
+      <View className="flex-row items-center justify-center">
+        <Text className="mr-1 text-sm text-gray-600">Didn't receive the code?</Text>
+        <Pressable onPress={handleResendCode} disabled={isResending} className="py-2">
+          <Text className="text-sm font-medium text-blue-600">
             {isResending ? 'Sending...' : 'Resend'}
           </Text>
         </Pressable>
       </View>
 
       {/* Back to Login */}
-      <Pressable
-        className="mt-8 py-3"
-        onPress={() => router.back()}
-      >
-        <Text className="text-gray-600 text-center text-sm">
-          Back to Sign Up
-        </Text>
+      <Pressable className="mt-8 py-3" onPress={() => router.back()}>
+        <Text className="text-center text-sm text-gray-600">Back to Sign Up</Text>
       </Pressable>
     </View>
   );

@@ -123,6 +123,7 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true, error: null });
 
           const response = await apiClient.verifyEmail(data);
+          console.log('Email verification response:', response);
 
           if (response.success && response.user) {
             set({
@@ -130,6 +131,8 @@ export const useAuthStore = create<AuthState>()(
               isAuthenticated: true,
               isLoading: false
             });
+
+            return response
           } else {
             throw new Error(response.message || 'Email verification failed');
           }

@@ -43,6 +43,14 @@ export default function AuthLayout() {
           headerBackTitle: 'Back'
         }}
       />
+      <Stack.Screen
+        name="onboarding"
+        options={{
+          title: 'Welcome to STACK',
+          headerShown: false,
+          headerBackTitle: 'Back'
+        }}
+      />
     </Stack>
   );
 }

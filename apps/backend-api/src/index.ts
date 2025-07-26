@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import { healthRouter } from './routes/health';
 import { authRouter } from './routes/auth';
 import { userRouter } from './routes/users';
+import onboardingRouter from './routes/onboarding';
 import { errorHandler } from './middleware/errorHandler';
 import { testEmailConfiguration } from './services/emailService';
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/onboarding', onboardingRouter);
 
 // Error handling middleware
 app.use(errorHandler);
