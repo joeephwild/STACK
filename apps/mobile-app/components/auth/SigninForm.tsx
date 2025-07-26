@@ -91,7 +91,7 @@ export function SigninForm({ onSuccess, onSignupPress, onForgotPassword }: Signi
 
   return (
     <View className="flex-1 bg-white px-6 py-8">
-      <View className="space-y-6">
+      <View className="flex-1">
         {/* Header */}
         <View className="space-y-2">
           <Text className="font-heading text-h1 font-bold text-text-primary">Welcome Back</Text>
@@ -140,14 +140,16 @@ export function SigninForm({ onSuccess, onSignupPress, onForgotPassword }: Signi
             <Text className="text-error font-heading-bold text-sm">{error}</Text>
           </View>
         )}
+      </View>
 
+      <View className="gap-y-4">
         {/* Submit Button */}
         <Button
           title="Sign In"
           onPress={handleSubmit}
           loading={isLoading}
           disabled={isLoading}
-          variant="primary"
+          variant="accent"
           size="large"
           fullWidth
         />
@@ -155,7 +157,7 @@ export function SigninForm({ onSuccess, onSignupPress, onForgotPassword }: Signi
         {/* Footer */}
         <Pressable
           onPress={onSignupPress}
-          className="mt-4 flex-row items-center justify-center space-x-1">
+          className="flex-row items-center justify-center space-x-1">
           <Text className="font-heading-regular text-text-secondary">
             Don&apos;t have an account?
           </Text>

@@ -1,6 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, Animated, StyleSheet } from 'react-native';
-import { Button, FeatureCard, Icon, colors, typography, spacing, borderRadius } from '@stack/ui-library';
+import {
+  Button,
+  FeatureCard,
+  Icon,
+  colors,
+  typography,
+  spacing,
+  borderRadius,
+  Grid,
+  GridItem,
+} from '@stack/ui-library';
 
 interface HowItWorksStepProps {
   onNext: () => void;
@@ -36,31 +46,32 @@ export const HowItWorksStep: React.FC<HowItWorksStepProps> = ({
   const features = [
     {
       icon: <Icon name="card" library="ionicons" size={32} color={colors.primary.royalBlue} />,
-      title: "Link Your Card",
-      description: "Connect your debit or credit card securely to start rounding up purchases"
+      title: 'Link Your Card',
+      description: 'Connect your debit or credit card securely to start rounding up purchases',
     },
     {
-      icon: <Icon name="trending-up" library="ionicons" size={32} color={colors.accent.limeGreen} />,
-      title: "Round Up Purchases",
-      description: "Every purchase is rounded up to the nearest dollar and invested automatically"
+      icon: (
+        <Icon name="trending-up" library="ionicons" size={32} color={colors.accent.limeGreen} />
+      ),
+      title: 'Round Up Purchases',
+      description: 'Every purchase is rounded up to the nearest dollar and invested automatically',
     },
     {
       icon: <Icon name="pie-chart" library="ionicons" size={32} color={colors.primary.royalBlue} />,
-      title: "Build Your Portfolio",
-      description: "Watch your spare change grow into a diversified investment portfolio"
-    }
+      title: 'Build Your Portfolio',
+      description: 'Watch your spare change grow into a diversified investment portfolio',
+    },
   ];
 
   return (
-    <Animated.View 
+    <Animated.View
       style={[
         styles.container,
         {
           opacity: fadeAnim,
           transform: [{ translateY: slideAnim }],
         },
-      ]}
-    >
+      ]}>
       {/* Main Content */}
       <View style={styles.mainContent}>
         {/* Title */}
@@ -74,44 +85,34 @@ export const HowItWorksStep: React.FC<HowItWorksStepProps> = ({
         {/* Features */}
         <View style={styles.featuresContainer}>
           {features.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              style={styles.featureCard}
-            />
-          ))}
-        </View>
-
-        {/* Progress Indicator */}
-        <View style={styles.progressContainer}>
-          {Array.from({ length: totalSteps }).map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.progressDot,
-                index === currentStep - 1 && styles.progressDotActive,
-              ]}
-            />
+            <Grid columns={2}  key={index}>
+              <GridItem span={2}>
+                <FeatureCard
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.description}
+                  style={styles.featureCard}
+                />
+              </GridItem>
+            </Grid>
           ))}
         </View>
       </View>
 
+      {/* Progress Indicator */}
+      <View style={styles.progressContainer}>
+        {Array.from({ length: totalSteps }).map((_, index) => (
+          <View
+            key={index}
+            style={[styles.progressDot, index === currentStep - 1 && styles.progressDotActive]}
+          />
+        ))}
+      </View>
+
       {/* Action Buttons */}
       <View style={styles.buttonContainer}>
-        <Button
-          title="Skip"
-          variant="tertiary"
-          onPress={onSkip}
-          style={styles.skipButton}
-        />
-        <Button
-          title="Continue"
-          variant="primary"
-          onPress={onNext}
-          style={styles.nextButton}
-        />
+        <Button title="Skip" variant="tertiary" onPress={onSkip} style={styles.skipButton} />
+        <Button title="Continue" variant="primary" onPress={onNext} style={styles.nextButton} />
       </View>
     </Animated.View>
   );
@@ -123,14 +124,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.main,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.xl * 2,
-    justifyContent: 'space-between',
     paddingBottom: spacing.xl,
   },
   mainContent: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
+    paddingBottom: spacing.lg,
   },
   title: {
     fontFamily: typography.fonts.primary,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold,
     color: colors.text.primary,
     textAlign: 'center',
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
   subtitle: {
     fontFamily: typography.fonts.secondary,
@@ -147,18 +147,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: typography.styles.body.size * typography.lineHeights.normal,
     marginBottom: spacing.xl,
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.sm,
   },
   featuresContainer: {
+    width: '100%',
     flex: 1,
-    marginBottom: spacing.xl,
+    justifyContent: 'center',
+    paddingVertical: spacing.lg,
   },
   featureCard: {
     marginBottom: spacing.lg,
+    width: '100%',
   },
   progressContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: spacing.lg,
     marginBottom: spacing.xl,
   },
   progressDot: {
@@ -174,7 +179,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: spacing.md,
     paddingBottom: spacing.xl,
+    width: '100%',
   },
   skipButton: {
     flex: 1,
