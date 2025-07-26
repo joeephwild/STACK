@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, Alert, Pressable } from 'react-native';
-import { InputField } from '../../../../packages/ui-library/src/components/atoms/InputField';
-import { Button } from '../../../../packages/ui-library/src/components/atoms/Button';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, SafeAreaView, Alert } from 'react-native';
+import { Button, Icon } from '@stack/ui-library';
+import { useNavigation } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
 import { ForgotPasswordData } from '../../lib/api';
-import { Ionicons } from '@expo/vector-icons';
 
 interface ForgotPasswordFormProps {
   onSuccess?: () => void;
@@ -13,37 +12,40 @@ interface ForgotPasswordFormProps {
 
 export function ForgotPasswordForm({ onSuccess, onBackPress }: ForgotPasswordFormProps) {
   const { forgotPassword, isLoading, error, clearError } = useAuthStore();
+  const navigation = useNavigation();
 
-  const [formData, setFormData] = useState<ForgotPasswordData>({
-    email: '',
-  });
-
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
 
-  const validateForm = (): boolean => {
-    const errors: Record<string, string> = {};
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
 
-    // Email validation
-    if (!formData.email) {
-      errors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleSubmit = async () => {
     clearError();
 
-    if (!validateForm()) {
+    if (!email.trim()) {
+      setEmailError('Email is required');
       return;
     }
 
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+
+    setEmailError('');
+
     try {
-      const response = await forgotPassword(formData);
+      const response = await forgotPassword({ email: email.trim() });
       if (response.success) {
         setIsEmailSent(true);
         Alert.alert(
@@ -63,134 +65,178 @@ export function ForgotPasswordForm({ onSuccess, onBackPress }: ForgotPasswordFor
     }
   };
 
-  const updateFormData = (field: keyof ForgotPasswordData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear field error when user starts typing
-    if (formErrors[field]) {
-      setFormErrors((prev) => ({ ...prev, [field]: '' }));
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (emailError) setEmailError('');
+  };
+
+  const handleClose = () => {
+    if (onBackPress) {
+      onBackPress();
+    } else {
+      navigation.goBack();
     }
   };
 
   if (isEmailSent) {
     return (
-      <View className="flex-1 bg-white px-6 py-8">
-        <View className="space-y-6">
-          {/* Back Button */}
-          <Pressable onPress={onBackPress} className="mb-4 flex-row items-center">
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
-            <Text className="font-heading-medium ml-2 text-base text-text-primary">
-              Back to Sign In
-            </Text>
-          </Pressable>
+      <SafeAreaView className="flex-1">
+        <View className="flex-1 px-6">
+          {/* Header with Close Button */}
+          <View className="flex-row justify-between items-center pt-4 pb-8">
+            <TouchableOpacity
+              onPress={handleClose}
+              className="w-8 h-8 items-center justify-center"
+            >
+              <Icon name="close" library="ionicons" size={24} color="#000000" />
+            </TouchableOpacity>
+            <View className="flex-1" />
+          </View>
 
-          {/* Success Icon */}
-          <View className="mb-8 items-center">
-            <View className="bg-accent-light mb-4 h-20 w-20 items-center justify-center rounded-full">
-              <Ionicons name="mail-outline" size={40} color="#84CC16" />
+          {/* Main Content */}
+          <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+            <View className="flex-1">
+              {/* Success Icon */}
+              <View className="mb-8 items-center">
+                <View className="bg-accent-light mb-4 h-20 w-20 items-center justify-center rounded-full">
+                  <Icon name="mail-outline" library="ionicons" size={40} color="#84CC16" />
+                </View>
+              </View>
+
+              {/* Title */}
+              <Text className="font-h1 text-h1 text-text-primary mb-8 text-center">
+                Check Your Email
+              </Text>
+
+              {/* Description */}
+              <Text className="font-body text-body text-text-secondary text-center mb-8">
+                We&apos;ve sent a password reset link to {email}
+              </Text>
+
+              {/* Info Note */}
+              <View className="bg-gray-50 rounded-xl p-4 mb-8">
+                <Text className="font-caption text-caption text-text-secondary text-center leading-5">
+                  Didn&apos;t receive the email? Check your spam folder or try again.
+                </Text>
+              </View>
             </View>
-          </View>
+          </ScrollView>
 
-          {/* Header */}
-          <View className="space-y-2 text-center">
-            <Text className="text-center font-heading text-h1 font-bold text-text-primary">
-              Check Your Email
-            </Text>
-            <Text className="text-center font-heading-regular text-base text-text-secondary">
-              We've sent a password reset link to {formData.email}
-            </Text>
-          </View>
-
-          {/* Instructions */}
-          <View className="mt-6 rounded-lg bg-gray-50 p-4">
-            <Text className="font-heading-medium text-center text-sm text-text-secondary">
-              Didn't receive the email? Check your spam folder or try again.
-            </Text>
-          </View>
-
-          {/* Action Buttons */}
-          <View className="mt-8 space-y-3">
+          {/* Bottom Section */}
+          <View className="pb-6 space-y-3">
             <Button
               title="Resend Email"
               onPress={handleSubmit}
               loading={isLoading}
               disabled={isLoading}
               variant="accent"
-              size="large"
               fullWidth
             />
 
             <Button
               title="Back to Sign In"
-              onPress={onBackPress}
+              onPress={handleClose}
               variant="tertiary"
-              size="large"
               fullWidth
             />
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View className="flex-1 bg-white px-6 py-8">
-      <View className="space-y-6">
-        {/* Back Button */}
-        <Pressable onPress={onBackPress} className="mb-4 flex-row items-center">
-          <Ionicons name="arrow-back" size={24} color="#1F2937" />
-          <Text className="font-heading-medium ml-2 text-base text-text-primary">
-            Back to Sign In
-          </Text>
-        </Pressable>
-
-        {/* Header */}
-        <View className="space-y-2">
-          <Text className="font-heading text-h1 font-bold text-text-primary">Forgot Password?</Text>
-          <Text className="font-heading-regular text-base text-text-secondary">
-            Enter your email address and we'll send you a link to reset your password.
-          </Text>
+    <SafeAreaView className="flex-1 ">
+      <View className="flex-1 px-4">
+        {/* Header with Close Button */}
+        <View className="flex-row justify-between items-center pt-4 pb-8">
+          <TouchableOpacity
+            onPress={handleClose}
+            className="w-8 h-8 items-center justify-center"
+          >
+            <Icon name="close" library="ionicons" size={24} color="#000000" />
+          </TouchableOpacity>
+          <View className="flex-1" />
         </View>
 
-        {/* Form Fields */}
-        <View className="mt-8 gap-y-4">
-          <InputField
-            label="Email Address"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChangeText={(value) => updateFormData('email', value)}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            error={formErrors.email}
-            required
-          />
-        </View>
+        {/* Main Content */}
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <View className="flex-1">
+            {/* Title */}
+            <Text className="font-h1 text-h1 text-text-primary mb-8">
+              Forgot Password?
+            </Text>
 
-        {/* Error Display */}
-        {error && (
-          <View className="bg-error-light border-error rounded-lg border p-4">
-            <Text className="text-error font-heading-bold text-sm">{error}</Text>
+            {/* Description */}
+            <Text className="font-body text-body text-text-secondary mb-8">
+              Enter your email address and we&apos;ll send you a link to reset your password.
+            </Text>
+
+            {/* Email Input Section */}
+            <View className="mb-6">
+              <Text className="font-label text-label text-text-secondary mb-3">
+                Email Address
+              </Text>
+
+              <TextInput
+                value={email}
+                onChangeText={handleEmailChange}
+                placeholder=""
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect={false}
+                className={`
+                  bg-white
+                  border border-text-tertiary
+                  rounded-xl
+                  px-4 py-4
+                  font-body text-body text-text-primary
+                  ${emailError ? 'border-semantic-danger' : ''}
+                `}
+                style={{
+                  fontSize: 16,
+                  lineHeight: 24,
+                }}
+              />
+
+              {emailError && (
+                <Text className="font-caption text-caption text-semantic-danger mt-2">
+                  {emailError}
+                </Text>
+              )}
+            </View>
+
+            {/* Error Display */}
+            {error && (
+              <View className="bg-error-light border-error rounded-lg border p-4 mb-6">
+                <Text className="text-error font-heading-bold text-sm">{error}</Text>
+              </View>
+            )}
           </View>
-        )}
+        </ScrollView>
 
-        {/* Submit Button */}
-        <Button
-          title="Send Reset Link"
-          onPress={handleSubmit}
-          loading={isLoading}
-          disabled={isLoading}
-          variant="primary"
-          size="large"
-          fullWidth
-        />
+        {/* Bottom Section */}
+        <View className="pb-6">
+          {/* Submit Button */}
+          <Button
+            title="Send Reset Link"
+            onPress={handleSubmit}
+            loading={isLoading}
+            disabled={isLoading || !email.trim()}
+            variant="accent"
+            fullWidth
+          />
 
-        {/* Footer */}
-        <View className="mt-6 flex-row items-center justify-center space-x-1">
-          <Text className="font-heading-regular text-text-secondary">Remember your password?</Text>
-          <Pressable onPress={onBackPress}>
-            <Text className="font-heading-bold text-primary">Sign In</Text>
-          </Pressable>
+          {/* Footer */}
+          <View className="mt-6 flex-row items-center justify-center space-x-1">
+            <Text className="font-caption text-caption text-text-secondary">Remember your password?</Text>
+            <TouchableOpacity onPress={handleClose}>
+              <Text className="font-caption text-caption text-primary underline">Sign In</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

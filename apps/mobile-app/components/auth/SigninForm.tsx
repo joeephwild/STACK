@@ -94,7 +94,7 @@ export function SigninForm({ onSuccess, onSignupPress, onForgotPassword }: Signi
       <View className="flex-1">
         {/* Header */}
         <View className="space-y-2">
-          <Text className="font-heading text-h1 font-bold text-text-primary">Welcome Back</Text>
+          <Text className="font-h1 text-h1 font-bold text-text-primary">Welcome Back</Text>
           <Text className="font-heading-bold text-base text-text-secondary">
             Sign in to your account to continue
           </Text>

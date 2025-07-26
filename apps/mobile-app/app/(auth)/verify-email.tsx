@@ -1,24 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, Alert } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native';
+import { useRouter, useLocalSearchParams, useNavigation } from 'expo-router';
+import { Button, Icon } from '@stack/ui-library';
 import { useAuthStore } from '~/store/authStore';
 
 export default function VerifyEmailScreen() {
-  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
   const [isResending, setIsResending] = useState(false);
   const router = useRouter();
+  const navigation = useNavigation();
   const { email } = useLocalSearchParams<{ email: string }>();
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const { verifyEmail, resendVerification, isLoading, error, clearError } = useAuthStore();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
 
   useEffect(() => {
     // Clear any previous errors when component mounts
     clearError();
   }, [clearError]);
 
+  const handleCodeChange = (value: string, index: number) => {
+    // Only allow numeric input
+    if (!/^\d*$/.test(value)) return;
+
+    const newCode = [...verificationCode];
+    newCode[index] = value;
+    setVerificationCode(newCode);
+
+    // Clear error when user starts typing
+    if (error) {
+      clearError();
+    }
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyPress = (key: string, index: number) => {
+    if (key === 'Backspace' && !verificationCode[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
   const handleVerifyEmail = async () => {
-    if (!verificationCode.trim()) {
-      Alert.alert('Error', 'Please enter the verification code');
+    const code = verificationCode.join('');
+
+    if (code.length !== 6) {
+      Alert.alert('Error', 'Please enter the complete 6-digit verification code');
       return;
     }
 
@@ -26,7 +62,7 @@ export default function VerifyEmailScreen() {
     clearError();
 
     try {
-      const res = await verifyEmail({ token: verificationCode.trim() });
+      const res = await verifyEmail({ token: code });
       console.log('res', res);
 
       // If we get here, verification was successful
@@ -35,7 +71,6 @@ export default function VerifyEmailScreen() {
       ]);
     } catch (error) {
       // The error is already set in the store by the verifyEmail function
-      // We don't need to show an additional Alert since the error will be displayed in the UI
       console.log('Verification error:', error);
     }
   };
@@ -50,6 +85,9 @@ export default function VerifyEmailScreen() {
       setIsResending(true);
       const response = await resendVerification({ email });
       Alert.alert('Success', response.message || 'Verification code sent!');
+      // Clear the current code when resending
+      setVerificationCode(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
     } catch (error) {
       Alert.alert('Error', 'Failed to resend verification code');
     } finally {
@@ -57,72 +95,105 @@ export default function VerifyEmailScreen() {
     }
   };
 
+  const handleClose = () => {
+    router.back();
+  };
+
+  const isCodeComplete = verificationCode.every(digit => digit !== '');
+  const maskedEmail = email ? email.replace(/(.{2})(.*)(@.*)/, '$1***$3') : '';
+
   return (
-    <View className="flex-1 bg-white px-6 pt-16">
-      {/* Header */}
-      <View className="mb-8">
-        <Text className="mb-2 text-3xl font-bold text-gray-900">Verify Your Email</Text>
-        <Text className="text-base leading-6 text-gray-600">
-          We've sent a verification code to{'\n'}
-          <Text className="font-semibold text-gray-900">{email}</Text>
-        </Text>
-      </View>
-
-      {/* Verification Code Input */}
-      <View className="mb-6">
-        <Text className="mb-2 font-medium text-gray-700">Verification Code</Text>
-        <TextInput
-          className="rounded-xl border border-gray-300 bg-white px-4 py-4 text-base"
-          placeholder="Enter 6-digit code"
-          value={verificationCode}
-          onChangeText={(text) => {
-            setVerificationCode(text);
-            // Clear error when user starts typing
-            if (error) {
-              clearError();
-            }
-          }}
-          keyboardType="number-pad"
-          maxLength={6}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View>
-
-      {/* Error Message */}
-      {error && (
-        <View className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3">
-          <Text className="text-sm text-red-600">{error}</Text>
+    <SafeAreaView className="flex-1">
+      <View className="flex-1 px-4">
+        {/* Header with Close Button and Help */}
+        <View className="flex-row justify-between items-center pt-4 pb-8">
+          <TouchableOpacity
+            onPress={handleClose}
+            className="w-8 h-8 items-center justify-center"
+          >
+            <Icon name="arrow-back" library="ionicons" size={24} color="#000000" />
+          </TouchableOpacity>
+          <TouchableOpacity className="bg-primary-light rounded-full px-4 py-2">
+            <Text className="font-label text-label text-primary">Help</Text>
+          </TouchableOpacity>
         </View>
-      )}
 
-      {/* Verify Button */}
-      <Pressable
-        className={`mb-4 rounded-xl py-4 ${
-          isLoading || !verificationCode.trim() ? 'bg-gray-300' : 'bg-blue-600'
-        }`}
-        // onPress={handleVerifyEmail}
-        onPress={() => router.push('/(auth)/onboarding')}
-        disabled={isLoading || !verificationCode.trim()}>
-        <Text className="text-center text-base font-semibold text-white">
-          {isLoading ? 'Verifying...' : 'Verify Email'}
-        </Text>
-      </Pressable>
+        {/* Main Content */}
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <View className="flex-1">
+            {/* Title */}
+            <Text className="font-h1 text-h1 text-text-primary mb-4">
+              We just sent you an SMS
+            </Text>
 
-      {/* Resend Code */}
-      <View className="flex-row items-center justify-center">
-        <Text className="mr-1 text-sm text-gray-600">Didn't receive the code?</Text>
-        <Pressable onPress={handleResendCode} disabled={isResending} className="py-2">
-          <Text className="text-sm font-medium text-blue-600">
-            {isResending ? 'Sending...' : 'Resend'}
-          </Text>
-        </Pressable>
+            {/* Description */}
+            <Text className="font-body text-body text-text-secondary mb-8">
+              Enter the security code we sent to{'\n'}
+              <Text className="font-body-bold text-text-primary">{maskedEmail}</Text>
+            </Text>
+
+            {/* 6-Digit Code Input */}
+            <View className="flex-row justify-between mb-8">
+              {verificationCode.map((digit, index) => (
+                <View key={index} className="relative">
+                  <TextInput
+                     ref={(ref) => { inputRefs.current[index] = ref; }}
+                     value={digit}
+                    onChangeText={(value) => handleCodeChange(value, index)}
+                    onKeyPress={({ nativeEvent }) => handleKeyPress(nativeEvent.key, index)}
+                    keyboardType="number-pad"
+                    maxLength={1}
+                    className={`
+                      w-12 h-12
+                      border-2 rounded-xl
+                      text-center
+                      font-h2 text-h2 text-text-primary
+                      ${digit ? 'border-text-primary bg-white' : 'border-text-tertiary bg-white'}
+                      ${error ? 'border-semantic-danger' : ''}
+                    `}
+                    style={{
+                      fontSize: 20,
+                      lineHeight: 24,
+                    }}
+                    autoFocus={index === 0}
+                  />
+                </View>
+              ))}
+            </View>
+
+            {/* Error Message */}
+            {error && (
+              <View className="mb-6">
+                <Text className="font-caption text-caption text-semantic-danger text-center">
+                  {error}
+                </Text>
+              </View>
+            )}
+
+            {/* Didn't receive code link */}
+            <View className="items-center mb-8">
+              <TouchableOpacity onPress={handleResendCode} disabled={isResending}>
+                <Text className="font-body text-body text-text-primary underline">
+                  {isResending ? 'Sending...' : "Didn't receive a code?"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Bottom Section */}
+        <View className="pb-6">
+          {/* Done Button */}
+          <Button
+            title="Done"
+            variant="accent"
+            fullWidth
+            onPress={handleVerifyEmail}
+            loading={isLoading}
+            disabled={isLoading || !isCodeComplete}
+          />
+        </View>
       </View>
-
-      {/* Back to Login */}
-      <Pressable className="mt-8 py-3" onPress={() => router.back()}>
-        <Text className="text-center text-sm text-gray-600">Back to Sign Up</Text>
-      </Pressable>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, Alert, Pressable } from 'react-native';
-import { InputField } from '../../../../packages/ui-library/src/components/atoms/InputField';
-import { Button } from '../../../../packages/ui-library/src/components/atoms/Button';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, SafeAreaView, Alert } from 'react-native';
+import { Button, Icon } from '@stack/ui-library';
+import { useNavigation } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
 import { ResetPasswordData } from '../../lib/api';
-import { Ionicons } from '@expo/vector-icons';
 
 interface ResetPasswordFormProps {
   token: string;
@@ -14,37 +13,42 @@ interface ResetPasswordFormProps {
 
 export function ResetPasswordForm({ token, onSuccess, onBackPress }: ResetPasswordFormProps) {
   const { resetPassword, isLoading, error, clearError } = useAuthStore();
+  const navigation = useNavigation();
 
-  const [formData, setFormData] = useState<ResetPasswordData>({
-    token,
-    password: '',
-    confirmPassword: '',
-  });
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
 
   const validateForm = (): boolean => {
-    const errors: Record<string, string> = {};
+    const newErrors: typeof errors = {};
 
     // Password validation
-    if (!formData.password) {
-      errors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      errors.password = 'Password must be at least 8 characters long';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      errors.password =
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters long';
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      newErrors.password =
         'Password must contain at least one uppercase letter, one lowercase letter, and one number';
     }
 
     // Confirm password validation
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
+    if (!confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
@@ -55,7 +59,11 @@ export function ResetPasswordForm({ token, onSuccess, onBackPress }: ResetPasswo
     }
 
     try {
-      const response = await resetPassword(formData);
+      const response = await resetPassword({
+        token,
+        password,
+        confirmPassword,
+      });
       if (response.success) {
         Alert.alert(
           'Password Reset Successful',
@@ -74,100 +82,201 @@ export function ResetPasswordForm({ token, onSuccess, onBackPress }: ResetPasswo
     }
   };
 
-  const updateFormData = (field: keyof ResetPasswordData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear field error when user starts typing
-    if (formErrors[field]) {
-      setFormErrors((prev) => ({ ...prev, [field]: '' }));
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (errors.password) {
+      setErrors(prev => ({ ...prev, password: undefined }));
     }
   };
 
+  const handleConfirmPasswordChange = (value: string) => {
+    setConfirmPassword(value);
+    if (errors.confirmPassword) {
+      setErrors(prev => ({ ...prev, confirmPassword: undefined }));
+    }
+  };
+
+  const handleClose = () => {
+    if (onBackPress) {
+      onBackPress();
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const isFormValid = password && confirmPassword;
+
   return (
-    <View className="flex-1 bg-white px-6 py-8">
-      <View className="space-y-6">
-        {/* Back Button */}
-        <Pressable onPress={onBackPress} className="mb-4 flex-row items-center">
-          <Ionicons name="arrow-back" size={24} color="#1F2937" />
-          <Text className="font-heading-medium ml-2 text-base text-text-primary">
-            Back to Sign In
-          </Text>
-        </Pressable>
-
-        {/* Header */}
-        <View className="space-y-2">
-          <Text className="font-heading text-h1 font-bold text-text-primary">Reset Password</Text>
-          <Text className="font-heading-regular text-base text-text-secondary">
-            Enter your new password below to complete the reset process.
-          </Text>
+    <SafeAreaView className="flex-1">
+      <View className="flex-1">
+        {/* Header with Close Button */}
+        <View className="flex-row justify-between items-center pt-4 pb-8">
+          <TouchableOpacity
+            onPress={handleClose}
+            className="w-8 h-8 items-center justify-center"
+          >
+            <Icon name="close" library="ionicons" size={24} color="#000000" />
+          </TouchableOpacity>
+          <View className="flex-1" />
         </View>
 
-        {/* Form Fields */}
-        <View className="mt-8 gap-y-4">
-          <InputField
-            label="New Password"
-            placeholder="Enter your new password"
-            value={formData.password}
-            onChangeText={(value) => updateFormData('password', value)}
-            secureTextEntry
-            error={formErrors.password}
-            required
+        {/* Main Content */}
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <View className="flex-1">
+            {/* Title */}
+            <Text className="font-h1 text-h1 text-text-primary mb-8">
+              Reset Password
+            </Text>
+
+            {/* Description */}
+            <Text className="font-body text-body text-text-secondary mb-8">
+              Enter your new password below to complete the reset process.
+            </Text>
+
+            {/* Password Input Section */}
+            <View className="mb-6">
+              <Text className="font-label text-label text-text-secondary mb-3">
+                New Password
+              </Text>
+
+              <View className="relative">
+                <TextInput
+                  value={password}
+                  onChangeText={handlePasswordChange}
+                  placeholder=""
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                  autoComplete="password"
+                  autoCorrect={false}
+                  className={`
+                    bg-white
+                    border border-text-tertiary
+                    rounded-xl
+                    px-4 py-4 pr-12
+                    font-body text-body text-text-primary
+                    ${errors.password ? 'border-semantic-danger' : ''}
+                  `}
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 24,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-4"
+                >
+                  <Icon 
+                    name={showPassword ? "eye-off" : "eye"} 
+                    library="ionicons" 
+                    size={20} 
+                    color="#666666" 
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {errors.password && (
+                <Text className="font-caption text-caption text-semantic-danger mt-2">
+                  {errors.password}
+                </Text>
+              )}
+            </View>
+
+            {/* Confirm Password Input Section */}
+            <View className="mb-6">
+              <Text className="font-label text-label text-text-secondary mb-3">
+                Confirm New Password
+              </Text>
+
+              <View className="relative">
+                <TextInput
+                  value={confirmPassword}
+                  onChangeText={handleConfirmPasswordChange}
+                  placeholder=""
+                  secureTextEntry={!showConfirmPassword}
+                  autoCapitalize="none"
+                  autoComplete="password"
+                  autoCorrect={false}
+                  className={`
+                    bg-white
+                    border border-text-tertiary
+                    rounded-xl
+                    px-4 py-4 pr-12
+                    font-body text-body text-text-primary
+                    ${errors.confirmPassword ? 'border-semantic-danger' : ''}
+                  `}
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 24,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-4"
+                >
+                  <Icon 
+                    name={showConfirmPassword ? "eye-off" : "eye"} 
+                    library="ionicons" 
+                    size={20} 
+                    color="#666666" 
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {errors.confirmPassword && (
+                <Text className="font-caption text-caption text-semantic-danger mt-2">
+                  {errors.confirmPassword}
+                </Text>
+              )}
+            </View>
+
+            {/* Password Requirements */}
+            <View className="bg-gray-50 rounded-xl p-4 mb-6">
+              <Text className="font-label text-label text-text-secondary mb-2">
+                Password Requirements:
+              </Text>
+              <View className="space-y-1">
+                <Text className="font-caption text-caption text-text-secondary">
+                  • At least 8 characters long
+                </Text>
+                <Text className="font-caption text-caption text-text-secondary">
+                  • Contains uppercase and lowercase letters
+                </Text>
+                <Text className="font-caption text-caption text-text-secondary">
+                  • Contains at least one number
+                </Text>
+              </View>
+            </View>
+
+            {/* Error Display */}
+            {error && (
+              <View className="bg-error-light border-error rounded-lg border p-4 mb-6">
+                <Text className="text-error font-heading-bold text-sm">{error}</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+
+        {/* Bottom Section */}
+        <View className="pb-6">
+          {/* Submit Button */}
+          <Button
+            title="Reset Password"
+            onPress={handleSubmit}
+            loading={isLoading}
+            disabled={isLoading || !isFormValid}
+            variant="accent"
+            fullWidth
           />
 
-          <InputField
-            label="Confirm New Password"
-            placeholder="Confirm your new password"
-            value={formData.confirmPassword}
-            onChangeText={(value) => updateFormData('confirmPassword', value)}
-            secureTextEntry
-            error={formErrors.confirmPassword}
-            required
-          />
-        </View>
-
-        {/* Password Requirements */}
-        <View className="rounded-lg bg-gray-50 p-4">
-          <Text className="font-heading-medium mb-2 text-sm text-text-secondary">
-            Password Requirements:
-          </Text>
-          <View className="space-y-1">
-            <Text className="font-heading-regular text-xs text-text-secondary">
-              • At least 8 characters long
-            </Text>
-            <Text className="font-heading-regular text-xs text-text-secondary">
-              • Contains uppercase and lowercase letters
-            </Text>
-            <Text className="font-heading-regular text-xs text-text-secondary">
-              • Contains at least one number
-            </Text>
+          {/* Footer */}
+          <View className="mt-6 flex-row items-center justify-center space-x-1">
+            <Text className="font-caption text-caption text-text-secondary">Remember your password?</Text>
+            <TouchableOpacity onPress={handleClose}>
+              <Text className="font-caption text-caption text-primary underline">Sign In</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-
-        {/* Error Display */}
-        {error && (
-          <View className="bg-error-light border-error rounded-lg border p-4">
-            <Text className="text-error font-heading-bold text-sm">{error}</Text>
-          </View>
-        )}
-
-        {/* Submit Button */}
-        <Button
-          title="Reset Password"
-          onPress={handleSubmit}
-          loading={isLoading}
-          disabled={isLoading}
-          variant="primary"
-          size="large"
-          fullWidth
-        />
-
-        {/* Footer */}
-        <View className="mt-6 flex-row items-center justify-center space-x-1">
-          <Text className="font-heading-regular text-text-secondary">Remember your password?</Text>
-          <Pressable onPress={onBackPress}>
-            <Text className="font-heading-bold text-primary">Sign In</Text>
-          </Pressable>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
