@@ -1,6 +1,15 @@
 import { router } from 'expo-router';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, FlatList, Dimensions, Image, TouchableOpacity, StatusBar, ViewStyle } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  ViewStyle,
+} from 'react-native';
 import { onBoard1, onBoard2, onBoard3 } from '~/assets/images';
 
 const { width, height } = Dimensions.get('window');
@@ -171,7 +180,8 @@ export default function App() {
       <View className="absolute bottom-10 w-full items-center px-6">
         <TouchableOpacity
           className="w-full rounded-xl bg-slate-900 p-4"
-          onPress={() => router.replace('/(auth)/login')}>
+          //   onPress={() => router.replace('/(auth)/login')}
+          onPress={() => router.push('/(auth)/onboarding')}>
           <Text className="text-center text-lg font-bold text-white">Get Started</Text>
         </TouchableOpacity>
       </View>

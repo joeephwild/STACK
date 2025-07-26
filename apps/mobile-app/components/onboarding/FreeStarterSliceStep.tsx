@@ -1,293 +1,257 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Alert } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-  withDelay,
-  withSequence,
-  interpolate,
-} from 'react-native-reanimated';
-import { Button, colors, typography, spacing } from '@stack/ui-library';
-import { useAuthStore } from '../../store/authStore';
-import { GiftIcon } from '../icons/OnboardingIcons';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Animated, StyleSheet, SafeAreaView } from 'react-native';
+import { Button, Icon, colors, typography, spacing, borderRadius, shadows } from '@stack/ui-library';
 
 interface FreeStarterSliceStepProps {
-  onNext: () => void;
+  onAccept: () => void;
   onSkip: () => void;
-  onAcceptStarterSlice?: () => void;
-  isLoading?: boolean;
   currentStep: number;
   totalSteps: number;
 }
 
 export const FreeStarterSliceStep: React.FC<FreeStarterSliceStepProps> = ({
-  onNext,
+  onAccept,
   onSkip,
-  onAcceptStarterSlice,
-  isLoading = false,
   currentStep,
   totalSteps,
 }) => {
-  const [isAccepting, setIsAccepting] = useState(false);
-  const { user } = useAuthStore();
-
-  // Animation values
-  const iconScale = useSharedValue(0);
-  const iconBounce = useSharedValue(0);
-  const titleOpacity = useSharedValue(0);
-  const titleTranslateY = useSharedValue(30);
-  const descriptionOpacity = useSharedValue(0);
-  const descriptionTranslateY = useSharedValue(30);
-  const benefitsOpacity = useSharedValue(0);
-  const benefitsTranslateY = useSharedValue(30);
-  const buttonsOpacity = useSharedValue(0);
-  const buttonsTranslateY = useSharedValue(30);
-  const progressOpacity = useSharedValue(0);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+  const iconScaleAnim = useRef(new Animated.Value(0.8)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    // Entrance animation sequence
-    iconScale.value = withDelay(200, withSpring(1, { damping: 12, stiffness: 100 }));
+    // Initial entrance animation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(iconScaleAnim, {
+        toValue: 1,
+        tension: 100,
+        friction: 8,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
-    // Continuous bounce animation for the gift icon
-    const bounceAnimation = () => {
-      iconBounce.value = withSequence(
-        withTiming(1, { duration: 1000 }),
-        withSpring(0, { damping: 8, stiffness: 100 }),
-        withDelay(2000, withTiming(0, { duration: 0 }))
-      );
-    };
-
-    setTimeout(() => {
-      bounceAnimation();
-      const interval = setInterval(bounceAnimation, 4000);
-      return () => clearInterval(interval);
-    }, 800);
-
-    titleOpacity.value = withDelay(500, withTiming(1, { duration: 600 }));
-    titleTranslateY.value = withDelay(500, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    descriptionOpacity.value = withDelay(700, withTiming(1, { duration: 600 }));
-    descriptionTranslateY.value = withDelay(700, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    benefitsOpacity.value = withDelay(900, withTiming(1, { duration: 600 }));
-    benefitsTranslateY.value = withDelay(900, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    buttonsOpacity.value = withDelay(1100, withTiming(1, { duration: 600 }));
-    buttonsTranslateY.value = withDelay(1100, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    progressOpacity.value = withDelay(300, withTiming(1, { duration: 400 }));
-  }, []);
-
-  const handleAcceptStarterSlice = async () => {
-    if (!user) {
-      Alert.alert('Error', 'Please log in to continue');
-      return;
-    }
-
-    setIsAccepting(true);
-    try {
-      // Call the onboarding API to create wallet and starter investment
-      const response = await fetch('/api/onboarding/starter-investment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include cookies for authentication
-        body: JSON.stringify({
-          userId: user.id,
-          amount: 10, // $10 starter slice
+    // Continuous pulse animation for the icon
+    const pulseAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.1,
+          duration: 1000,
+          useNativeDriver: true,
         }),
-      });
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    pulseAnimation.start();
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        // Success - wallet created and starter investment made
-        Alert.alert(
-          'Success!',
-          'Your wallet has been created and your free $10 starter slice has been invested!',
-          [{ text: 'Continue', onPress: onNext }]
-        );
-      } else {
-        throw new Error(data.message || 'Failed to create starter investment');
-      }
-    } catch (error) {
-      console.error('Error creating starter slice:', error);
-      Alert.alert('Error', 'Failed to create your starter slice. Please try again.', [
-        { text: 'OK' },
-      ]);
-    } finally {
-      setIsAccepting(false);
-    }
-  };
-
-  // Animated styles
-  const iconAnimatedStyle = useAnimatedStyle(() => {
-    const bounceTranslateY = interpolate(iconBounce.value, [0, 1], [0, -10]);
-    return {
-      transform: [{ scale: iconScale.value }, { translateY: bounceTranslateY }],
+    return () => {
+      pulseAnimation.stop();
     };
-  });
-
-  const titleAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: titleOpacity.value,
-    transform: [{ translateY: titleTranslateY.value }],
-  }));
-
-  const descriptionAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: descriptionOpacity.value,
-    transform: [{ translateY: descriptionTranslateY.value }],
-  }));
-
-  const benefitsAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: benefitsOpacity.value,
-    transform: [{ translateY: benefitsTranslateY.value }],
-  }));
-
-  const buttonsAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: buttonsOpacity.value,
-    transform: [{ translateY: buttonsTranslateY.value }],
-  }));
-
-  const progressAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: progressOpacity.value,
-  }));
+  }, [fadeAnim, slideAnim, iconScaleAnim, pulseAnim]);
 
   return (
-    <View style={{ flex: 1, padding: spacing.lg }}>
-      {/* Progress Indicator */}
+    <SafeAreaView style={styles.safeArea}>
       <Animated.View
         style={[
-          { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.md },
-          progressAnimatedStyle,
+          styles.container,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
         ]}>
-        {Array.from({ length: totalSteps }).map((_, index) => (
-          <View
-            key={index}
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: 4,
-              backgroundColor:
-                index === currentStep ? colors.primary.royalBlue : colors.border.secondary,
-              marginHorizontal: 4,
-            }}
-          />
-        ))}
-      </Animated.View>
+        {/* Main Content */}
+        <View style={styles.mainContent}>
+          {/* Icon with pulse animation */}
+          <Animated.View
+            style={[
+              styles.iconContainer,
+              {
+                transform: [{ scale: iconScaleAnim }, { scale: pulseAnim }],
+              },
+            ]}>
+            <View style={styles.iconBackground}>
+              <Icon name="gift" library="ionicons" size={80} color={colors.accent.limeGreen} />
+            </View>
+          </Animated.View>
 
-      {/* Skip Button */}
-      <Animated.View
-        style={[{ alignItems: 'flex-end', marginTop: spacing.md }, progressAnimatedStyle]}>
-        <Button
-          title="Skip"
-          variant="tertiary"
-          size="small"
-          onPress={onSkip}
-          disabled={isAccepting}
-        />
-      </Animated.View>
+          {/* Title */}
+          <Text style={styles.title}>Free $25 Starter{'\n'}Slice!</Text>
 
-      {/* Main Content */}
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {/* Animated Gift Icon */}
-        <Animated.View style={[{ marginBottom: spacing.xl }, iconAnimatedStyle]}>
-          <GiftIcon size={120} />
-        </Animated.View>
+          {/* Subtitle */}
+          <Text style={styles.subtitle}>
+            Get started with a free $25 investment{'\n'}to explore STACK
+          </Text>
 
-        {/* Animated Title */}
-        <Animated.Text
-          style={[
-            {
-              fontSize: typography.styles.h1.size,
-              fontWeight: typography.weights.bold,
-              fontFamily: typography.fonts.secondary,
-              color: colors.text.primary,
-              textAlign: 'center',
-              marginBottom: spacing.md,
-            },
-            titleAnimatedStyle,
-          ]}>
-          Free $10 Starter Slice
-        </Animated.Text>
+          {/* Features */}
+          <View style={styles.featuresContainer}>
+            <View style={styles.feature}>
+              <Icon
+                name="checkmark-circle"
+                library="ionicons"
+                size={20}
+                color={colors.accent.limeGreen}
+              />
+              <Text style={styles.featureText}>No fees or commitments</Text>
+            </View>
+            <View style={styles.feature}>
+              <Icon
+                name="checkmark-circle"
+                library="ionicons"
+                size={20}
+                color={colors.accent.limeGreen}
+              />
+              <Text style={styles.featureText}>Real investment returns</Text>
+            </View>
+            <View style={styles.feature}>
+              <Icon
+                name="checkmark-circle"
+                library="ionicons"
+                size={20}
+                color={colors.accent.limeGreen}
+              />
+              <Text style={styles.featureText}>Learn as you invest</Text>
+            </View>
+          </View>
+        </View>
 
-        {/* Animated Description */}
-        <Animated.Text
-          style={[
-            {
-              fontSize: typography.styles.body.size,
-              fontFamily: typography.fonts.secondary,
-              color: colors.text.secondary,
-              textAlign: 'center',
-              lineHeight: 24,
-              paddingHorizontal: spacing.lg,
-              marginBottom: spacing.lg,
-            },
-            descriptionAnimatedStyle,
-          ]}>
-          Get started with a free $10 investment in our diversified portfolio. No strings attached -
-          it&apos;s our gift to help you begin your investing journey.
-        </Animated.Text>
-
-        {/* Animated Benefits List */}
-        <Animated.View
-          style={[{ alignSelf: 'stretch', paddingHorizontal: spacing.lg }, benefitsAnimatedStyle]}>
-          {[
-            'Instant diversification across top stocks',
-            'Professional portfolio management',
-            'Real-time performance tracking',
-            'No fees on your starter slice',
-          ].map((benefit, index) => (
-            <Animated.View
+        {/* Progress Indicator */}
+        <View style={styles.progressContainer}>
+          {Array.from({ length: totalSteps }).map((_, index) => (
+            <View
               key={index}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: spacing.sm,
-                opacity: benefitsOpacity.value,
-                transform: [{ translateY: benefitsTranslateY.value }],
-              }}>
-              <Text
-                style={{ color: colors.accent.limeGreen, marginRight: spacing.sm, fontSize: 16 }}>
-                ✓
-              </Text>
-              <Text
-                style={{
-                  fontSize: typography.styles.label.size,
-                  fontFamily: typography.fonts.secondary,
-                  color: colors.text.secondary,
-                  flex: 1,
-                }}>
-                {benefit}
-              </Text>
-            </Animated.View>
+              style={[styles.progressDot, index === currentStep - 1 && styles.progressDotActive]}
+            />
           ))}
-        </Animated.View>
-      </View>
+        </View>
 
-      {/* Animated Bottom Actions */}
-      <Animated.View style={[{ paddingBottom: spacing.lg }, buttonsAnimatedStyle]}>
-        <Button
-          title={isAccepting ? 'Creating Your Wallet...' : 'Claim My $10'}
-          variant="accent"
-          size="large"
-          fullWidth
-          loading={isAccepting}
-          onPress={handleAcceptStarterSlice}
-          disabled={isAccepting}
-        />
-        <Button
-          title="Maybe Later"
-          variant="tertiary"
-          size="medium"
-          fullWidth
-          onPress={onNext}
-          disabled={isAccepting}
-          style={{ marginTop: spacing.md }}
-        />
+        {/* Action Buttons */}
+        <View style={styles.buttonContainer}>
+          <Button 
+            title="Maybe Later" 
+            variant="tertiary" 
+            onPress={onSkip} 
+            style={styles.skipButton} 
+          />
+          <Button
+            title="Claim My $25"
+            variant="accent"
+            onPress={onAccept}
+            style={styles.acceptButton}
+          />
+        </View>
       </Animated.View>
-    </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.background.main,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.lg,
+    justifyContent: 'space-between',
+  },
+  mainContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: spacing.xl,
+  },
+  iconContainer: {
+    marginBottom: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconBackground: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: colors.surface.light,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadows.md,
+  },
+  title: {
+    fontFamily: typography.fonts.primary,
+    fontSize: 32,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+    lineHeight: 38,
+  },
+  subtitle: {
+    fontFamily: typography.fonts.secondary,
+    fontSize: typography.styles.body.size,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: spacing.xl,
+    paddingHorizontal: spacing.md,
+  },
+  featuresContainer: {
+    alignItems: 'flex-start',
+    marginBottom: spacing.xl,
+  },
+  feature: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+    paddingHorizontal: spacing.sm,
+  },
+  featureText: {
+    fontFamily: typography.fonts.secondary,
+    fontSize: typography.styles.body.size,
+    color: colors.text.primary,
+    marginLeft: spacing.sm,
+    fontWeight: typography.weights.medium,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.xl,
+    paddingVertical: spacing.md,
+  },
+  progressDot: {
+    height: 8,
+    width: 32,
+    marginHorizontal: 4,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.surface.light,
+  },
+  progressDotActive: {
+    backgroundColor: colors.primary.royalBlue,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: spacing.md,
+    gap: spacing.md,
+  },
+  skipButton: {
+    flex: 1,
+  },
+  acceptButton: {
+    flex: 1,
+  },
+});

@@ -27,6 +27,7 @@ export { CollateralValueCard } from './components/molecules/CollateralValueCard'
 export { RoundUpToggle } from './components/molecules/RoundUpToggle';
 export { Drawer } from './components/molecules/Drawer';
 export { QuestProgress } from './components/molecules/QuestProgress';
+export { FeatureCard } from './components/molecules/FeatureCard';
 
 // Organisms
 export { UserProfile } from './components/organisms/UserProfile';

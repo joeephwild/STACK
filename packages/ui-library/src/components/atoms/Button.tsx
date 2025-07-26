@@ -21,6 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   icon,
   disabled,
   className,
+  style,
   ...props
 }) => {
   const getVariantStyles = (): ViewStyle => {
@@ -28,11 +29,15 @@ export const Button: React.FC<ButtonProps> = ({
       case 'primary':
         return {
           backgroundColor: colors.primary.royalBlue,
+          borderWidth: 1,
+          borderColor: colors.primary.royalBlue,
           ...shadows.md,
         };
       case 'accent':
         return {
           backgroundColor: colors.accent.limeGreen,
+          borderWidth: 1,
+          borderColor: colors.accent.limeGreen,
           ...shadows.md,
         };
       case 'tertiary':
@@ -44,6 +49,8 @@ export const Button: React.FC<ButtonProps> = ({
       case 'fab':
         return {
           backgroundColor: colors.accent.limeGreen,
+          borderWidth: 1,
+          borderColor: colors.accent.limeGreen,
           ...shadows.md,
           borderRadius: borderRadius.fab,
           width: 56,
@@ -52,6 +59,8 @@ export const Button: React.FC<ButtonProps> = ({
       default:
         return {
           backgroundColor: colors.primary.royalBlue,
+          borderWidth: 1,
+          borderColor: colors.primary.royalBlue,
           ...shadows.md,
         };
     }
@@ -74,27 +83,31 @@ export const Button: React.FC<ButtonProps> = ({
 
   const getSizeStyles = (): ViewStyle => {
     if (variant === 'fab') return {}; // FAB has fixed size
-    
+
     switch (size) {
       case 'small':
         return {
           paddingHorizontal: spacing.md,
           paddingVertical: spacing.xs,
+          minHeight: 32,
         };
       case 'medium':
         return {
           paddingHorizontal: spacing.lg,
           paddingVertical: spacing.md,
+          minHeight: 44,
         };
       case 'large':
         return {
           paddingHorizontal: spacing.xl,
           paddingVertical: spacing.md + 4,
+          minHeight: 52,
         };
       default:
         return {
           paddingHorizontal: spacing.lg,
           paddingVertical: spacing.md,
+          minHeight: 44,
         };
     }
   };
@@ -116,14 +129,14 @@ export const Button: React.FC<ButtonProps> = ({
   const isFab = variant === 'fab';
 
   const buttonStyle: ViewStyle = {
-    ...getVariantStyles(),
-    ...getSizeStyles(),
     borderRadius: isFab ? borderRadius.fab : borderRadius.lg,
     flexDirection: isFab ? 'column' : 'row',
     alignItems: 'center',
     justifyContent: 'center',
     width: fullWidth && !isFab ? '100%' : undefined,
     opacity: isDisabled ? 0.5 : 1,
+    ...getVariantStyles(),
+    ...getSizeStyles(),
   };
 
   const textStyle: TextStyle = {
@@ -136,16 +149,16 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity
       disabled={isDisabled}
-      style={buttonStyle}
+      style={[buttonStyle, style]}
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled }}
       accessibilityLabel={title}
       {...props}
     >
       {loading ? (
-        <ActivityIndicator 
-          size="small" 
-          color={variant === 'tertiary' ? colors.primary.royalBlue : colors.text.onPrimary} 
+        <ActivityIndicator
+          size="small"
+          color={variant === 'tertiary' ? colors.primary.royalBlue : colors.text.onPrimary}
         />
       ) : (
         <>

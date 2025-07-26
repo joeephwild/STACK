@@ -1,160 +1,135 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import { router } from 'expo-router';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-  runOnJS,
-  interpolate,
-  Extrapolate,
-} from 'react-native-reanimated';
 import { WelcomeStep } from '../../components/onboarding/WelcomeStep';
 import { FreeStarterSliceStep } from '../../components/onboarding/FreeStarterSliceStep';
 import { HowItWorksStep } from '../../components/onboarding/HowItWorksStep';
+import { useOnboardingStore } from '../../store/onboardingStore';
+import { useAuthStore } from '../../store/authStore';
 import { colors } from '@stack/ui-library';
 
-const { width: screenWidth } = Dimensions.get('window');
+const TOTAL_STEPS = 3;
 
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const translateX = useSharedValue(0);
-  const opacity = useSharedValue(1);
-  const scale = useSharedValue(1);
+  const {
+    setHasCompletedOnboarding,
+    setHasAcceptedStarterSlice,
+    setCurrentStep: setOnboardingStep,
+    setLoading,
+    setError,
+    clearError,
+  } = useOnboardingStore();
 
-  const steps = [
-    { component: WelcomeStep, key: 'welcome' },
-    { component: FreeStarterSliceStep, key: 'starter-slice' },
-    { component: HowItWorksStep, key: 'how-it-works' },
-  ];
+  const { user } = useAuthStore();
 
-  const animateToNextStep = (nextStep: number) => {
-    setIsTransitioning(true);
-
-    // Slide out current step
-    translateX.value = withTiming(-screenWidth, { duration: 300 });
-    opacity.value = withTiming(0, { duration: 200 });
-    scale.value = withTiming(0.95, { duration: 300 });
-
-    setTimeout(() => {
-      setCurrentStep(nextStep);
-
-      // Reset position for slide in
-      translateX.value = screenWidth;
-      opacity.value = 0;
-      scale.value = 1.05;
-
-      // Slide in new step
-      translateX.value = withSpring(0, { damping: 20, stiffness: 90 });
-      opacity.value = withTiming(1, { duration: 400 });
-      scale.value = withSpring(1, { damping: 20, stiffness: 90 });
-
-      setTimeout(() => setIsTransitioning(false), 400);
-    }, 300);
-  };
+  useEffect(() => {
+    setOnboardingStep(currentStep);
+  }, [currentStep, setOnboardingStep]);
 
   const handleNext = () => {
-    if (isTransitioning) return;
-
-    if (currentStep < steps.length - 1) {
-      animateToNextStep(currentStep + 1);
+    if (currentStep < TOTAL_STEPS - 1) {
+      setCurrentStep(currentStep + 1);
     } else {
-      // Complete onboarding with fade out animation
-      opacity.value = withTiming(0, { duration: 300 });
-      scale.value = withTiming(0.9, { duration: 300 });
-
-      setTimeout(() => {
-        router.replace('/(tabs)');
-      }, 300);
+      handleComplete();
     }
   };
 
   const handleSkip = () => {
-    if (isTransitioning) return;
+    handleComplete();
+  };
 
-    // Skip with fade out animation
-    opacity.value = withTiming(0, { duration: 300 });
-    scale.value = withTiming(0.9, { duration: 300 });
-
-    setTimeout(() => {
-      router.replace('/(tabs)');
-    }, 300);
+  const handleComplete = () => {
+    setHasCompletedOnboarding(true);
+    router.replace('/(tabs)');
   };
 
   const handleStarterSliceAccept = async () => {
+    if (!user) {
+      Alert.alert('Error', 'Please log in to continue');
+      return;
+    }
+
     setIsLoading(true);
+    setLoading(true);
+    clearError();
+
     try {
-      // This will be handled by the FreeStarterSliceStep component
-      // which will call the onboarding API and create wallet
-      handleNext();
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/onboarding/starter-investment`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create starter investment');
+      }
+
+      setHasAcceptedStarterSlice(true);
+      Alert.alert('Success!', 'Your $25 starter investment has been created. Welcome to STACK!', [
+        { text: 'Continue', onPress: handleNext },
+      ]);
     } catch (error) {
-      console.error('Error accepting starter slice:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      setError(errorMessage);
+      Alert.alert('Error', errorMessage);
     } finally {
       setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  // Animated styles
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { scale: scale.value },
-      ],
-      opacity: opacity.value,
-    };
-  });
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <WelcomeStep
+            onNext={handleNext}
+            onSkip={handleSkip}
+            currentStep={currentStep + 1}
+            totalSteps={TOTAL_STEPS}
+          />
+        );
+      case 1:
+        return (
+          <FreeStarterSliceStep
+            onNext={handleNext}
+            onSkip={handleSkip}
+            onAccept={handleStarterSliceAccept}
+            currentStep={currentStep + 1}
+            totalSteps={TOTAL_STEPS}
+            isLoading={isLoading}
+          />
+        );
+      case 2:
+        return (
+          <HowItWorksStep
+            onNext={handleComplete}
+            onSkip={handleSkip}
+            currentStep={currentStep + 1}
+            totalSteps={TOTAL_STEPS}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
-  // Background gradient animation
-  const backgroundOpacity = useSharedValue(1);
-  const backgroundAnimatedStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolate(
-      currentStep,
-      [0, 1, 2],
-      [0, 0.5, 1],
-      Extrapolate.CLAMP
-    );
-
-    return {
-      backgroundColor: `rgba(79, 70, 229, ${backgroundColor * 0.05})`,
-    };
-  });
-
-  const CurrentStepComponent = steps[currentStep].component;
-
-  return (
-    <View style={{ flex: 1, backgroundColor: colors.background.main }}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.background.main} />
-
-      {/* Animated background */}
-      <Animated.View
-        style={[
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0
-          },
-          backgroundAnimatedStyle
-        ]}
-      />
-
-      {/* Main content with slide animation */}
-      <Animated.View style={[{ flex: 1 }, animatedStyle]}>
-        <CurrentStepComponent
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onAcceptStarterSlice={handleStarterSliceAccept}
-          isLoading={isLoading}
-          currentStep={currentStep}
-          totalSteps={steps.length}
-        />
-      </Animated.View>
-    </View>
-  );
+  return <View style={styles.container}>{renderStep()}</View>;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background.main,
+  },
+});

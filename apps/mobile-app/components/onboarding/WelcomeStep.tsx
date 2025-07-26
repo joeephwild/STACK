@@ -1,15 +1,6 @@
-import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-  withDelay,
-  withSequence,
-} from 'react-native-reanimated';
-import { Button, colors, typography, spacing } from '@stack/ui-library';
-import { WelcomeIcon } from '../icons/OnboardingIcons';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Animated, StyleSheet } from 'react-native';
+import { Button, Icon, colors, typography, spacing, borderRadius } from '@stack/ui-library';
 
 interface WelcomeStepProps {
   onNext: () => void;
@@ -24,132 +15,149 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = ({
   currentStep,
   totalSteps,
 }) => {
-  // Animation values
-  const iconScale = useSharedValue(0);
-  const iconRotation = useSharedValue(-180);
-  const titleOpacity = useSharedValue(0);
-  const titleTranslateY = useSharedValue(30);
-  const subtitleOpacity = useSharedValue(0);
-  const subtitleTranslateY = useSharedValue(30);
-  const buttonOpacity = useSharedValue(0);
-  const buttonTranslateY = useSharedValue(30);
-  const progressOpacity = useSharedValue(0);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+  const iconScaleAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
-    // Entrance animation sequence
-    iconScale.value = withDelay(200, withSpring(1, { damping: 15, stiffness: 100 }));
-    iconRotation.value = withDelay(200, withSpring(0, { damping: 20, stiffness: 80 }));
-
-    titleOpacity.value = withDelay(500, withTiming(1, { duration: 600 }));
-    titleTranslateY.value = withDelay(500, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    subtitleOpacity.value = withDelay(800, withTiming(1, { duration: 600 }));
-    subtitleTranslateY.value = withDelay(800, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    buttonOpacity.value = withDelay(1100, withTiming(1, { duration: 600 }));
-    buttonTranslateY.value = withDelay(1100, withSpring(0, { damping: 20, stiffness: 90 }));
-
-    progressOpacity.value = withDelay(300, withTiming(1, { duration: 400 }));
-  }, []);
-
-  // Animated styles
-  const iconAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: iconScale.value }, { rotate: `${iconRotation.value}deg` }],
-  }));
-
-  const titleAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: titleOpacity.value,
-    transform: [{ translateY: titleTranslateY.value }],
-  }));
-
-  const subtitleAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: subtitleOpacity.value,
-    transform: [{ translateY: subtitleTranslateY.value }],
-  }));
-
-  const buttonAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: buttonOpacity.value,
-    transform: [{ translateY: buttonTranslateY.value }],
-  }));
-
-  const progressAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: progressOpacity.value,
-  }));
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(iconScaleAnim, {
+        toValue: 1,
+        tension: 100,
+        friction: 8,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, slideAnim, iconScaleAnim]);
 
   return (
-    <View style={{ flex: 1, padding: spacing.lg }}>
-      {/* Progress Indicator */}
-      <Animated.View
-        style={[
-          { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.md },
-          progressAnimatedStyle,
-        ]}>
-        {Array.from({ length: totalSteps }).map((_, index) => (
-          <Animated.View
-            key={index}
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: 4,
-              backgroundColor:
-                index === currentStep ? colors.primary.royalBlue : colors.border.secondary,
-              marginHorizontal: 4,
-            }}
-          />
-        ))}
-      </Animated.View>
-
-      {/* Skip Button */}
-      <Animated.View
-        style={[{ alignItems: 'flex-end', marginTop: spacing.md }, progressAnimatedStyle]}>
-        <Button title="Skip" variant="tertiary" size="small" onPress={onSkip} />
-      </Animated.View>
-
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        },
+      ]}>
       {/* Main Content */}
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {/* Animated Icon */}
-        <Animated.View style={[{ marginBottom: spacing.xl }, iconAnimatedStyle]}>
-          <WelcomeIcon size={120} />
+      <View style={styles.mainContent}>
+        {/* Logo/Icon */}
+        <Animated.View
+          style={[
+            styles.iconContainer,
+            {
+              transform: [{ scale: iconScaleAnim }],
+            },
+          ]}>
+          <Icon name="wallet" library="ionicons" size={80} color={colors.primary.royalBlue} />
         </Animated.View>
 
-        {/* Animated Title */}
-        <Animated.Text
-          style={[
-            {
-              fontSize: typography.styles.h1.size,
-              fontWeight: typography.weights.bold,
-              fontFamily: typography.fonts.primary,
-              color: colors.text.primary,
-              textAlign: 'center',
-              marginBottom: spacing.md,
-            },
-            titleAnimatedStyle,
-          ]}>
-          Welcome to STACK
-        </Animated.Text>
+        {/* Title */}
+        <Text style={styles.title} className='font-heading'>Welcome to STACK</Text>
 
-        {/* Animated Subtitle */}
-        <Animated.Text
-          style={[
-            {
-              fontSize: typography.styles.body.size,
-              fontFamily: typography.fonts.secondary,
-              color: colors.text.secondary,
-              textAlign: 'center',
-              lineHeight: 24,
-              paddingHorizontal: spacing.lg,
-            },
-            subtitleAnimatedStyle,
-          ]}>
-          Your gateway to smart investing. Build wealth with fractional shares, expert insights, and
-          automated strategies.
-        </Animated.Text>
+        {/* Subtitle */}
+        <Text style={styles.subtitle}>
+          Turn your spare change into investments with every purchase
+        </Text>
+
+        {/* Progress Indicator */}
+        <View style={styles.progressContainer}>
+          {Array.from({ length: totalSteps }).map((_, index) => (
+            <View
+              key={index}
+              style={[styles.progressDot, index === currentStep - 1 && styles.progressDotActive]}
+            />
+          ))}
+        </View>
       </View>
 
-      {/* Animated Bottom Action */}
-      <Animated.View style={[{ paddingBottom: spacing.lg }, buttonAnimatedStyle]}>
-        <Button title="Get Started" variant="primary" size="large" fullWidth onPress={onNext} />
-      </Animated.View>
-    </View>
+      {/* Action Buttons */}
+      <View style={styles.buttonContainer}>
+        <Button title="Skip" variant="tertiary" onPress={onSkip} style={styles.skipButton} />
+        <Button title="Get Started" variant="primary" onPress={onNext} style={styles.nextButton} />
+      </View>
+    </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background.main,
+    position: 'relative',
+  },
+  mainContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xl * 2,
+    paddingBottom: 120, // Reserve space for buttons
+  },
+  iconContainer: {
+    marginBottom: spacing.xl,
+  },
+  title: {
+    // fontFamily: typography.fonts.primary,
+    fontSize: typography.styles.h1.size,
+    fontWeight: typography.weights.bold,
+    color: colors.text.primary,
+    textAlign: 'center',
+    marginBottom: spacing.lg,
+  },
+  subtitle: {
+    fontFamily: typography.fonts.secondary,
+    fontSize: typography.styles.body.size,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: typography.styles.body.size * typography.lineHeights.normal,
+    marginBottom: spacing.xl * 2,
+    paddingHorizontal: spacing.lg,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: spacing.xl,
+  },
+  progressDot: {
+    height: 8,
+    width: 32,
+    marginHorizontal: 4,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.surface.light,
+  },
+  progressDotActive: {
+    backgroundColor: colors.primary.royalBlue,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.xl * 2,
+    paddingTop: spacing.lg,
+    backgroundColor: colors.background.main,
+  },
+  skipButton: {
+    flex: 1,
+    marginRight: spacing.md,
+  },
+  nextButton: {
+    flex: 1,
+    marginLeft: spacing.md,
+  },
+});
