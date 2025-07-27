@@ -12,6 +12,29 @@ exports[`Visual Regression Tests Accessibility States Button - With accessibilit
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(88,82,255,1.00)",
+      "borderBottomColor": "rgba(88,82,255,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(88,82,255,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(88,82,255,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(88,82,255,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 1,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -21,6 +44,14 @@ exports[`Visual Regression Tests Accessibility States Button - With accessibilit
     className="css-text-146c3p1"
     dir="auto"
     ref={[Function]}
+    style={
+      {
+        "color": "rgba(255,255,255,1.00)",
+        "fontFamily": "Gilroy",
+        "fontSize": "14px",
+        "fontWeight": "500",
+      }
+    }
   >
     Accessible Button
   </div>
@@ -89,6 +120,29 @@ exports[`Visual Regression Tests Atomic Components Button - Accent variant shoul
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(185,255,75,1.00)",
+      "borderBottomColor": "rgba(185,255,75,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(185,255,75,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(185,255,75,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(185,255,75,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 1,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -98,6 +152,14 @@ exports[`Visual Regression Tests Atomic Components Button - Accent variant shoul
     className="css-text-146c3p1"
     dir="auto"
     ref={[Function]}
+    style={
+      {
+        "color": "rgba(0,0,0,1.00)",
+        "fontFamily": "Gilroy",
+        "fontSize": "14px",
+        "fontWeight": "500",
+      }
+    }
   >
     Accent Button
   </div>
@@ -118,6 +180,29 @@ exports[`Visual Regression Tests Atomic Components Button - Disabled state shoul
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(88,82,255,1.00)",
+      "borderBottomColor": "rgba(88,82,255,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(88,82,255,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(88,82,255,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(88,82,255,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 0.5,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -128,6 +213,14 @@ exports[`Visual Regression Tests Atomic Components Button - Disabled state shoul
     className="css-text-146c3p1"
     dir="auto"
     ref={[Function]}
+    style={
+      {
+        "color": "rgba(255,255,255,1.00)",
+        "fontFamily": "Gilroy",
+        "fontSize": "14px",
+        "fontWeight": "500",
+      }
+    }
   >
     Disabled Button
   </div>
@@ -148,6 +241,29 @@ exports[`Visual Regression Tests Atomic Components Button - Loading state should
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(88,82,255,1.00)",
+      "borderBottomColor": "rgba(88,82,255,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(88,82,255,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(88,82,255,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(88,82,255,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 0.5,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -217,6 +333,29 @@ exports[`Visual Regression Tests Atomic Components Button - Primary variant shou
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(88,82,255,1.00)",
+      "borderBottomColor": "rgba(88,82,255,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(88,82,255,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(88,82,255,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(88,82,255,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 1,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -226,6 +365,14 @@ exports[`Visual Regression Tests Atomic Components Button - Primary variant shou
     className="css-text-146c3p1"
     dir="auto"
     ref={[Function]}
+    style={
+      {
+        "color": "rgba(255,255,255,1.00)",
+        "fontFamily": "Gilroy",
+        "fontSize": "14px",
+        "fontWeight": "500",
+      }
+    }
   >
     Primary Button
   </div>
@@ -244,6 +391,28 @@ exports[`Visual Regression Tests Atomic Components Button - Tertiary variant sho
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(0,0,0,0.00)",
+      "borderBottomColor": "rgba(160,160,160,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(160,160,160,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(160,160,160,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(160,160,160,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 1,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -253,6 +422,14 @@ exports[`Visual Regression Tests Atomic Components Button - Tertiary variant sho
     className="css-text-146c3p1"
     dir="auto"
     ref={[Function]}
+    style={
+      {
+        "color": "rgba(0,0,0,1.00)",
+        "fontFamily": "Gilroy",
+        "fontSize": "14px",
+        "fontWeight": "500",
+      }
+    }
   >
     Tertiary Button
   </div>
@@ -636,6 +813,29 @@ exports[`Visual Regression Tests Component Combinations Card with Button should 
       role="button"
       style={
         {
+          "alignItems": "center",
+          "backgroundColor": "rgba(88,82,255,1.00)",
+          "borderBottomColor": "rgba(88,82,255,1.00)",
+          "borderBottomLeftRadius": "12px",
+          "borderBottomRightRadius": "12px",
+          "borderBottomWidth": "1px",
+          "borderLeftColor": "rgba(88,82,255,1.00)",
+          "borderLeftWidth": "1px",
+          "borderRightColor": "rgba(88,82,255,1.00)",
+          "borderRightWidth": "1px",
+          "borderTopColor": "rgba(88,82,255,1.00)",
+          "borderTopLeftRadius": "12px",
+          "borderTopRightRadius": "12px",
+          "borderTopWidth": "1px",
+          "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "minHeight": "44px",
+          "opacity": 1,
+          "paddingBottom": "16px",
+          "paddingLeft": "24px",
+          "paddingRight": "24px",
+          "paddingTop": "16px",
           "transitionDuration": "0s",
         }
       }
@@ -645,6 +845,14 @@ exports[`Visual Regression Tests Component Combinations Card with Button should 
         className="css-text-146c3p1"
         dir="auto"
         ref={[Function]}
+        style={
+          {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Gilroy",
+            "fontSize": "14px",
+            "fontWeight": "500",
+          }
+        }
       >
         Action Button
       </div>
@@ -779,7 +987,31 @@ exports[`Visual Regression Tests Component Combinations Form with InputField and
       role="button"
       style={
         {
+          "alignItems": "center",
+          "backgroundColor": "rgba(88,82,255,1.00)",
+          "borderBottomColor": "rgba(88,82,255,1.00)",
+          "borderBottomLeftRadius": "12px",
+          "borderBottomRightRadius": "12px",
+          "borderBottomWidth": "1px",
+          "borderLeftColor": "rgba(88,82,255,1.00)",
+          "borderLeftWidth": "1px",
+          "borderRightColor": "rgba(88,82,255,1.00)",
+          "borderRightWidth": "1px",
+          "borderTopColor": "rgba(88,82,255,1.00)",
+          "borderTopLeftRadius": "12px",
+          "borderTopRightRadius": "12px",
+          "borderTopWidth": "1px",
+          "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "minHeight": "44px",
+          "opacity": 1,
+          "paddingBottom": "16px",
+          "paddingLeft": "24px",
+          "paddingRight": "24px",
+          "paddingTop": "16px",
           "transitionDuration": "0s",
+          "width": "100%",
         }
       }
       type="button"
@@ -788,6 +1020,14 @@ exports[`Visual Regression Tests Component Combinations Form with InputField and
         className="css-text-146c3p1"
         dir="auto"
         ref={[Function]}
+        style={
+          {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Gilroy",
+            "fontSize": "14px",
+            "fontWeight": "500",
+          }
+        }
       >
         Sign In
       </div>
@@ -810,6 +1050,29 @@ exports[`Visual Regression Tests Error States Button - Loading state should matc
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(88,82,255,1.00)",
+      "borderBottomColor": "rgba(88,82,255,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(88,82,255,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(88,82,255,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(88,82,255,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 0.5,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
     }
   }
@@ -1386,74 +1649,80 @@ exports[`Visual Regression Tests Molecular Components QuestProgress - Active que
           className="css-view-g5y9jx"
           dir={null}
           ref={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "justifyContent": "center",
-            }
-          }
         >
+          <div
+            className="css-view-g5y9jx"
+            dir={null}
+            ref={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <div
+              className="css-text-146c3p1"
+              dir="auto"
+              ref={[Function]}
+            >
+              gift
+            </div>
+          </div>
           <div
             className="css-text-146c3p1"
             dir="auto"
             ref={[Function]}
+            style={
+              {
+                "color": "rgba(84,84,84,1.00)",
+                "fontFamily": "Gilroy",
+                "fontSize": "12px",
+                "fontWeight": "500",
+              }
+            }
           >
-            gift
+            100 XP
           </div>
         </div>
-        <div
-          className="css-text-146c3p1"
-          dir="auto"
-          ref={[Function]}
-          style={
-            {
-              "color": "rgba(84,84,84,1.00)",
-              "fontFamily": "Gilroy",
-              "fontSize": "12px",
-              "fontWeight": "500",
-            }
-          }
-        >
-          100 XP
-        </div>
-      </div>
-      <div
-        className="css-view-g5y9jx"
-        dir={null}
-        ref={[Function]}
-      >
         <div
           className="css-view-g5y9jx"
           dir={null}
           ref={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "justifyContent": "center",
-            }
-          }
         >
+          <div
+            className="css-view-g5y9jx"
+            dir={null}
+            ref={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
+            }
+          >
+            <div
+              className="css-text-146c3p1"
+              dir="auto"
+              ref={[Function]}
+            >
+              time
+            </div>
+          </div>
           <div
             className="css-text-146c3p1"
             dir="auto"
             ref={[Function]}
-          >
-            time
-          </div>
-        </div>
-        <div
-          className="css-text-146c3p1"
-          dir="auto"
-          ref={[Function]}
-          style={
-            {
-              "color": "rgba(160,160,160,1.00)",
-              "fontFamily": "Gilroy",
-              "fontSize": "12px",
+            style={
+              {
+                "color": "rgba(160,160,160,1.00)",
+                "fontFamily": "Gilroy",
+                "fontSize": "12px",
+              }
             }
-          }
-        >
-          2 days
+          >
+            2 days
+          </div>
         </div>
       </div>
     </div>
@@ -1689,6 +1958,7 @@ exports[`Visual Regression Tests Organism Components BattlePass - Level 5 progre
               "borderRightWidth": "1px",
               "borderTopColor": "rgba(234,226,255,1.00)",
               "borderTopWidth": "1px",
+              "opacity": 1,
             }
           }
         >
@@ -1807,6 +2077,7 @@ exports[`Visual Regression Tests Organism Components BattlePass - Level 5 progre
               "borderRightWidth": "1px",
               "borderTopColor": "rgba(234,226,255,1.00)",
               "borderTopWidth": "1px",
+              "opacity": 1,
             }
           }
         >
@@ -1925,6 +2196,7 @@ exports[`Visual Regression Tests Organism Components BattlePass - Level 5 progre
               "borderRightWidth": "3px",
               "borderTopColor": "rgba(88,82,255,1.00)",
               "borderTopWidth": "3px",
+              "opacity": 1,
             }
           }
         >
@@ -2043,6 +2315,7 @@ exports[`Visual Regression Tests Organism Components BattlePass - Level 5 progre
               "borderRightWidth": "1px",
               "borderTopColor": "rgba(160,160,160,1.00)",
               "borderTopWidth": "1px",
+              "opacity": 1,
             }
           }
         >
@@ -2161,6 +2434,7 @@ exports[`Visual Regression Tests Organism Components BattlePass - Level 5 progre
               "borderRightWidth": "1px",
               "borderTopColor": "rgba(160,160,160,1.00)",
               "borderTopWidth": "1px",
+              "opacity": 1,
             }
           }
         >
@@ -2480,7 +2754,31 @@ exports[`Visual Regression Tests Responsive Behavior Button - Full width should 
   role="button"
   style={
     {
+      "alignItems": "center",
+      "backgroundColor": "rgba(88,82,255,1.00)",
+      "borderBottomColor": "rgba(88,82,255,1.00)",
+      "borderBottomLeftRadius": "12px",
+      "borderBottomRightRadius": "12px",
+      "borderBottomWidth": "1px",
+      "borderLeftColor": "rgba(88,82,255,1.00)",
+      "borderLeftWidth": "1px",
+      "borderRightColor": "rgba(88,82,255,1.00)",
+      "borderRightWidth": "1px",
+      "borderTopColor": "rgba(88,82,255,1.00)",
+      "borderTopLeftRadius": "12px",
+      "borderTopRightRadius": "12px",
+      "borderTopWidth": "1px",
+      "boxShadow": "0px 2px 4px rgba(0,0,0,0.15)",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "minHeight": "44px",
+      "opacity": 1,
+      "paddingBottom": "16px",
+      "paddingLeft": "24px",
+      "paddingRight": "24px",
+      "paddingTop": "16px",
       "transitionDuration": "0s",
+      "width": "100%",
     }
   }
   type="button"
@@ -2489,6 +2787,14 @@ exports[`Visual Regression Tests Responsive Behavior Button - Full width should 
     className="css-text-146c3p1"
     dir="auto"
     ref={[Function]}
+    style={
+      {
+        "color": "rgba(255,255,255,1.00)",
+        "fontFamily": "Gilroy",
+        "fontSize": "14px",
+        "fontWeight": "500",
+      }
+    }
   >
     Full Width Button
   </div>

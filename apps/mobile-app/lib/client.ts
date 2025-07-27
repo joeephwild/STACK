@@ -8,13 +8,7 @@ export const client = createThirdwebClient({
 });
 
 export const chain: Chain = {
-    id: 5115,
-    name: 'Citrea Testnet',
-    rpc: 'https://rpc.testnet.citrea.xyz',
-    blockExplorers: [
-       {
-        name: "Citrea Explorer",
-        url: "https://explorer.testnet.citrea.xyz",
-       }
-    ],
-}
+  id: 5115,
+  name: 'Citrea Testnet',
+  rpc: 'https://rpc.testnet.citrea.xyz',
+};

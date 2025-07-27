@@ -55,7 +55,7 @@ export function MultiStepSignupForm() {
   };
 
   const handleNext = (stepData: Partial<FormData>) => {
-    updateFormData(stepData);
+    // updateFormData(stepData);
     setCurrentStep((prev) => prev + 1);
   };
 
@@ -67,20 +67,20 @@ export function MultiStepSignupForm() {
     try {
       setIsLoading(true);
 
-      // Prepare signup data
-      const signupData = {
-        email: formData.email,
-        password: formData.password,
-        displayName: formData.displayName,
-        phoneNumber: formData.phoneNumber,
-        nationality: formData.nationality,
-        referralCode: formData.referralCode,
-      };
+      //   // Prepare signup data
+      //   const signupData = {
+      //     email: formData.email,
+      //     password: formData.password,
+      //     displayName: formData.displayName,
+      //     phoneNumber: formData.phoneNumber,
+      //     nationality: formData.nationality,
+      //     referralCode: formData.referralCode,
+      //   };
 
-      await signupWithEmail(signupData);
+      //   await signupWithEmail(signupData);
 
       // Navigate to email verification or success screen
-      router.replace('/(auth)/verify-email');
+      router.replace('/(auth)/onboarding');
     } catch (error) {
       console.error('Signup error:', error);
       // Handle error (show toast, etc.)

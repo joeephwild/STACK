@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card } from '../atoms/Card';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { Icon } from '../atoms/Icon';
+import { RewardClaimAnimation } from '../atoms/RewardClaimAnimation';
 import { colors, typography, spacing, borderRadius } from '../../design/tokens';
 
 export interface BattlePassTier {
@@ -24,6 +25,7 @@ export interface BattlePassProps {
   hasPremium?: boolean;
   onTierPress?: (tier: BattlePassTier) => void;
   onUpgradePress?: () => void;
+  onRewardClaim?: (tier: BattlePassTier) => Promise<boolean>;
   className?: string;
   testID?: string;
 }
@@ -37,26 +39,58 @@ export const BattlePass: React.FC<BattlePassProps> = ({
   hasPremium = false,
   onTierPress,
   onUpgradePress,
+  onRewardClaim,
   className,
   testID,
 }) => {
+  const [showRewardAnimation, setShowRewardAnimation] = useState(false);
+  const [claimedReward, setClaimedReward] = useState<BattlePassTier | null>(null);
+  const [isClaimingReward, setIsClaimingReward] = useState(false);
+
   const progressPercentage = totalXP > 0 ? (currentXP / totalXP) * 100 : 0;
+
+  const handleTierPress = async (tier: BattlePassTier) => {
+    const canClaim = tier.isUnlocked && !tier.isClaimed;
+    
+    if (canClaim && onRewardClaim) {
+      setIsClaimingReward(true);
+      try {
+        const success = await onRewardClaim(tier);
+        if (success) {
+          setClaimedReward(tier);
+          setShowRewardAnimation(true);
+        }
+      } catch (error) {
+        console.error('Failed to claim reward:', error);
+      } finally {
+        setIsClaimingReward(false);
+      }
+    } else if (onTierPress) {
+      onTierPress(tier);
+    }
+  };
+
+  const handleAnimationComplete = () => {
+    setShowRewardAnimation(false);
+    setClaimedReward(null);
+  };
 
   const renderTier = (tier: BattlePassTier) => {
     const isActive = tier.level === currentLevel;
     const canClaim = tier.isUnlocked && !tier.isClaimed;
+    const isCurrentlyClaiming = isClaimingReward && claimedReward?.id === tier.id;
 
     return (
       <TouchableOpacity
         key={tier.id}
-        onPress={() => onTierPress?.(tier)}
-        disabled={!onTierPress}
+        onPress={() => handleTierPress(tier)}
+        disabled={!onTierPress && !onRewardClaim}
         className="items-center mx-2"
-        accessibilityRole={onTierPress ? 'button' : undefined}
+        accessibilityRole={onTierPress || onRewardClaim ? 'button' : undefined}
         accessibilityLabel={`Tier ${tier.level}, ${tier.reward}, ${tier.isClaimed ? 'claimed' : tier.isUnlocked ? 'available' : 'locked'}`}
       >
         <View
-          className="relative items-center justify-center w-16 h-16 rounded-full mb-2"
+          className={`relative items-center justify-center w-16 h-16 rounded-full mb-2 ${isCurrentlyClaiming ? 'animate-pulse' : ''}`}
           style={{
             backgroundColor: tier.isUnlocked
               ? tier.isPremium
@@ -69,6 +103,7 @@ export const BattlePass: React.FC<BattlePassProps> = ({
               : tier.isUnlocked
               ? colors.border.primary
               : colors.border.secondary,
+            opacity: isCurrentlyClaiming ? 0.7 : 1,
           }}
         >
           {tier.isClaimed && (
@@ -260,6 +295,15 @@ export const BattlePass: React.FC<BattlePassProps> = ({
       >
         {tiers.map(renderTier)}
       </ScrollView>
+
+      {/* Reward Claim Animation */}
+      <RewardClaimAnimation
+        isVisible={showRewardAnimation}
+        rewardText={claimedReward?.reward || ''}
+        rewardIcon={claimedReward?.icon || (claimedReward?.isPremium ? 'diamond' : 'trophy')}
+        onAnimationComplete={handleAnimationComplete}
+        testID="battle-pass-reward-animation"
+      />
     </Card>
   );
 };

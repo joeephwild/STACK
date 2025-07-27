@@ -32,5 +32,10 @@
   },
   "testTimeout": 10000,
   "clearMocks": true,
-  "restoreMocks": true
+  "restoreMocks": true,
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "tsconfig.test.json"
+    }
+  }
 }

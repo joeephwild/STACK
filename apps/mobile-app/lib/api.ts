@@ -205,6 +205,61 @@ class ApiClient {
   async getUserStats(walletAddress: string): Promise<any> {
     return this.request<any>(`${this.baseUrl}/users/${walletAddress}/stats`);
   }
+
+  // Basket methods
+  async getBaskets(params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    category?: string;
+    riskLevel?: 'LOW' | 'MEDIUM' | 'HIGH';
+  }): Promise<GetBasketsResponse> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.append('page', params.page.toString());
+    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.search) searchParams.append('search', params.search);
+    if (params?.category) searchParams.append('category', params.category);
+    if (params?.riskLevel) searchParams.append('riskLevel', params.riskLevel);
+    
+    const url = `${this.baseUrl}/baskets${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+    return this.request<GetBasketsResponse>(url);
+  }
+
+  async getBasketById(id: string): Promise<BasketResponse> {
+    return this.request<BasketResponse>(`${this.baseUrl}/baskets/${id}`);
+  }
+}
+
+// Basket interfaces
+export interface BasketResponse {
+  id: string;
+  name: string;
+  description: string;
+  iconUrl: string;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+  category: string;
+  performance: {
+    percentage: number;
+    period: string;
+    isPositive: boolean;
+  };
+  totalValue: number;
+  assetCount: number;
+  assets?: Array<{
+    symbol: string;
+    allocation: number;
+    name: string;
+  }>;
+}
+
+export interface GetBasketsResponse {
+  baskets: BasketResponse[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 export const apiClient = new ApiClient();

@@ -76,7 +76,7 @@ export function NationalitySection({
           <View className="flex-1">
             {/* Title */}
             <Text className="font-h1 text-h1 text-text-primary mb-8">
-              Select your nationality
+              Your country of primary residence.
             </Text>
 
             {/* Nationality Input Section */}

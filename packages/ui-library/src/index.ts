@@ -14,6 +14,8 @@ export { Chart } from './components/atoms/Chart';
 export { Grid, GridItem } from './components/atoms/Grid';
 export { Breadcrumb } from './components/atoms/Breadcrumb';
 export { Ionicons } from './components/atoms/SafeIonicons';
+export { Badge } from './components/atoms/Badge';
+export { LoadingSkeleton, BasketCardSkeleton } from './components/atoms/LoadingSkeleton';
 
 // Molecules
 export { SearchBar } from './components/molecules/SearchBar';
@@ -28,6 +30,11 @@ export { RoundUpToggle } from './components/molecules/RoundUpToggle';
 export { Drawer } from './components/molecules/Drawer';
 export { QuestProgress } from './components/molecules/QuestProgress';
 export { FeatureCard } from './components/molecules/FeatureCard';
+export { PerformanceIndicator } from './components/molecules/PerformanceIndicator';
+export { BasketCard } from './components/molecules/BasketCard';
+export type { BasketCardProps } from './components/molecules/BasketCard';
+export { FilterChips } from './components/molecules/FilterChips';
+export type { FilterChip, FilterChipsProps } from './components/molecules/FilterChips';
 
 // Organisms
 export { UserProfile } from './components/organisms/UserProfile';

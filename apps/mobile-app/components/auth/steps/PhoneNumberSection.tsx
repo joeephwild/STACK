@@ -11,11 +11,11 @@ interface PhoneNumberSectionProps {
   defaultCountry?: string;
 }
 
-export function PhoneNumberSection({ 
-  onNext, 
-  onBack, 
+export function PhoneNumberSection({
+  onNext,
+  onBack,
   initialData,
-  defaultCountry = "US" 
+  defaultCountry = "US"
 }: PhoneNumberSectionProps) {
   const [phoneNumber, setPhoneNumber] = useState(initialData?.phoneNumber || '');
   const [error, setError] = useState('');
@@ -107,13 +107,6 @@ export function PhoneNumberSection({
                 defaultCountry={defaultCountry}
                 placeholder="Enter your phone number"
               />
-            </View>
-
-            {/* Info Note */}
-            <View className="bg-gray-50 rounded-xl p-4 mb-8">
-              <Text className="font-caption text-caption text-text-secondary leading-5">
-                📱 We&apos;ll send you a verification code to confirm your phone number. Standard messaging rates may apply.
-              </Text>
             </View>
           </View>
         </ScrollView>

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Card } from '../atoms/Card';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { Icon } from '../atoms/Icon';
+import { RewardClaimAnimation } from '../atoms/RewardClaimAnimation';
 import { colors, typography, spacing, borderRadius } from '../../design/tokens';
 
 export interface QuestProgressProps {
@@ -14,7 +15,10 @@ export interface QuestProgressProps {
   reward?: string;
   difficulty?: 'easy' | 'medium' | 'hard';
   timeRemaining?: string;
+  isCompleted?: boolean;
+  canClaimReward?: boolean;
   onPress?: () => void;
+  onRewardClaim?: () => Promise<boolean>;
   className?: string;
   testID?: string;
 }
@@ -28,10 +32,35 @@ export const QuestProgress: React.FC<QuestProgressProps> = ({
   reward,
   difficulty = 'medium',
   timeRemaining,
+  isCompleted = false,
+  canClaimReward = false,
   onPress,
+  onRewardClaim,
   className,
   testID,
 }) => {
+  const [showRewardAnimation, setShowRewardAnimation] = useState(false);
+  const [isClaimingReward, setIsClaimingReward] = useState(false);
+
+  const handleRewardClaim = async () => {
+    if (!onRewardClaim || !canClaimReward) return;
+    
+    setIsClaimingReward(true);
+    try {
+      const success = await onRewardClaim();
+      if (success) {
+        setShowRewardAnimation(true);
+      }
+    } catch (error) {
+      console.error('Failed to claim quest reward:', error);
+    } finally {
+      setIsClaimingReward(false);
+    }
+  };
+
+  const handleAnimationComplete = () => {
+    setShowRewardAnimation(false);
+  };
   const getDifficultyColor = () => {
     switch (difficulty) {
       case 'easy':
@@ -154,49 +183,101 @@ export const QuestProgress: React.FC<QuestProgressProps> = ({
 
         {/* Footer */}
         <View className="flex-row items-center justify-between">
-          {reward && (
-            <View className="flex-row items-center">
-              <Icon
-                name="gift"
-                library="ionicons"
-                size={16}
-                color={colors.accent.limeGreen}
-              />
-              <Text
-                className="ml-1"
-                style={{
-                  fontFamily: typography.fonts.secondary,
-                  fontSize: typography.styles.caption.size,
-                  fontWeight: typography.weights.medium,
-                  color: colors.text.secondary,
-                }}
-              >
-                {reward}
-              </Text>
-            </View>
-          )}
+          <View className="flex-row items-center flex-1">
+            {reward && (
+              <View className="flex-row items-center mr-4">
+                <Icon
+                  name="gift"
+                  library="ionicons"
+                  size={16}
+                  color={colors.accent.limeGreen}
+                />
+                <Text
+                  className="ml-1"
+                  style={{
+                    fontFamily: typography.fonts.secondary,
+                    fontSize: typography.styles.caption.size,
+                    fontWeight: typography.weights.medium,
+                    color: colors.text.secondary,
+                  }}
+                >
+                  {reward}
+                </Text>
+              </View>
+            )}
 
-          {timeRemaining && (
-            <View className="flex-row items-center">
-              <Icon
-                name="time"
-                library="ionicons"
-                size={16}
-                color={colors.text.tertiary}
-              />
+            {timeRemaining && (
+              <View className="flex-row items-center">
+                <Icon
+                  name="time"
+                  library="ionicons"
+                  size={16}
+                  color={colors.text.tertiary}
+                />
+                <Text
+                  className="ml-1"
+                  style={{
+                    fontFamily: typography.fonts.secondary,
+                    fontSize: typography.styles.caption.size,
+                    color: colors.text.tertiary,
+                  }}
+                >
+                  {timeRemaining}
+                </Text>
+              </View>
+            )}
+          </View>
+
+          {/* Reward Claim Button */}
+          {canClaimReward && isCompleted && reward && (
+            <TouchableOpacity
+              onPress={handleRewardClaim}
+              disabled={isClaimingReward}
+              className={`px-3 py-2 rounded-full flex-row items-center ${isClaimingReward ? 'opacity-70' : ''}`}
+              style={{
+                backgroundColor: colors.accent.limeGreen,
+              }}
+              accessibilityRole="button"
+              accessibilityLabel={`Claim reward: ${reward}`}
+            >
+              {isClaimingReward ? (
+                <Icon
+                  name="hourglass"
+                  library="ionicons"
+                  size={14}
+                  color={colors.text.onPrimary}
+                />
+              ) : (
+                <Icon
+                  name="gift"
+                  library="ionicons"
+                  size={14}
+                  color={colors.text.onPrimary}
+                />
+              )}
               <Text
                 className="ml-1"
                 style={{
                   fontFamily: typography.fonts.secondary,
                   fontSize: typography.styles.caption.size,
-                  color: colors.text.tertiary,
+                  fontWeight: typography.weights.semibold,
+                  color: colors.text.onPrimary,
                 }}
               >
-                {timeRemaining}
+                {isClaimingReward ? 'Claiming...' : 'Claim'}
               </Text>
-            </View>
+            </TouchableOpacity>
           )}
         </View>
+
+        {/* Reward Claim Animation */}
+        <RewardClaimAnimation
+          isVisible={showRewardAnimation}
+          rewardText={reward || ''}
+          rewardIcon="gift"
+          onAnimationComplete={handleAnimationComplete}
+          testID="quest-reward-animation"
+        />
       </Card>
     </TouchableOpacity>
   );

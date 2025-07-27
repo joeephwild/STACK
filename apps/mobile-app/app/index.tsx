@@ -180,8 +180,8 @@ export default function App() {
       <View className="absolute bottom-10 w-full items-center px-6">
         <TouchableOpacity
           className="w-full rounded-xl bg-slate-900 p-4"
-        //   onPress={() => router.replace('/(auth)/login')}
-            onPress={() => router.push('/(auth)/onboarding')}
+          onPress={() => router.replace('/(auth)/login')}
+            // onPress={() => router.push('/(auth)/onboarding')}
         >
           <Text className="text-center text-lg font-bold text-white">Get Started</Text>
         </TouchableOpacity>
