@@ -1,3 +1,5 @@
+<img width="1024" height="1536" alt="Poster Design Concepts Jul 27 2025" src="https://github.com/user-attachments/assets/b6d951bd-57bc-4dd5-b31e-e63471647071" />
+
 # **Project Brief: STACK**
 
 ## **Executive Summary**
@@ -65,14 +67,14 @@ STACK will be a Web3-native financial platform that reframes investing through t
     * **Frontend:** React Native.
     * **Backend:** Serverless architecture.
     * **Database:** Amazon Aurora Serverless (PostgreSQL).
-    * **Blockchain:** Must be built on the Etherlink ecosystem using the Thirdweb SDK.
+    * **Blockchain:** Must be built on the citrea ecosystem using the Thirdweb SDK.
 * **Architecture Considerations:**
     * **Repository:** A Monorepo structure will be used to manage all code.
     * **Testing:** A full testing pyramid (Unit, Integration, E2E) is required.
 
 ## **Constraints & Assumptions**
 ### **Constraints**
-* The platform must be built on and integrate with the Etherlink blockchain ecosystem.
+* The platform must be built on and integrate with the Citrea blockchain ecosystem.
 * The user interface must comply with WCAG 2.1 Level AA accessibility standards.
 
 ### **Key Assumptions**
