@@ -6,6 +6,7 @@ import bell from './bell.png'
 import gear from "./gear.png"
 import stocks from './stocks.png'
 import checkmark from './checkmark.png'
+import cards from "./cards.png"
 
 export {
     onBoard1,
@@ -15,5 +16,6 @@ export {
     bell,
     gear,
     stocks,
-    checkmark
+    checkmark,
+    cards
 }

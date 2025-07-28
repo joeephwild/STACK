@@ -18,6 +18,7 @@ export { Badge } from './components/atoms/Badge';
 export { LoadingSkeleton, BasketCardSkeleton } from './components/atoms/LoadingSkeleton';
 
 // Molecules
+export { BalanceCard } from './components/molecules/BalanceCard';
 export { SearchBar } from './components/molecules/SearchBar';
 export { FormField } from './components/molecules/FormField';
 export { ListItem } from './components/molecules/ListItem';

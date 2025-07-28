@@ -10,7 +10,7 @@ import {
   StatusBar,
   ViewStyle,
 } from 'react-native';
-import { onBoard1, onBoard2, onBoard3 } from '~/assets/images';
+import { cards, onBoard1, onBoard2, onBoard3 } from '~/assets/images';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,6 +25,10 @@ interface OnboardingSlide {
   indicatorBg: string;
   indicatorActiveBg: string;
   textSmall?: string;
+  imageStyle?: {
+    width: number;
+    height: number;
+  };
 }
 
 interface ViewableItemsChanged {
@@ -50,6 +54,7 @@ const onboardingSlides: OnboardingSlide[] = [
     indicatorBg: 'bg-white/30',
     indicatorActiveBg: 'bg-white',
     textSmall: 'text-[#D7D6FF]',
+    imageStyle: { width: width, height: height * 0.7 },
   },
   {
     key: '2',
@@ -61,6 +66,7 @@ const onboardingSlides: OnboardingSlide[] = [
     textColor: 'text-black',
     indicatorBg: 'bg-black/30',
     indicatorActiveBg: 'bg-black',
+    imageStyle: { width: width, height: height * 0.7 },
   },
   {
     key: '3',
@@ -72,6 +78,19 @@ const onboardingSlides: OnboardingSlide[] = [
     textColor: 'text-[#1E1F4B]',
     indicatorBg: 'bg-slate-400/50',
     indicatorActiveBg: 'bg-slate-800',
+    imageStyle: { width: width, height: height * 0.7 },
+  },
+  {
+    key: '4',
+    title: 'Smart Cards\nSmarter Wealth',
+    description:
+      'Get virtual and physical cards that automatically round up purchases and invest the difference. Turn everyday spending into wealth building!',
+    image: cards,
+    backgroundColor: '#EAE8FF',
+    textColor: 'text-[#1E1F4B]',
+    indicatorBg: 'bg-slate-400/50',
+    indicatorActiveBg: 'bg-slate-800',
+    imageStyle: { width: width, height: height * 0.6 }, // Different size for cards image
   },
 ];
 
@@ -121,7 +140,7 @@ export default function App() {
 
       <Image
         source={item.image}
-        style={{ width: width, height: height * 0.7 }}
+        style={item.imageStyle}
         className="absolute bottom-0"
         resizeMode="cover"
         onError={(e) => console.log('Image failed to load', e.nativeEvent.error)}
@@ -180,8 +199,8 @@ export default function App() {
       <View className="absolute bottom-10 w-full items-center px-6">
         <TouchableOpacity
           className="w-full rounded-xl bg-slate-900 p-4"
-          onPress={() => router.replace('/(auth)/login')}
-            // onPress={() => router.push('/(auth)/onboarding')}
+        //   onPress={() => router.replace('/(auth)/login')}
+          onPress={() => router.push('/(tabs)')}
         >
           <Text className="text-center text-lg font-bold text-white">Get Started</Text>
         </TouchableOpacity>

@@ -11,3 +11,4 @@ export { OrSeparator } from './OrSeparator';
 export { Icon } from './Icon';
 export { Chart } from './Chart';
 export { RewardClaimAnimation } from './RewardClaimAnimation';
+export { Ionicons } from './SafeIonicons';

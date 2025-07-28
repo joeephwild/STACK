@@ -22,7 +22,7 @@ export const Card: React.FC<CardProps> = ({
       case 'default':
         return {
           backgroundColor: colors.surface.card, // #F7F7F7
-          borderRadius: borderRadius.xxl, // 20px
+          borderRadius: borderRadius.xxl, 
         };
       case 'quest':
         return {

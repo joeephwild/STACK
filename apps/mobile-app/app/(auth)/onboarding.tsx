@@ -4,19 +4,22 @@ import { router } from 'expo-router';
 import { NotificationPermissionStep } from '../../components/onboarding/NotificationPermissionStep';
 import { TrackingPermissionStep } from '../../components/onboarding/TrackingPermissionStep';
 import { FreeStarterSliceStep } from '../../components/onboarding/FreeStarterSliceStep';
+import { PinSetupStep } from '../../components/onboarding/PinSetupStep';
 import { CompletionStep } from '../../components/onboarding/CompletionStep';
 import { useOnboardingStore } from '../../store/onboardingStore';
 import { useAuthStore } from '../../store/authStore';
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 6;
 
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [tempPin, setTempPin] = useState<string>('');
 
   const {
     setHasCompletedOnboarding,
     setHasAcceptedStarterSlice,
+    setAppPin,
     setCurrentStep: setOnboardingStep,
     setLoading,
     setError,
@@ -73,6 +76,18 @@ export default function OnboardingScreen() {
     }
   };
 
+  const handlePinSetup = (pin: string) => {
+    setTempPin(pin);
+    handleNext();
+  };
+
+  const handlePinConfirmation = (pin: string) => {
+    setAppPin(pin);
+    Alert.alert('Success!', 'Your PIN has been set successfully!', [
+      { text: 'Continue', onPress: handleNext },
+    ]);
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -103,6 +118,28 @@ export default function OnboardingScreen() {
           />
         );
       case 3:
+        return (
+          <PinSetupStep
+            onNext={handleNext}
+            onSkip={handleNext}
+            onPinSet={handlePinSetup}
+            currentStep={currentStep + 1}
+            totalSteps={TOTAL_STEPS}
+          />
+        );
+      case 4:
+        return (
+          <PinSetupStep
+            onNext={handleNext}
+            onSkip={handleNext}
+            onPinSet={handlePinConfirmation}
+            isConfirmation={true}
+            originalPin={tempPin}
+            currentStep={currentStep + 1}
+            totalSteps={TOTAL_STEPS}
+          />
+        );
+      case 5:
         return (
           <CompletionStep
             onNext={handleComplete}
