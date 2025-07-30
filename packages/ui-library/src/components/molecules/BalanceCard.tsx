@@ -1,56 +1,58 @@
 import React from 'react';
-import { View, Text, ViewProps, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ViewProps,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import { Card } from '../atoms/Card';
-import { Button } from '../atoms/Button';
 import { colors, typography, spacing } from '../../design/tokens';
-import { Chart, Icon } from '../atoms';
-import { ChartDataPoint } from '../atoms/Chart';
+import { Chart, ChartDataPoint } from '../atoms/Chart';
+import { Icon } from '../atoms/Icon';
 
 export interface BalanceCardProps extends ViewProps {
   balance: string;
   currency?: string;
-  onTopUpPress?: () => void;
+  onPress?: () => void;
   className?: string;
+  chartData: ChartDataPoint[];
+  performanceText: string;
 }
 
 export const BalanceCard: React.FC<BalanceCardProps> = ({
   balance,
   currency = 'USD',
-  onTopUpPress,
+  onPress,
   className,
+  chartData,
+  performanceText,
   ...props
 }) => {
-  // Sample chart data for balance trends
-  const chartData: ChartDataPoint[] = [
-    { value: 1250, label: 'Jan', color: colors.primary.royalBlue },
-    { value: 2800, label: 'Feb', color: colors.primary.royalBlue },
-    { value: 1750, label: 'Mar', color: colors.primary.royalBlue },
-    { value: 5000, label: 'Apr', color: colors.primary.royalBlue },
-    { value: 6180, label: 'May', color: colors.primary.royalBlue },
-    { value: 2700, label: 'Jun', color: colors.primary.royalBlue },
-  ];
+  const { width: screenWidth } = useWindowDimensions();
+  // Calculate chart width to be the full width of the card, accounting for screen padding.
+  const chartWidth = screenWidth - 28; // Screen width minus the horizontal margin of the card.
 
   return (
     <Card
       variant="default"
-      padding="large"
+      padding="none" // Remove default padding from the card
       className={`${className || ''}`}
       {...props}
       style={{
         backgroundColor: colors.primary.royalBlue,
+        overflow: 'hidden', // Add overflow hidden to contain the chart
       }}
     >
-      {/* Balance Section */}
-      <View className="mb-6">
-        <View className="flex-row items-center justify-between mb-2">
+      {/* Top Content with Padding */}
+      <View style={{ paddingHorizontal: spacing.lg, paddingTop: spacing.lg }}>
+        <View className="mb-2">
           <Text
-            className="font-medium text-sm text-text-secondary"
             style={{
               fontFamily: typography.fonts.secondary,
               fontSize: typography.styles.label.size,
               color: colors.text.onPrimary,
               textTransform: 'uppercase',
-              letterSpacing: 0.5,
             }}
           >
             Portfolio Value
@@ -59,10 +61,11 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
 
         <View className="mb-3">
           <Text
-            className="font-bold font-h1 text-text-primary"
             style={{
               fontSize: 38,
               color: colors.text.onPrimary,
+              fontFamily: typography.fonts.primary,
+              fontWeight: 'bold',
             }}
           >
             {balance}
@@ -87,52 +90,66 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
         </View>
       </View>
 
-      {/* Chart Section */}
+      {/* Full Width Chart Section (No Padding) */}
       <Chart
         data={chartData}
         type="line"
-        height={120}
-        width={2400}
-        showLabels={false}
-        showValues={false}
+        height={190}
+        width={chartWidth}
+        color={colors.accent.limeGreen} // This is the limegreen line color
+        startFillColor={colors.accent.limeGreen}
+        // Set endFillColor to the card's background for a smooth blend
+        endFillColor={colors.primary.royalBlue} // This makes the gradient fade into the card
       />
 
-      <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center gap-x-1">
-          <Icon
-            library="feather"
-            name="trending-up"
-            size={14}
-            color={colors.accent.limeGreen}
-          />
-          <Text
-            className="text-[14px]"
-            style={{
-              color: colors.accent.limeGreen,
-              fontFamily: typography.fonts.secondary,
-            }}
-          >
-            +12.5%
-          </Text>
-        </View>
+      {/* Bottom Content with Padding */}
+      <View
+        style={{
+          paddingHorizontal: spacing.lg,
+          paddingBottom: spacing.lg,
+          paddingTop: spacing.sm,
+        }}
+      >
+        <View className="flex-row items-center justify-between mt-2">
+          <View className="flex-row items-center gap-x-1">
+            <Icon
+              library="feather"
+              name="trending-up"
+              size={14}
+              color={colors.accent.limeGreen}
+            />
+            <Text
+              className="text-[14px]"
+              style={{
+                color: colors.accent.limeGreen,
+                fontFamily: typography.fonts.secondary,
+              }}
+            >
+              {performanceText}
+            </Text>
+          </View>
 
-        <TouchableOpacity className="flex-row items-center gap-x-1">
-          <Text
-            style={{
-              color: colors.text.onPrimary,
-              fontFamily: typography.fonts.secondary,
-            }}
-            className="text-[14px] font"
+          <TouchableOpacity
+            onPress={onPress}
+            className="flex-row items-center gap-x-1"
           >
-            View Portfolio
-          </Text>
-          <Icon
-            library="feather"
-            name="chevron-right"
-            size={14}
-            color={colors.text.onPrimary}
-          />
-        </TouchableOpacity>
+            <Text
+              style={{
+                color: colors.text.onPrimary,
+                fontFamily: typography.fonts.secondary,
+              }}
+              className="text-[14px]"
+            >
+              View Portfolio
+            </Text>
+            <Icon
+              library="feather"
+              name="chevron-right"
+              size={14}
+              color={colors.text.onPrimary}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </Card>
   );

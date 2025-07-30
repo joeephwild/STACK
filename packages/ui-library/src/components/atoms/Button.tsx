@@ -137,6 +137,7 @@ export const Button: React.FC<ButtonProps> = ({
     opacity: isDisabled ? 0.5 : 1,
     ...getVariantStyles(),
     ...getSizeStyles(),
+    columnGap: 4
   };
 
   const textStyle: TextStyle = {

@@ -1,8 +1,15 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Text, ScrollView, FlatList, TouchableOpacity } from 'react-native';
-import { router, useNavigation } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Header, Card, Icon, colors, typography, spacing } from '@stack/ui-library';
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
+import {  useNavigation } from 'expo-router';
+import { Header, Card, Icon, colors, typography, spacing, Chart } from '@stack/ui-library';
+import { ChartDataPoint } from '../../../../packages/ui-library/src/components/atoms/Chart';
 
 // Mock data as specified in the story
 const mockTotalValue = {
@@ -11,6 +18,17 @@ const mockTotalValue = {
   change: 8.2,
   changeAmount: 411234.72,
 };
+const chartData: ChartDataPoint[] = [
+  { value: 1250, label: 'Jan', color: colors.primary.royalBlue },
+  { value: 2800, label: 'Feb', color: colors.primary.royalBlue },
+  { value: 1750, label: 'Mar', color: colors.primary.royalBlue },
+  { value: 5000, label: 'Apr', color: colors.primary.royalBlue },
+  { value: 6180, label: 'May', color: colors.primary.royalBlue },
+  { value: 2700, label: 'Jun', color: colors.primary.royalBlue },
+  { value: 5000, label: 'Apr', color: colors.primary.royalBlue },
+  { value: 6180, label: 'May', color: colors.primary.royalBlue },
+  { value: 2700, label: 'Jun', color: colors.primary.royalBlue },
+];
 
 const mockHoldings = [
   {
@@ -205,6 +223,7 @@ const HoldingsList: React.FC = () => (
 
 export default function PortfolioScreen() {
   const navigation = useNavigation();
+  const { width: screenWidth } = useWindowDimensions();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -224,7 +243,7 @@ export default function PortfolioScreen() {
     });
   }, [navigation]);
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
         backgroundColor: colors.background.main,
@@ -233,14 +252,43 @@ export default function PortfolioScreen() {
       <ScrollView
         className="flex-1"
         contentContainerStyle={{
-          paddingHorizontal: spacing.lg,
-          paddingBottom: spacing.xl,
+          paddingVertical: 15,
         }}
         showsVerticalScrollIndicator={false}
         accessibilityLabel="Portfolio content">
-        <PortfolioValueCard />
-        <HoldingsList />
+        {/* Wrap content that needs padding in a View */}
+        <View style={{ paddingHorizontal: 15 }}>
+          <View className="flex-row items-center gap-x-3">
+            <Text className="font-body-regular text-[16px] text-text-secondary">
+              Total Value of portfolio
+            </Text>
+            <Icon library="feather" name="eye" size={16} color="#545454" />
+          </View>
+          <Text className="font-h1 text-[38px]">
+            {mockTotalValue.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+          </Text>
+          <Text className="font-body-regular text-[16px] text-text-secondary">
+            {mockTotalValue.changeAmount.toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            })}
+          </Text>
+        </View>
+
+        <Chart
+          type="line"
+          data={chartData}
+          height={295}
+          width={screenWidth} // Use the screen width
+          color="#00FF00" // Example: Green line color
+          startFillColor="#00FF00" // Example: Green gradient start
+          endFillColor="#FFFFFF" // Example: White gradient end
+        />
+
+        <View style={{ paddingHorizontal: 15 }}>
+          {/* Your HoldingsList or other components go here */}
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

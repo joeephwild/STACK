@@ -1,5 +1,5 @@
-import React, { useLayoutEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 import {
   Icon,
@@ -9,22 +9,30 @@ import {
   AITipCard,
   Button,
   Grid,
-  GridItem,
+  ChartDataPoint,
+  colors,
 } from '@stack/ui-library';
+import { Avatar } from 'react-native-elements';
+import { avatar } from '~/assets/images';
 
+// --- INTERFACES ---
 interface BasketFeedItem {
   id: string;
   type: 'basket';
   name: string;
   description: string;
-  avatar: string;
-  performanceData: Array<{ date: string; value: number }>;
-  stockAvatars: string[];
+  avatar?: string;
   performance: {
     value: number;
-    percentage: number;
     isPositive: boolean;
+    chartData: number[];
   };
+  stocks: Array<{
+    id: string;
+    symbol: string;
+    avatar?: string;
+    allocation: number;
+  }>;
 }
 
 interface QuestFeedItem {
@@ -34,9 +42,8 @@ interface QuestFeedItem {
   description: string;
   progress: number;
   xpReward: number;
-  difficulty: 'easy' | 'medium' | 'hard';
+  iconName: any;
   isCompleted: boolean;
-  streakCount?: number;
 }
 
 interface AITipFeedItem {
@@ -51,102 +58,134 @@ interface AITipFeedItem {
 
 type FeedItem = BasketFeedItem | QuestFeedItem | AITipFeedItem;
 
+// --- MOCK DATA ---
+const mockFeedItemsData: FeedItem[] = [
+  {
+    id: 'quest1',
+    type: 'quest',
+    title: 'First Investment',
+    description: 'Make your first investment to learn the basics.',
+    progress: 0,
+    xpReward: 100,
+    iconName: 'target',
+    isCompleted: false,
+  },
+  {
+    id: 'tip1',
+    type: 'tip',
+    title: 'Understanding ETFs',
+    content:
+      'Exchange-Traded Funds (ETFs) offer a great way to diversify your portfolio without buying individual stocks.',
+    category: 'education',
+    readTime: 3,
+    isBookmarked: false,
+  },
+  {
+    id: 'basket1',
+    type: 'basket',
+    name: 'Tech Giants',
+    description: 'A basket of the top-performing technology stocks.',
+    avatar: 'https://placehold.co/48x48/6366F1/FFFFFF?text=TG',
+    performance: {
+      value: 12.5,
+      isPositive: true,
+      chartData: [30, 40, 25, 50, 60, 80, 70],
+    },
+    stocks: [
+      {
+        id: 's1',
+        symbol: 'AAPL',
+        avatar: 'https://placehold.co/24x24/000000/FFFFFF?text=A',
+        allocation: 40,
+      },
+      {
+        id: 's2',
+        symbol: 'GOOGL',
+        avatar: 'https://placehold.co/24x24/EA4335/FFFFFF?text=G',
+        allocation: 30,
+      },
+      {
+        id: 's3',
+        symbol: 'MSFT',
+        avatar: 'https://placehold.co/24x24/00A4EF/FFFFFF?text=M',
+        allocation: 30,
+      },
+    ],
+  },
+  {
+    id: 'quest2',
+    type: 'quest',
+    title: 'Portfolio Diversification',
+    description: 'Add at least 3 different assets to your portfolio.',
+    progress: 66,
+    xpReward: 150,
+    iconName: 'git-merge',
+    isCompleted: false,
+  },
+];
+
 export default function DashboardScreen() {
   const navigation = useNavigation();
-  // Mock data for placeholder content
   const portfolioValue = 1245989.56;
-  const dailyChange = 12.34;
-  const dailyChangePercent = 1.2;
-  const isPositiveChange = dailyChange >= 0;
+
+  const [feedItems, setFeedItems] = useState(mockFeedItemsData);
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: '',
       headerLeft: () => (
-        <Text className="pl-[12px] font-h1 text-[38px] font-bold text-text-primary">Dashboard</Text>
+        <View className="ml-[12px] flex-row items-center gap-x-4">
+          <Avatar rounded source={avatar} size="small" />
+          <Text className="font-heading-bold text-[24px] text-text-primary">HI, Simon</Text>
+        </View>
       ),
       headerRight: () => (
-        <TouchableOpacity
-          //   onPress={() => {
-          //     router.push('/settings');
-          //   }}
-          className="mr-[12px]">
-          <Icon library="feather" name="bell" size={24} color="#000000" />
-        </TouchableOpacity>
+        <View className="flex-row items-center">
+          <TouchableOpacity className="mr-[12px] rounded-full bg-primary-lavender px-4 py-2">
+            <Text className="font-body text-body text-text-on-primary">Seed</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="mr-[12px]">
+            <Icon library="feather" name="bell" size={24} color="#000000" />
+          </TouchableOpacity>
+        </View>
       ),
+      headerStyle: {
+        borderBottomWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+        paddingBottom: 10,
+        height: 100,
+      },
+      headerShown: true,
     });
   }, [navigation]);
 
-  const mockFeedItems: FeedItem[] = [
-    {
-      id: '1',
-      type: 'basket',
-      name: 'Tech Innovators',
-      description: 'Discover cutting-edge technology companies with high growth potential.',
-      avatar:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEsx0cmENacsYu8Z3kwcrZJRqc8oFsWe2n3Q&sI',
-      performanceData: [
-        { date: '2024-01-01', value: 1250 },
-        { date: '2024-01-02', value: 2514 },
-        { date: '2024-01-03', value: 1103 },
-        { date: '2024-01-04', value: 5008 },
-        { date: '2024-01-05', value: 6122 },
-      ],
-      stockAvatars: [
-        'https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-png-dallas-shootings-don-add-are-speech-zones-used-4.png',
-        'https://www.clipartmax.com/png/middle/39-396698_tesla-logo-%5Beps-motors%5D-tesla-logo-icon.png',
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEsx0cmENacsYu8Z3kwcrZJRqc8oFsWe2n3Q&s',
-      ],
-      performance: {
-        value: 12.34,
-        percentage: 8.5,
-        isPositive: true,
-      },
-    },
-    {
-      id: '2',
-      type: 'quest',
-      title: 'Set Up Round-ups',
-      description: 'Start investing spare change automatically with every purchase.',
-      progress: 60,
-      xpReward: 150,
-      difficulty: 'easy',
-      isCompleted: false,
-      streakCount: 3,
-    },
-    {
-      id: '3',
-      type: 'tip',
-      title: 'Market Update on Your Holdings',
-      content:
-        'Your tech stocks are performing well this week. Consider diversifying your portfolio to reduce risk while maintaining growth potential.',
-      category: 'portfolio',
-      readTime: 3,
-      isBookmarked: false,
-    },
+  const balanceChartData: ChartDataPoint[] = [
+    { value: 1250 },
+    { value: 2800 },
+    { value: 1750 },
+    { value: 5000 },
+    { value: 6180 },
+    { value: 2700 },
+    { value: 4500 },
+    { value: 5200 },
+    { value: 3200 },
   ];
 
-  const handlePortfolioPress = () => {
-    router.push('/portfolio');
-  };
+  const handlePortfolioPress = () => router.push('/portfolio');
+  const handleBasketPress = (id: string) => Alert.alert('Navigate', `To basket ${id}`);
+  const handleQuestPress = (id: string) => Alert.alert('Navigate', `To quest ${id}`);
+  const handleTipPress = (id: string) => Alert.alert('Navigate', `To tip ${id}`);
 
-  const handleFeedItemPress = (item: FeedItem) => {
-    switch (item.type) {
-      case 'basket':
-        console.log('Navigate to basket:', item.id);
-        // router.push(`/baskets/${item.id}`);
-        break;
-      case 'quest':
-        console.log('Navigate to quest:', item.id);
-        // router.push(`/quests/${item.id}`);
-        break;
-      case 'tip':
-        console.log('Navigate to tip:', item.id);
-        // router.push(`/tips/${item.id}`);
-        break;
-      default:
-        console.log('Unknown feed item type');
-    }
+  const handleBookmark = (id: string) => {
+    setFeedItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.id === id && item.type === 'tip') {
+          return { ...item, isBookmarked: !item.isBookmarked };
+        }
+        return item;
+      })
+    );
   };
 
   const renderFeedItem = (item: FeedItem) => {
@@ -155,22 +194,8 @@ export default function DashboardScreen() {
         return (
           <BasketFeedCard
             key={item.id}
-            id={item.id}
-            name={item.name}
-            description={item.description}
-            avatar={item.avatar}
-            performance={{
-              value: item.performance.value,
-              isPositive: item.performance.isPositive,
-              chartData: item.performanceData.map((d) => d.value),
-            }}
-            stocks={item.stockAvatars.map((avatar, index) => ({
-              id: `stock-${index}`,
-              symbol: `S${index + 1}`,
-              avatar,
-              allocation: 25, // Mock allocation
-            }))}
-            onPress={() => handleFeedItemPress(item)}
+            {...item}
+            onPress={() => handleBasketPress(item.id)}
             className="mb-4"
           />
         );
@@ -178,15 +203,8 @@ export default function DashboardScreen() {
         return (
           <QuestFeedCard
             key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            progress={item.progress}
-            xpReward={item.xpReward}
-            difficulty={item.difficulty}
-            isCompleted={item.isCompleted}
-            streakCount={item.streakCount}
-            onPress={() => handleFeedItemPress(item)}
+            {...item}
+            onPress={() => handleQuestPress(item.id)}
             className="mb-4"
           />
         );
@@ -194,14 +212,9 @@ export default function DashboardScreen() {
         return (
           <AITipCard
             key={item.id}
-            id={item.id}
-            title={item.title}
-            content={item.content}
-            category="general"
-            readTime={`${item.readTime} min`}
-            isBookmarked={item.isBookmarked}
-            onPress={() => handleFeedItemPress(item)}
-            onBookmark={() => console.log('Bookmark toggled for tip:', item.id)}
+            {...item}
+            onPress={() => handleTipPress(item.id)}
+            onBookmark={() => handleBookmark(item.id)}
             className="mb-4"
           />
         );
@@ -215,62 +228,71 @@ export default function DashboardScreen() {
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 20 }}
-        showsVerticalScrollIndicator={false}
-        accessibilityLabel="Dashboard screen content">
-        {/* Portfolio Summary Section */}
+        showsVerticalScrollIndicator={false}>
         <BalanceCard
-          className="mx-[14px] mt-[24px] h-[25%] gap-y-[16px] p-[16px]"
+          className="mx-[14px] mt-[24px]"
           balance={portfolioValue.toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD',
           })}
-          onTopUpPress={handlePortfolioPress}
+          onPress={handlePortfolioPress}
+          chartData={balanceChartData}
+          performanceText="+12.5%"
         />
 
         <View className="mx-6 items-start gap-x-4 gap-y-[16px] pt-2">
-          <Text className="font-heading-bold text-[20px] ">Add Money</Text>
+          <Text className="font-heading-bold text-[20px] ">Add Cash</Text>
           <Grid columns={3}>
-            <Button size="medium" variant="tertiary" title="$ 20k" />
-            <Button size="medium" variant="tertiary" title="$ 50k" />
-            <Button size="medium" variant="tertiary" title="$ 100k" />
-            <Button size="medium" variant="tertiary" title="$ 100" className="mr-2 h-[50px] bg-primary p-2" />
-            <Button size="medium" variant="tertiary" title="$ 200" />
             <Button
+              icon={<Icon library="feather" name="arrow-down-circle" size={20} color={colors.primary.royalBlue} />}
+              variant="primary"
               size="medium"
-              variant="tertiary"
-              icon={<Icon library="feather" name="plus" size={16} color="black" />}
-              title=""
-              className="mr-2 h-[50px] bg-primary p-2"
+              style={{ backgroundColor: colors.text.primary }}
+              title="Top Up"
+            />
+            <Button
+              icon={<Icon library="feather" name="arrow-down" size={20} color={colors.primary.royalBlue} />}
+              variant="primary"
+              size="medium"
+              style={{ backgroundColor: colors.text.primary }}
+              title="Cash Out"
+            />
+            <Button
+              icon={<Icon library="feather" name="arrow-right" size={20} color={colors.primary.royalBlue} />}
+              variant="primary"
+              size="medium"
+              style={{ backgroundColor: colors.text.primary }}
+              title="Power up"
             />
           </Grid>
         </View>
 
-        {/* Feed Items Section */}
-        <View className="px-6">
-          <Text
-            className="mb-4 mt-[24px] font-h1 text-[28px] font-bold text-black"
-            accessibilityRole="header">
-            For You
-          </Text>
-
-          <View accessibilityLabel="Personalized feed items">
-            {mockFeedItems.map(renderFeedItem)}
-          </View>
-
-          {/* Load More Indicator */}
-          <View className="mt-4 items-center">
-            <TouchableOpacity
-              className="px-6 py-3"
-              accessibilityRole="button"
-              accessibilityLabel="Load more feed items"
-              accessibilityHint="Loads additional personalized content">
-              <Text
-                className="text-base font-medium text-blue-600"
-                style={{ fontFamily: 'Gilroy' }}>
-                Load More
+        <View className="px-6 ">
+          <View className="flex-row items-center justify-between py-4">
+            <Text className="font-body-bold text-[18px]">Create a bucket</Text>
+            <View className="flex-row items-center gap-x-2">
+              <Text className="font-body-light text-[14px] text-text-secondary">
+                View all bucket
               </Text>
-            </TouchableOpacity>
+              <Icon library="feather" name="chevron-right" size={16} color="#545454" />
+            </View>
           </View>
+          <Text className="pb-2 font-body-medium text-[14px] text-text-secondary">
+            Start your investment journey by creating your first bucket
+          </Text>
+          <TouchableOpacity className="h-[160px] w-[50%] items-center justify-center gap-y-2 rounded-lg bg-primary-lavendertint">
+            <View className="rounded-full bg-background-main p-2">
+              <Icon library="feather" name="plus" size={16} color="#545454" />
+            </View>
+            <Text className="text-center font-body-light text-[14px]">
+              Create an investment bucket
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View className="mt-6 px-6">
+          <Text className="mb-4 font-h1 text-[28px] font-bold text-black">For You</Text>
+          <View>{feedItems.map(renderFeedItem)}</View>
         </View>
       </ScrollView>
     </View>

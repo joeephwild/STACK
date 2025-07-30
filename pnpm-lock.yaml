@@ -228,6 +228,9 @@ importers:
       react-native-css-interop:
         specifier: ^0.1.22
         version: 0.1.22(react-native-reanimated@3.17.5)(react-native-safe-area-context@5.4.0)(react-native-svg@15.11.2)(react-native@0.79.5)(react@19.0.0)(tailwindcss@3.4.17)
+      react-native-elements:
+        specifier: ^3.4.3
+        version: 3.4.3(react-native-safe-area-context@5.4.0)(react-native-vector-icons@10.3.0)(react-native@0.79.5)(react@19.0.0)
       react-native-gesture-handler:
         specifier: ~2.24.0
         version: 2.24.0(react-native@0.79.5)(react@19.0.0)
@@ -258,6 +261,9 @@ importers:
       react-native-svg:
         specifier: 15.11.2
         version: 15.11.2(react-native@0.79.5)(react@19.0.0)
+      react-native-vector-icons:
+        specifier: ^10.3.0
+        version: 10.3.0
       react-native-web:
         specifier: ^0.20.0
         version: 0.20.0(react-dom@19.0.0)(react@19.0.0)
@@ -4077,7 +4083,7 @@ packages:
     peerDependencies:
       hardhat: ^2.22.5
     dependencies:
-      '@matterlabs/zksync-telemetry-js': git@github.com+matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1)
+      '@matterlabs/zksync-telemetry-js': github.com/matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1)
       hardhat: 2.26.1(ts-node@10.9.2)(typescript@5.8.3)
     transitivePeerDependencies:
       - debug
@@ -17640,6 +17646,11 @@ packages:
       is-wsl: 2.2.0
     dev: false
 
+  /opencollective-postinstall@2.0.3:
+    resolution: {integrity: sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==}
+    hasBin: true
+    dev: false
+
   /optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -18748,6 +18759,28 @@ packages:
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
     dev: false
 
+  /react-native-elements@3.4.3(react-native-safe-area-context@5.4.0)(react-native-vector-icons@10.3.0)(react-native@0.79.5)(react@19.0.0):
+    resolution: {integrity: sha512-VtZc25EecPZyUBER85zFK9ZbY6kkUdcm1ZwJ9hdoGSCr1R/GFgxor4jngOcSYeMvQ+qimd5No44OVJW3rSJECA==}
+    requiresBuild: true
+    peerDependencies:
+      react-native-safe-area-context: '>= 3.0.0'
+      react-native-vector-icons: '>7.0.0'
+    dependencies:
+      '@types/react-native-vector-icons': 6.4.18
+      color: 3.2.1
+      deepmerge: 4.3.1
+      hoist-non-react-statics: 3.3.2
+      lodash.isequal: 4.5.0
+      opencollective-postinstall: 2.0.3
+      react-native-ratings: 8.0.4(react-native@0.79.5)(react@19.0.0)
+      react-native-safe-area-context: 5.4.0(react-native@0.79.5)(react@19.0.0)
+      react-native-size-matters: 0.3.1(react-native@0.79.5)
+      react-native-vector-icons: 10.3.0
+    transitivePeerDependencies:
+      - react
+      - react-native
+    dev: false
+
   /react-native-gesture-handler@2.24.0(react-native@0.79.5)(react@19.0.0):
     resolution: {integrity: sha512-ZdWyOd1C8axKJHIfYxjJKCcxjWEpUtUWgTOVY2wynbiveSQDm8X/PDyAKXSer/GOtIpjudUbACOndZXCN3vHsw==}
     peerDependencies:
@@ -18863,6 +18896,17 @@ packages:
       - react-native
     dev: false
 
+  /react-native-ratings@8.0.4(react-native@0.79.5)(react@19.0.0):
+    resolution: {integrity: sha512-Xczu5lskIIRD6BEdz9A0jDRpEck/SFxRqiglkXi0u67yAtI1/pcJC76P4MukCbT8K4BPVl+42w83YqXBoBRl7A==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+    dependencies:
+      lodash: 4.17.21
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
+    dev: false
+
   /react-native-ratings@8.1.0(react-native@0.79.5)(react@19.0.0):
     resolution: {integrity: sha512-+QOJ4G3NjVkI1D+tk4EGx1dCvVfbD2nQdkrj9cXrcAoEiwmbep4z4bZbCKmWMpQ5h2dqbxABU8/eBnbDmvAc3g==}
     peerDependencies:
@@ -18921,6 +18965,14 @@ packages:
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
       react-native-is-edge-to-edge: 1.2.1(react-native@0.79.5)(react@19.0.0)
       warn-once: 0.1.1
+    dev: false
+
+  /react-native-size-matters@0.3.1(react-native@0.79.5):
+    resolution: {integrity: sha512-mKOfBLIBFBcs9br1rlZDvxD5+mAl8Gfr5CounwJtxI6Z82rGrMO+Kgl9EIg3RMVf3G855a85YVqHJL2f5EDRlw==}
+    peerDependencies:
+      react-native: '*'
+    dependencies:
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
     dev: false
 
   /react-native-size-matters@0.4.2(react-native@0.79.5):
@@ -22736,9 +22788,9 @@ packages:
       - tailwindcss
     dev: false
 
-  git@github.com+matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1):
-    resolution: {commit: 2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11, repo: git@github.com:matter-labs/zksync-telemetry-js.git, type: git}
-    id: git@github.com+matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11
+  github.com/matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1):
+    resolution: {tarball: https://codeload.github.com/matter-labs/zksync-telemetry-js/tar.gz/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11}
+    id: github.com/matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11
     name: zksync-telemetry
     version: 1.0.0
     dependencies:

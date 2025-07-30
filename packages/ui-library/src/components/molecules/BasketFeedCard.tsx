@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, ViewStyle } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  useWindowDimensions,
+} from 'react-native';
 import { Card } from '../atoms/Card';
 import { Icon } from '../atoms/Icon';
 import { Chart } from '../atoms/Chart';
@@ -41,6 +47,10 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
   onPress,
   className,
 }) => {
+  const { width: screenWidth } = useWindowDimensions();
+  // The dashboard container has 'px-6' (24px on each side).
+  const chartWidth = screenWidth - 24 * 2;
+
   const performanceColor = performance.isPositive
     ? colors.semantic.success
     : colors.semantic.danger;
@@ -54,16 +64,13 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
       accessibilityHint="Tap to view basket details"
       className={className}
     >
-      <Card variant="default" padding="none" style={[shadows.md]}>
-        {/* Header Section with Background */}
-        <View
-          style={{
-            backgroundColor: colors.surface.card,
-            borderTopLeftRadius: borderRadius.xxl,
-            borderTopRightRadius: borderRadius.xxl,
-            padding: spacing.md,
-          }}
-        >
+      <Card
+        variant="default"
+        padding="none"
+        style={[shadows.md, { overflow: 'hidden' }]}
+      >
+        {/* Header Section (with padding) */}
+        <View style={{ padding: spacing.md, paddingBottom: spacing.sm }}>
           <View
             style={{
               flexDirection: 'row',
@@ -71,7 +78,6 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
               marginBottom: spacing.sm,
             }}
           >
-            {/* Basket Avatar */}
             <View
               style={{
                 width: 48,
@@ -99,8 +105,6 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
                 />
               )}
             </View>
-
-            {/* Basket Info */}
             <View style={{ flex: 1 }}>
               <Text
                 style={{
@@ -125,8 +129,6 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
                 {description}
               </Text>
             </View>
-
-            {/* Performance Badge */}
             <View
               style={{
                 backgroundColor: performance.isPositive
@@ -153,27 +155,21 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
           </View>
         </View>
 
-        {/* Chart Section */}
-        <View style={{ paddingHorizontal: spacing.md, paddingTop: spacing.sm }}>
-          <Chart
-            data={performance.chartData.map((value, index) => ({
-              value,
-              label: `${index}`,
-            }))}
-            height={80}
-            color={performanceColor}
-            style={{ marginBottom: spacing.md }}
-            type="line"
-            width={2500}
-            showLabels={false}
-            showValues={false}
-          />
-        </View>
+        {/* FIX: The Chart component is now a direct child of the Card,
+          and the wrapping View with horizontal padding has been removed.
+        */}
+        <Chart
+          data={performance.chartData.map(value => ({ value }))}
+          height={150} // Increased height as requested
+          width={chartWidth}
+          color={colors.accent.limeGreen}
+          startFillColor={colors.accent.limeGreen}
+          endFillColor={colors.surface.card}
+          type="line"
+        />
 
-        {/* Stocks Section */}
-        <View
-          style={{ paddingHorizontal: spacing.md, paddingBottom: spacing.md }}
-        >
+        {/* Stocks Section (with padding) */}
+        <View style={{ padding: spacing.md, paddingTop: spacing.sm }}>
           <View
             style={{
               flexDirection: 'row',
@@ -181,7 +177,6 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
               justifyContent: 'space-between',
             }}
           >
-            {/* Stock Avatars */}
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flexDirection: 'row' }}>
                 {stocks.slice(0, 4).map((stock, index) => (
@@ -248,8 +243,6 @@ export const BasketFeedCard: React.FC<BasketFeedCardProps> = ({
                 )}
               </View>
             </View>
-
-            {/* CTA Button */}
             <TouchableOpacity
               onPress={onPress}
               style={{

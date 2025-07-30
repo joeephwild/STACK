@@ -24,6 +24,9 @@ export interface ChartProps extends ViewProps {
   className?: string;
   testID?: string;
   color?: string;
+  areaColor?: string; // Add this for area color
+  startFillColor?: string; // Add this for gradient start
+  endFillColor?: string; // Add this for gradient end
   animationDuration?: number;
   width?: number;
 }
@@ -41,9 +44,12 @@ export const Chart: React.FC<ChartProps> = ({
   color = colors.accent.limeGreen,
   animationDuration = 800,
   width = 120,
+  areaColor = colors.accent.limeGreen,
+  startFillColor = colors.accent.limeGreen,
+  endFillColor = colors.accent.limeGreen,
   ...props
 }) => {
-  const giftedData = data.map((point) => ({
+  const giftedData = data.map(point => ({
     value: point.value,
     label: '', // hide labels
     frontColor: point.color || color,
@@ -87,6 +93,8 @@ export const Chart: React.FC<ChartProps> = ({
         return (
           <LineChart
             curved
+            startFillColor={startFillColor || color} // Use new props
+            endFillColor={endFillColor || areaColor || '#FFFFFF'}
             curveType={CurveType.QUADRATIC}
             data={giftedData}
             thickness={3}
@@ -99,19 +107,22 @@ export const Chart: React.FC<ChartProps> = ({
             hideRules
             hideYAxisText
             height={height}
-            adjustToWidth
-            areaChart2
+            width={width} // Pass width to LineChart
+            adjustToWidth={!width}
+            areaChart
+            initialSpacing={0}
+            endSpacing={0}
           />
         );
     }
   };
 
   return (
-    <
-    //   style={[{ height, width: '100%', alignItems: 'center' }, style]}
-    //   className={className}
-    //   testID={testID}
-    //   {...props}
+    <View
+      style={[{ height, width: width || '100%' }, style]}
+      className={className}
+      testID={testID}
+      {...props}
     >
       {title && (
         <Text
@@ -127,6 +138,6 @@ export const Chart: React.FC<ChartProps> = ({
         </Text>
       )}
       {renderChart()}
-    </>
+    </View>
   );
 };

@@ -7,6 +7,7 @@ import gear from "./gear.png"
 import stocks from './stocks.png'
 import checkmark from './checkmark.png'
 import cards from "./cards.png"
+import avatar from './avatar.png'
 
 export {
     onBoard1,
@@ -17,5 +18,6 @@ export {
     gear,
     stocks,
     checkmark,
-    cards
+    cards,
+    avatar
 }
