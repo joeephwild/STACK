@@ -1,17 +1,55 @@
 import React, { useLayoutEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useNavigation } from 'expo-router';
-import { Card, Button, Icon, BalanceCard, SpendableBalance } from '@stack/ui-library';
+import {
+  Icon,
+  BalanceCard,
+  BasketFeedCard,
+  QuestFeedCard,
+  AITipCard,
+  Button,
+  Grid,
+  GridItem,
+} from '@stack/ui-library';
 
-interface FeedItem {
+interface BasketFeedItem {
   id: string;
-  type: 'investment' | 'quest' | 'tip';
+  type: 'basket';
+  name: string;
+  description: string;
+  avatar: string;
+  performanceData: Array<{ date: string; value: number }>;
+  stockAvatars: string[];
+  performance: {
+    value: number;
+    percentage: number;
+    isPositive: boolean;
+  };
+}
+
+interface QuestFeedItem {
+  id: string;
+  type: 'quest';
   title: string;
   description: string;
-  actionText: string;
-  icon?: string;
+  progress: number;
+  xpReward: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  isCompleted: boolean;
+  streakCount?: number;
 }
+
+interface AITipFeedItem {
+  id: string;
+  type: 'tip';
+  title: string;
+  content: string;
+  category: 'market' | 'portfolio' | 'education' | 'strategy';
+  readTime: number;
+  isBookmarked: boolean;
+}
+
+type FeedItem = BasketFeedItem | QuestFeedItem | AITipFeedItem;
 
 export default function DashboardScreen() {
   const navigation = useNavigation();
@@ -24,7 +62,16 @@ export default function DashboardScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Text className="pl-[12px] font-h1 text-[38px] font-bold text-white">Dashboard</Text>
+        <Text className="pl-[12px] font-h1 text-[38px] font-bold text-text-primary">Dashboard</Text>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          //   onPress={() => {
+          //     router.push('/settings');
+          //   }}
+          className="mr-[12px]">
+          <Icon library="feather" name="bell" size={24} color="#000000" />
+        </TouchableOpacity>
       ),
     });
   }, [navigation]);
@@ -32,27 +79,50 @@ export default function DashboardScreen() {
   const mockFeedItems: FeedItem[] = [
     {
       id: '1',
-      type: 'investment',
-      title: 'New Basket Available: Tech Innovators',
+      type: 'basket',
+      name: 'Tech Innovators',
       description: 'Discover cutting-edge technology companies with high growth potential.',
-      actionText: 'Explore Basket',
-      icon: 'trending-up',
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEsx0cmENacsYu8Z3kwcrZJRqc8oFsWe2n3Q&sI',
+      performanceData: [
+        { date: '2024-01-01', value: 1250 },
+        { date: '2024-01-02', value: 2514 },
+        { date: '2024-01-03', value: 1103 },
+        { date: '2024-01-04', value: 5008 },
+        { date: '2024-01-05', value: 6122 },
+      ],
+      stockAvatars: [
+        'https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-png-dallas-shootings-don-add-are-speech-zones-used-4.png',
+        'https://www.clipartmax.com/png/middle/39-396698_tesla-logo-%5Beps-motors%5D-tesla-logo-icon.png',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEsx0cmENacsYu8Z3kwcrZJRqc8oFsWe2n3Q&s',
+      ],
+      performance: {
+        value: 12.34,
+        percentage: 8.5,
+        isPositive: true,
+      },
     },
     {
       id: '2',
       type: 'quest',
-      title: 'Complete Your First Quest: Set Up Round-ups',
+      title: 'Set Up Round-ups',
       description: 'Start investing spare change automatically with every purchase.',
-      actionText: 'Start Quest',
-      icon: 'target',
+      progress: 60,
+      xpReward: 150,
+      difficulty: 'easy',
+      isCompleted: false,
+      streakCount: 3,
     },
     {
       id: '3',
       type: 'tip',
-      title: 'AI Tip: Market Update on Your Holdings',
-      description: 'Your tech stocks are performing well this week. Consider diversifying.',
-      actionText: 'Learn More',
-      icon: 'lightbulb',
+      title: 'Market Update on Your Holdings',
+      content:
+        'Your tech stocks are performing well this week. Consider diversifying your portfolio to reduce risk while maintaining growth potential.',
+      category: 'portfolio',
+      readTime: 3,
+      isBookmarked: false,
     },
   ];
 
@@ -61,44 +131,84 @@ export default function DashboardScreen() {
   };
 
   const handleFeedItemPress = (item: FeedItem) => {
-    // Future implementation will handle different item types
-    console.log('Feed item pressed:', item.title);
+    switch (item.type) {
+      case 'basket':
+        console.log('Navigate to basket:', item.id);
+        // router.push(`/baskets/${item.id}`);
+        break;
+      case 'quest':
+        console.log('Navigate to quest:', item.id);
+        // router.push(`/quests/${item.id}`);
+        break;
+      case 'tip':
+        console.log('Navigate to tip:', item.id);
+        // router.push(`/tips/${item.id}`);
+        break;
+      default:
+        console.log('Unknown feed item type');
+    }
   };
 
-  const renderFeedItem = (item: FeedItem) => (
-    <TouchableOpacity
-      key={item.id}
-      onPress={() => handleFeedItemPress(item)}
-      accessibilityRole="button"
-      accessibilityLabel={`${item.title}. ${item.description}`}
-      accessibilityHint={`Tap to ${item.actionText.toLowerCase()}`}>
-      <Card className="mb-4 bg-white p-4">
-        <View className="flex-row items-start">
-          {item.icon && (
-            <View className="mr-3 mt-1">
-              <Icon name={item.icon} size={20} color="#5852FF" accessibilityLabel="" />
-            </View>
-          )}
-          <View className="flex-1">
-            <Text
-              className="mb-2 text-lg font-bold text-black"
-              style={{ fontFamily: 'MD Nichrome' }}
-              accessibilityRole="header">
-              {item.title}
-            </Text>
-            <Text className="mb-3 text-base text-gray-600" style={{ fontFamily: 'Gilroy' }}>
-              {item.description}
-            </Text>
-            <View className="flex-row justify-end">
-              <Text className="text-sm font-medium text-blue-600" style={{ fontFamily: 'Gilroy' }}>
-                {item.actionText}
-              </Text>
-            </View>
-          </View>
-        </View>
-      </Card>
-    </TouchableOpacity>
-  );
+  const renderFeedItem = (item: FeedItem) => {
+    switch (item.type) {
+      case 'basket':
+        return (
+          <BasketFeedCard
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            description={item.description}
+            avatar={item.avatar}
+            performance={{
+              value: item.performance.value,
+              isPositive: item.performance.isPositive,
+              chartData: item.performanceData.map((d) => d.value),
+            }}
+            stocks={item.stockAvatars.map((avatar, index) => ({
+              id: `stock-${index}`,
+              symbol: `S${index + 1}`,
+              avatar,
+              allocation: 25, // Mock allocation
+            }))}
+            onPress={() => handleFeedItemPress(item)}
+            className="mb-4"
+          />
+        );
+      case 'quest':
+        return (
+          <QuestFeedCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            description={item.description}
+            progress={item.progress}
+            xpReward={item.xpReward}
+            difficulty={item.difficulty}
+            isCompleted={item.isCompleted}
+            streakCount={item.streakCount}
+            onPress={() => handleFeedItemPress(item)}
+            className="mb-4"
+          />
+        );
+      case 'tip':
+        return (
+          <AITipCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            content={item.content}
+            category="general"
+            readTime={`${item.readTime} min`}
+            isBookmarked={item.isBookmarked}
+            onPress={() => handleFeedItemPress(item)}
+            onBookmark={() => console.log('Bookmark toggled for tip:', item.id)}
+            className="mb-4"
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -108,21 +218,37 @@ export default function DashboardScreen() {
         showsVerticalScrollIndicator={false}
         accessibilityLabel="Dashboard screen content">
         {/* Portfolio Summary Section */}
-        <View className="h-[45%] gap-y-[16px] bg-primary px-[14px] pt-[24px]">
-          <BalanceCard
-            className="h-auto"
-            balance={portfolioValue.toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            })}
-            onTopUpPress={handlePortfolioPress}
-          />
+        <BalanceCard
+          className="mx-[14px] mt-[24px] h-[25%] gap-y-[16px] p-[16px]"
+          balance={portfolioValue.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })}
+          onTopUpPress={handlePortfolioPress}
+        />
+
+        <View className="mx-6 items-start gap-x-4 gap-y-[16px] pt-2">
+          <Text className="font-heading-bold text-[20px] ">Add Money</Text>
+          <Grid columns={3}>
+            <Button size="medium" variant="tertiary" title="$ 20k" />
+            <Button size="medium" variant="tertiary" title="$ 50k" />
+            <Button size="medium" variant="tertiary" title="$ 100k" />
+            <Button size="medium" variant="tertiary" title="$ 100" className="mr-2 h-[50px] bg-primary p-2" />
+            <Button size="medium" variant="tertiary" title="$ 200" />
+            <Button
+              size="medium"
+              variant="tertiary"
+              icon={<Icon library="feather" name="plus" size={16} color="black" />}
+              title=""
+              className="mr-2 h-[50px] bg-primary p-2"
+            />
+          </Grid>
         </View>
 
         {/* Feed Items Section */}
         <View className="px-6">
           <Text
-            className="mb-4 mt-[24px] font-h1 text-[34px] font-bold text-black"
+            className="mb-4 mt-[24px] font-h1 text-[28px] font-bold text-black"
             accessibilityRole="header">
             For You
           </Text>

@@ -94,7 +94,7 @@ const onboardingSlides: OnboardingSlide[] = [
   },
 ];
 
-const SLIDE_INTERVAL = 4000; // 4 seconds
+const SLIDE_INTERVAL = 6000; // 4 seconds
 
 // --- Main App Component ---
 export default function App() {

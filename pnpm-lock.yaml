@@ -150,6 +150,12 @@ importers:
       '@react-navigation/native':
         specifier: ^7.0.3
         version: 7.1.14(react-native@0.79.5)(react@19.0.0)
+      '@rneui/base':
+        specifier: 4.0.0-rc.8
+        version: 4.0.0-rc.8(react-native-safe-area-context@5.4.0)(react-native-vector-icons@10.3.0)(react-native@0.79.5)(react@19.0.0)
+      '@rneui/themed':
+        specifier: 4.0.0-rc.8
+        version: 4.0.0-rc.8(@rneui/base@4.0.0-rc.8)
       '@stack/ui-library':
         specifier: file:../../packages/ui-library
         version: file:packages/ui-library(expo-font@13.3.2)(react-native-reanimated@3.17.5)(react-native-safe-area-context@5.4.0)(react-native-svg@15.11.2)(react-native@0.79.5)(react@19.0.0)(tailwindcss@3.4.17)
@@ -4071,7 +4077,7 @@ packages:
     peerDependencies:
       hardhat: ^2.22.5
     dependencies:
-      '@matterlabs/zksync-telemetry-js': github.com/matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1)
+      '@matterlabs/zksync-telemetry-js': git@github.com+matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1)
       hardhat: 2.26.1(ts-node@10.9.2)(typescript@5.8.3)
     transitivePeerDependencies:
       - debug
@@ -6763,6 +6769,33 @@ packages:
       nanoid: 3.3.11
     dev: false
 
+  /@rneui/base@4.0.0-rc.8(react-native-safe-area-context@5.4.0)(react-native-vector-icons@10.3.0)(react-native@0.79.5)(react@19.0.0):
+    resolution: {integrity: sha512-teJ6bUki+TQ+r+abefEWYb2wRUaMgRhp1oxtKa84UfDqTiCF0ItyJ0L8FhMb6AAkTOkWC34301T7j3H4df6ueA==}
+    peerDependencies:
+      react-native-safe-area-context: '>= 3.0.0'
+      react-native-vector-icons: '>7.0.0'
+    dependencies:
+      '@types/react-native-vector-icons': 6.4.18
+      color: 3.2.1
+      deepmerge: 4.3.1
+      hoist-non-react-statics: 3.3.2
+      react-native-ratings: 8.1.0(react-native@0.79.5)(react@19.0.0)
+      react-native-safe-area-context: 5.4.0(react-native@0.79.5)(react@19.0.0)
+      react-native-size-matters: 0.4.2(react-native@0.79.5)
+      react-native-vector-icons: 10.3.0
+    transitivePeerDependencies:
+      - react
+      - react-native
+    dev: false
+
+  /@rneui/themed@4.0.0-rc.8(@rneui/base@4.0.0-rc.8):
+    resolution: {integrity: sha512-8L/XOrL9OK/r+/iBLvx63TbIdZOXF8SIjN9eArMYm6kRbMr8m4BitXllDN8nBhBsSPNYvL6EAgjk+i2MfY4sBA==}
+    peerDependencies:
+      '@rneui/base': 4.0.0-rc.7
+    dependencies:
+      '@rneui/base': 4.0.0-rc.8(react-native-safe-area-context@5.4.0)(react-native-vector-icons@10.3.0)(react-native@0.79.5)(react@19.0.0)
+    dev: false
+
   /@rtsao/scc@1.1.0:
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
@@ -8173,6 +8206,19 @@ packages:
     dependencies:
       '@types/react': 19.0.14
     dev: true
+
+  /@types/react-native-vector-icons@6.4.18:
+    resolution: {integrity: sha512-YGlNWb+k5laTBHd7+uZowB9DpIK3SXUneZqAiKQaj1jnJCZM0x71GDim5JCTMi4IFkhc9m8H/Gm28T5BjyivUw==}
+    dependencies:
+      '@types/react': 19.0.14
+      '@types/react-native': 0.70.19
+    dev: false
+
+  /@types/react-native@0.70.19:
+    resolution: {integrity: sha512-c6WbyCgWTBgKKMESj/8b4w+zWcZSsCforson7UdXtXMecG3MxCinYi6ihhrHVPyUrVzORsvEzK8zg32z4pK6Sg==}
+    dependencies:
+      '@types/react': 19.0.14
+    dev: false
 
   /@types/react-native@0.72.8(react-native@0.79.5):
     resolution: {integrity: sha512-St6xA7+EoHN5mEYfdWnfYt0e8u6k2FR0P9s2arYgakQGFgU1f9FlPrIEcj0X24pLCF5c5i3WVuLCUdiCYHmOoA==}
@@ -11458,6 +11504,13 @@ packages:
   /color-support@1.1.3:
     resolution: {integrity: sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==}
     hasBin: true
+    dev: false
+
+  /color@3.2.1:
+    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
+    dependencies:
+      color-convert: 1.9.3
+      color-string: 1.9.1
     dev: false
 
   /color@4.2.3:
@@ -18810,6 +18863,17 @@ packages:
       - react-native
     dev: false
 
+  /react-native-ratings@8.1.0(react-native@0.79.5)(react@19.0.0):
+    resolution: {integrity: sha512-+QOJ4G3NjVkI1D+tk4EGx1dCvVfbD2nQdkrj9cXrcAoEiwmbep4z4bZbCKmWMpQ5h2dqbxABU8/eBnbDmvAc3g==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+    dependencies:
+      lodash: 4.17.21
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
+    dev: false
+
   /react-native-reanimated@3.17.5(@babel/core@7.28.0)(react-native@0.79.5)(react@19.0.0):
     resolution: {integrity: sha512-SxBK7wQfJ4UoWoJqQnmIC7ZjuNgVb9rcY5Xc67upXAFKftWg0rnkknTw6vgwnjRcvYThrjzUVti66XoZdDJGtw==}
     peerDependencies:
@@ -18859,6 +18923,14 @@ packages:
       warn-once: 0.1.1
     dev: false
 
+  /react-native-size-matters@0.4.2(react-native@0.79.5):
+    resolution: {integrity: sha512-DKE3f/sdcozd24oASgkP1iGg+YU3HoajRa5k3a4wkRzpiqREq8SGX12Y5zBgAt/8IivLQoTMYkyQu1/Giuy+zQ==}
+    peerDependencies:
+      react-native: '*'
+    dependencies:
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
+    dev: false
+
   /react-native-svg@15.11.2(react-native@0.79.5)(react@19.0.0):
     resolution: {integrity: sha512-+YfF72IbWQUKzCIydlijV1fLuBsQNGMT6Da2kFlo1sh+LE3BIm/2Q7AR1zAAR6L0BFLi1WaQPLfFUC9bNZpOmw==}
     peerDependencies:
@@ -18879,6 +18951,15 @@ packages:
     dependencies:
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
       whatwg-url-without-unicode: 8.0.0-3
+    dev: false
+
+  /react-native-vector-icons@10.3.0:
+    resolution: {integrity: sha512-IFQ0RE57819hOUdFvgK4FowM5aMXg7C7XKsuGLevqXkkIJatc3QopN0wYrb2IrzUgmdpfP+QVIbI3S6h7M0btw==}
+    deprecated: react-native-vector-icons package has moved to a new model of per-icon-family packages. See the https://github.com/oblador/react-native-vector-icons/blob/master/MIGRATION.md on how to migrate
+    hasBin: true
+    dependencies:
+      prop-types: 15.8.1
+      yargs: 16.2.0
     dev: false
 
   /react-native-web@0.20.0(react-dom@19.0.0)(react@19.0.0):
@@ -22643,8 +22724,11 @@ packages:
       nativewind: 4.1.23(react-native-reanimated@3.17.5)(react-native-safe-area-context@5.4.0)(react-native-svg@15.11.2)(react-native@0.79.5)(react@19.0.0)(tailwindcss@3.4.17)
       react: 19.0.0
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
+      react-native-gifted-charts: 1.4.63(react-native-svg@15.11.2)(react-native@0.79.5)(react@19.0.0)
     transitivePeerDependencies:
       - expo-font
+      - expo-linear-gradient
+      - react-native-linear-gradient
       - react-native-reanimated
       - react-native-safe-area-context
       - react-native-svg
@@ -22652,9 +22736,9 @@ packages:
       - tailwindcss
     dev: false
 
-  github.com/matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1):
-    resolution: {tarball: https://codeload.github.com/matter-labs/zksync-telemetry-js/tar.gz/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11}
-    id: github.com/matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11
+  git@github.com+matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11(debug@4.4.1):
+    resolution: {commit: 2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11, repo: git@github.com:matter-labs/zksync-telemetry-js.git, type: git}
+    id: git@github.com+matter-labs/zksync-telemetry-js/2fd9edbe6b9a5e0c2caeda4b04dd5631d7546a11
     name: zksync-telemetry
     version: 1.0.0
     dependencies:

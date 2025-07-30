@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, ViewProps } from 'react-native';
-import { LineChart, BarChart, ProgressChart } from 'react-native-gifted-charts';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  CurveType,
+} from 'react-native-gifted-charts';
 import { colors, typography, spacing } from '../../design/tokens';
 
 export interface ChartDataPoint {
@@ -11,7 +16,7 @@ export interface ChartDataPoint {
 
 export interface ChartProps extends ViewProps {
   data: ChartDataPoint[];
-  type?: 'line' | 'bar' | 'progress';
+  type?: 'line' | 'bar' | 'pie';
   height?: number;
   showLabels?: boolean;
   showValues?: boolean;
@@ -20,6 +25,7 @@ export interface ChartProps extends ViewProps {
   testID?: string;
   color?: string;
   animationDuration?: number;
+  width?: number;
 }
 
 export const Chart: React.FC<ChartProps> = ({
@@ -34,11 +40,12 @@ export const Chart: React.FC<ChartProps> = ({
   style,
   color = colors.accent.limeGreen,
   animationDuration = 800,
+  width = 120,
   ...props
 }) => {
-  const giftedData = data.map((point, index) => ({
+  const giftedData = data.map((point) => ({
     value: point.value,
-    label: point.label || '',
+    label: '', // hide labels
     frontColor: point.color || color,
   }));
 
@@ -56,30 +63,22 @@ export const Chart: React.FC<ChartProps> = ({
             animationDuration={animationDuration}
             height={height}
             yAxisThickness={0}
-            xAxisLabelTextStyle={{
-              fontFamily: typography.fonts.secondary,
-              fontSize: typography.styles.caption.size,
-              color: colors.text.secondary,
-            }}
-            hideAxesAndRules={!showLabels}
+            xAxisThickness={0}
+            hideRules
+            xAxisLabelTextStyle={{ display: 'none' }}
+            yAxisTextStyle={{ display: 'none' }}
           />
         );
 
-      case 'progress':
-        const total = data.reduce((sum, p) => sum + p.value, 0);
-        const percentages = data.map(p => p.value / total);
+      case 'pie':
         return (
-          <ProgressChart
-            data={percentages}
-            labels={showLabels ? data.map(p => p.label || '') : []}
+          <PieChart
+            data={giftedData}
+            showText={false}
             radius={height / 2}
-            strokeWidth={10}
-            showText
-            strokeColorConfig={data.map(p => p.color || color)}
-            animated
+            innerRadius={height / 4}
+            isAnimated
             animationDuration={animationDuration}
-            textColor={colors.text.primary}
-            textFontSize={typography.styles.caption.size}
           />
         );
 
@@ -87,32 +86,32 @@ export const Chart: React.FC<ChartProps> = ({
       default:
         return (
           <LineChart
-            areaChart5
+            curved
+            curveType={CurveType.QUADRATIC}
             data={giftedData}
-            thickness={5}
+            thickness={3}
             color={color}
             hideDataPoints={!showValues}
             yAxisThickness={0}
+            xAxisThickness={0}
             isAnimated
             animationDuration={animationDuration}
+            hideRules
+            hideYAxisText
             height={height}
-            xAxisLabelTextStyle={{
-              fontFamily: typography.fonts.secondary,
-              fontSize: typography.styles.caption.size,
-              color: colors.text.secondary,
-            }}
-            hideAxesAndRules={!showLabels}
+            adjustToWidth
+            areaChart2
           />
         );
     }
   };
 
   return (
-    <View
-      style={[{ padding: spacing.md }, style]}
-      className={className}
-      testID={testID}
-      {...props}
+    <
+    //   style={[{ height, width: '100%', alignItems: 'center' }, style]}
+    //   className={className}
+    //   testID={testID}
+    //   {...props}
     >
       {title && (
         <Text
@@ -128,6 +127,6 @@ export const Chart: React.FC<ChartProps> = ({
         </Text>
       )}
       {renderChart()}
-    </View>
+    </>
   );
 };

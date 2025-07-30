@@ -2,12 +2,13 @@ import { Link, Tabs } from 'expo-router';
 
 import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
+import { colors } from '@stack/ui-library';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#5852FF',
+        tabBarActiveTintColor: colors.primary.royalBlue,
         tabBarInactiveTintColor: '#6B7280',
         headerShown: false,
         tabBarStyle: {
@@ -31,10 +32,6 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           tabBarAccessibilityLabel: 'Dashboard tab',
-
-          headerStyle: {
-            backgroundColor: '#5852FF',
-          },
           headerShown: true,
           headerTitle: '',
         }}
@@ -45,6 +42,7 @@ export default function TabLayout() {
           title: 'Portfolio',
           tabBarIcon: ({ color }) => <TabBarIcon name="pie-chart" color={color} />,
           tabBarAccessibilityLabel: 'Portfolio tab',
+          headerTitle: '',
         }}
       />
       <Tabs.Screen

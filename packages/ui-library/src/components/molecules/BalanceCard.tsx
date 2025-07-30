@@ -31,7 +31,15 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   ];
 
   return (
-    <View className={`${className || ''}`} {...props}>
+    <Card
+      variant="default"
+      padding="large"
+      className={`${className || ''}`}
+      {...props}
+      style={{
+        backgroundColor: colors.primary.royalBlue,
+      }}
+    >
       {/* Balance Section */}
       <View className="mb-6">
         <View className="flex-row items-center justify-between mb-2">
@@ -47,27 +55,13 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
           >
             Portfolio Value
           </Text>
-          <View className="flex-row items-center gap-x-1">
-            <Icon
-              library="feather"
-              name="trending-up"
-              size={14}
-              color={colors.accent.limeGreen}
-            />
-            <Text
-              className="text-xs font-medium"
-              style={{ color: colors.accent.limeGreen }}
-            >
-              +12.5%
-            </Text>
-          </View>
         </View>
 
         <View className="mb-3">
           <Text
             className="font-bold font-h1 text-text-primary"
             style={{
-              fontSize: 48,
+              fontSize: 38,
               color: colors.text.onPrimary,
             }}
           >
@@ -94,70 +88,52 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       </View>
 
       {/* Chart Section */}
-      <View className="mb-6 w-full">
-        <Chart
-          data={chartData}
-          type="line"
-          height={120}
-          showLabels={false}
-          showValues={false}
-          style={{ width: '100%' }}
-        />
-      </View>
+      <Chart
+        data={chartData}
+        type="line"
+        height={120}
+        width={2400}
+        showLabels={false}
+        showValues={false}
+      />
 
-      {/* Action Buttons */}
-      <View className="flex-row items-center gap-x-3">
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.accent.limeGreen,
-            shadowColor: colors.accent.limeGreen,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 8,
-            elevation: 4,
-          }}
-          className="flex-1 flex-row items-center gap-x-2 justify-center px-4 py-3 rounded-xl"
-          onPress={onTopUpPress}
-        >
+      <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center gap-x-1">
           <Icon
             library="feather"
-            name="plus"
-            size={18}
-            color={colors.text.primary}
+            name="trending-up"
+            size={14}
+            color={colors.accent.limeGreen}
           />
           <Text
-            className="font-semibold text-base"
-            style={{ color: colors.text.primary }}
+            className="text-[14px]"
+            style={{
+              color: colors.accent.limeGreen,
+              fontFamily: typography.fonts.secondary,
+            }}
           >
-            Add Funds
+            +12.5%
           </Text>
-        </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primary.royalBlue,
-            shadowColor: colors.primary.royalBlue,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 8,
-            elevation: 4,
-          }}
-          className="flex-1 flex-row items-center gap-x-2 justify-center px-4 py-3 rounded-xl"
-        >
+        <TouchableOpacity className="flex-row items-center gap-x-1">
+          <Text
+            style={{
+              color: colors.text.onPrimary,
+              fontFamily: typography.fonts.secondary,
+            }}
+            className="text-[14px] font"
+          >
+            View Portfolio
+          </Text>
           <Icon
             library="feather"
-            name="arrow-down-left"
-            size={18}
+            name="chevron-right"
+            size={14}
             color={colors.text.onPrimary}
           />
-          <Text
-            className="font-semibold text-base"
-            style={{ color: colors.text.onPrimary }}
-          >
-            Withdraw
-          </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Card>
   );
 };

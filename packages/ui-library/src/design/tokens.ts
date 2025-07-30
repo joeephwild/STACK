@@ -86,8 +86,8 @@ export const typography = {
       weight: 'regular',
     },
     label: {
-      font: 'Gilroy',
-      size: 14,
+      font: 'MD Nichrome',
+      size: 12,
       weight: 'medium',
     },
     caption: {

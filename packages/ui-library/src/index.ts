@@ -34,6 +34,9 @@ export { FeatureCard } from './components/molecules/FeatureCard';
 export { PerformanceIndicator } from './components/molecules/PerformanceIndicator';
 export { BasketCard } from './components/molecules/BasketCard';
 export type { BasketCardProps } from './components/molecules/BasketCard';
+export { BasketFeedCard } from './components/molecules/BasketFeedCard';
+export { QuestFeedCard } from './components/molecules/QuestFeedCard';
+export { AITipCard } from './components/molecules/AITipCard';
 export { FilterChips } from './components/molecules/FilterChips';
 export type { FilterChip, FilterChipsProps } from './components/molecules/FilterChips';
 

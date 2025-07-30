@@ -22,6 +22,8 @@
         "@react-native-async-storage/async-storage": "^2.1.2",
         "@react-native-community/netinfo": "11.4.1",
         "@react-navigation/native": "^7.0.3",
+        "@rneui/base": "4.0.0-rc.8",
+        "@rneui/themed": "4.0.0-rc.8",
         "@stack/ui-library": "file:../../packages/ui-library",
         "@walletconnect/react-native-compat": "^2.21.5",
         "amazon-cognito-identity-js": "^6.3.15",
